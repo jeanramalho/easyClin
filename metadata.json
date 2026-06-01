@@ -1,0 +1,6 @@
+{
+  "name": "EasyClin",
+  "description": "SaaS premium para clínicas e profissionais de saúde - Agenda, Prontuário, Financeiro, CRM e Faturamento Inteligente.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
