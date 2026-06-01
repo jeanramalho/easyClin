@@ -34,11 +34,11 @@ graph TD
 - **O que fazer:** Refatorar a visualização de login seguindo os moldes exatos de `login_easyclin/code.html`.
 - **Elementos críticos:** Efeito de vidro (`glass-card`), gradiente suave de fundo (`soft-gradient`), cabeçalho da logo centralizado, inputs com ícones e estados de foco contornados em anel azul de 2px, suporte a modo escuro e transições animadas.
 
-### [ ] Tarefa 1.3: Redesenho do Dashboard Principal (`ClinicDashboard.tsx`)
+### [x] Tarefa 1.3: Redesenho do Dashboard Principal (`ClinicDashboard.tsx`)
 - **O que fazer:** Reconstruir o layout estrutural do dashboard, menu lateral fixo (aside) e topo (header) em total conformidade com `dashboard_principal_easyclin/code.html`.
 - **Elementos críticos:** Menu de navegação lateral com ícones da Google Material Symbols, cabeçalho de topo contendo busca em pílula, botões de ação expressiva (`+ Novo Paciente`, `+ Novo Agendamento`) e avatar premium.
 
-### [ ] Tarefa 1.4: Refatoração da Agenda Central (`AgendaPanel.tsx`)
+### [x] Tarefa 1.4: Refatoração da Agenda Central (`AgendaPanel.tsx`)
 - **O que fazer:** Ajustar a interface da agenda utilizando as referências e elementos visuais de `agenda_easyclin/code.html`.
 - **Elementos críticos:** Visualização de cartões de agendamento com bordas arredondadas e cores baseadas no status, badges de status estilizados em preenchimento de baixo contraste (fundo 10% opacidade, texto 100%), e cabeçalho de controle de períodos.
 

@@ -6,11 +6,6 @@
 import React, { useState, useEffect } from 'react';
 import { User, Tenant, Patient, Appointment, Procedure, Budget, FinancialTransaction, AuditLog } from '../types';
 import { dbObj } from '../services/db';
-import { 
-  Building2, Users, Calendar, Calculator, FileSpreadsheet, 
-  PiggyBank, ShieldCheck, Settings, AlertTriangle, Play, RefreshCw, 
-  LogOut, ShieldX, UserCheck, Stethoscope, Lock, Mail, Phone, MapPin
-} from 'lucide-react';
 
 // Child panels imports
 import AgendaPanel from '../components/AgendaPanel';
@@ -39,6 +34,9 @@ export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch, d
 
   // Navigation tab
   const [activeTab, setActiveTab] = useState<'agenda' | 'patients' | 'budgets' | 'pricing' | 'finance' | 'admin'>('agenda');
+
+  // Mobile navigation drawer state
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   // Staff registration handler
   const [newStaffName, setNewStaffName] = useState('');
@@ -69,10 +67,11 @@ export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch, d
   if (!activeTenant) {
     return (
       <div className="min-h-screen flex items-center justify-center p-6 bg-slate-900 text-white">
-        <div className="text-center">
+        <div className="text-center space-y-4">
+          <span className="material-symbols-outlined text-[48px] text-rose-500">gpp_maybe</span>
           <p className="text-xs text-rose-500 font-extrabold uppercase tracking-widest">Sessão Corrompida</p>
           <h2 className="text-xl font-bold mt-1">Tenant não localizado</h2>
-          <button onClick={onLogout} className="mt-4 px-4 py-2 border rounded-xl">Voltar ao Login</button>
+          <button onClick={onLogout} className="mt-4 px-4 py-2 border rounded-xl cursor-pointer">Voltar ao Login</button>
         </div>
       </div>
     );
@@ -137,303 +136,343 @@ export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch, d
   const simulatedStaffMembers = dbObj.getUsers().filter(u => u.tenantId === activeTenant.id);
 
   return (
-    <div className={`min-h-screen flex flex-col transition-colors duration-300 ${
-      darkMode ? 'bg-slate-950 text-slate-100' : 'bg-slate-50 text-slate-900'
-    }`}>
+    <div className="min-h-screen flex bg-background text-on-background transition-colors duration-300">
       
-      {/* 1. Header Banner */}
-      <header className={`border-b px-4 md:px-8 py-3.5 flex flex-col md:flex-row justify-between items-center gap-4 sticky top-0 z-30 shadow-sm transition-colors ${
-        darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'
+      {/* Mobile Drawer Backdrop */}
+      {mobileSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black/40 z-30 md:hidden"
+          onClick={() => setMobileSidebarOpen(false)}
+        />
+      )}
+
+      {/* 1. Sidebar Left Navigation (aside) */}
+      <aside className={`fixed md:sticky top-0 left-0 h-screen z-40 w-[280px] bg-white dark:bg-slate-900 border-r border-outline-variant dark:border-outline/20 flex flex-col p-6 shrink-0 transition-transform duration-300 md:translate-x-0 ${
+        mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
       }`}>
-        {/* Brand/Clinic details */}
-        <div className="flex items-center gap-3">
-          {activeTenant.logoUrl ? (
-            <img 
-              src={activeTenant.logoUrl} 
-              alt={activeTenant.name} 
-              className="w-10 h-10 object-cover rounded-xl shrink-0" 
-              referrerPolicy="no-referrer"
-            />
-          ) : (
-            <div className="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold font-sans">
-              {activeTenant.name.charAt(0)}
-            </div>
-          )}
-          
-          <div>
-            <div className="flex items-center gap-1.5 leading-none">
-              <h2 className="font-extrabold text-sm md:text-md tracking-tight">{activeTenant.name}</h2>
-              <span className={`px-1.5 py-0.2 rounded text-[8px] font-bold uppercase ${
+        {/* Brand Header */}
+        <div className="flex items-center gap-3 mb-8">
+          <span className="material-symbols-outlined text-primary dark:text-primary-fixed-dim text-[32px]" style={{ fontVariationSettings: "'FILL' 1" }}>
+            medical_services
+          </span>
+          <span className="font-headline-sm text-headline-sm text-on-surface tracking-tight">EasyClin</span>
+        </div>
+
+        {/* Tenant Quick Info */}
+        <div className="bg-surface-container dark:bg-inverse-surface rounded-xl p-3 mb-6 border border-outline-variant/30">
+          <div className="flex items-center gap-3 min-w-0">
+            {activeTenant.logoUrl ? (
+              <img 
+                src={activeTenant.logoUrl} 
+                alt={activeTenant.name} 
+                className="w-8 h-8 rounded-full object-cover shrink-0 border border-outline-variant"
+                referrerPolicy="no-referrer"
+              />
+            ) : (
+              <div className="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-sm shrink-0">
+                {activeTenant.name.charAt(0)}
+              </div>
+            )}
+            <div className="min-w-0">
+              <h3 className="font-body-md text-body-md text-on-surface font-semibold truncate leading-none mb-1">{activeTenant.name}</h3>
+              <span className={`px-1.5 py-0.5 rounded text-[8px] font-bold uppercase ${
                 activeTenant.status === 'active' 
-                  ? 'bg-emerald-500/10 text-emerald-500' 
+                  ? 'bg-emerald-500/10 text-emerald-500 dark:text-emerald-400' 
                   : activeTenant.status === 'trial' 
-                  ? 'bg-amber-500/10 text-amber-500' 
-                  : 'bg-rose-500/10 text-rose-500'
+                  ? 'bg-amber-500/10 text-amber-500 dark:text-amber-400' 
+                  : 'bg-rose-500/10 text-rose-500 dark:text-rose-400'
               }`}>
                 {activeTenant.status}
               </span>
             </div>
-            <p className="text-[10px] text-slate-400 mt-1 font-mono">Tenant ID: {activeTenant.id}</p>
           </div>
         </div>
 
-        {/* Simulator controls + role selectors (Middle of header) */}
-        <div className={`px-3 py-1.5 rounded-xl border flex items-center gap-2 text-xs font-semibold ${
-          darkMode ? 'bg-slate-950 border-slate-850' : 'bg-slate-100/80 border-slate-200'
-        }`}>
-          <span className="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Simulador de Papel:</span>
-          
-          <select
-            value={currentUser.id}
-            onChange={(e) => {
-              const matched = simulatedStaffMembers.find(m => m.id === e.target.value);
-              if (matched) onRoleSwitch(matched);
+        {/* Nav Tabs */}
+        <nav className="space-y-1 flex-1">
+          <button
+            onClick={() => {
+              setActiveTab('agenda');
+              setMobileSidebarOpen(false);
             }}
-            className="p-1 px-2.5 rounded-lg border text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 bg-transparent"
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg font-title-sm text-title-sm text-left transition-colors cursor-pointer focus:outline-none ${
+              activeTab === 'agenda'
+                ? 'bg-primary text-on-primary font-bold shadow-sm'
+                : 'text-on-surface-variant hover:bg-surface-container dark:hover:bg-inverse-surface'
+            }`}
           >
-            {simulatedStaffMembers.map(m => {
-              let labelRole = m.role === 'clinic_admin' ? 'Dono' : m.role === 'receptionist' ? 'Recepção' : 'Dentista/Médico';
-              return (
-                <option key={m.id} value={m.id}>
-                  {m.name} ({labelRole})
-                </option>
-              );
-            })}
-          </select>
-        </div>
-
-        {/* Right logout credits */}
-        <div className="flex items-center gap-4 text-xs font-semibold">
-          <div className="text-right">
-            <span className="text-slate-400 font-normal uppercase text-[9px] tracking-widest block leading-3">Conectado como</span>
-            <span className="text-slate-900 dark:text-slate-100 font-bold">{currentUser.name}</span>
-          </div>
+            <span className="material-symbols-outlined text-[20px]">calendar_today</span>
+            <span>Agenda Central</span>
+          </button>
 
           <button
-            onClick={onLogout}
-            className="p-2.5 rounded-xl border border-slate-300 dark:border-slate-850 hover:bg-rose-600 hover:text-white dark:hover:bg-rose-600 transition-colors cursor-pointer"
-            title="Sair do consultório"
+            onClick={() => {
+              setActiveTab('patients');
+              setMobileSidebarOpen(false);
+            }}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg font-title-sm text-title-sm text-left transition-colors cursor-pointer focus:outline-none ${
+              activeTab === 'patients'
+                ? 'bg-primary text-on-primary font-bold shadow-sm'
+                : 'text-on-surface-variant hover:bg-surface-container dark:hover:bg-inverse-surface'
+            }`}
           >
-            <LogOut className="h-4 w-4" />
+            <span className="material-symbols-outlined text-[20px]">group</span>
+            <span>Fichas e Prontuários</span>
+          </button>
+
+          <button
+            disabled={isReceptionist}
+            onClick={() => {
+              setActiveTab('budgets');
+              setMobileSidebarOpen(false);
+            }}
+            className={`w-full flex items-center justify-between px-4 py-3 rounded-lg font-title-sm text-title-sm text-left transition-colors focus:outline-none ${
+              isReceptionist ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer hover:bg-surface-container dark:hover:bg-inverse-surface'
+            } ${
+              activeTab === 'budgets'
+                ? 'bg-primary text-on-primary font-bold shadow-sm'
+                : 'text-on-surface-variant'
+            }`}
+          >
+            <div className="flex items-center gap-3">
+              <span className="material-symbols-outlined text-[20px]">description</span>
+              <span>Orçamentos</span>
+            </div>
+            {isReceptionist && <span className="material-symbols-outlined text-sm text-outline">lock</span>}
+          </button>
+
+          <button
+            disabled={isReceptionist || isProfessional}
+            onClick={() => {
+              setActiveTab('pricing');
+              setMobileSidebarOpen(false);
+            }}
+            className={`w-full flex items-center justify-between px-4 py-3 rounded-lg font-title-sm text-title-sm text-left transition-colors focus:outline-none ${
+              isReceptionist || isProfessional ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer hover:bg-surface-container dark:hover:bg-inverse-surface'
+            } ${
+              activeTab === 'pricing'
+                ? 'bg-primary text-on-primary font-bold shadow-sm'
+                : 'text-on-surface-variant'
+            }`}
+          >
+            <div className="flex items-center gap-3">
+              <span className="material-symbols-outlined text-[20px]">calculate</span>
+              <span>Precificação (QiDent)</span>
+            </div>
+            {(isReceptionist || isProfessional) && <span className="material-symbols-outlined text-sm text-outline">lock</span>}
+          </button>
+
+          <button
+            disabled={isReceptionist}
+            onClick={() => {
+              setActiveTab('finance');
+              setMobileSidebarOpen(false);
+            }}
+            className={`w-full flex items-center justify-between px-4 py-3 rounded-lg font-title-sm text-title-sm text-left transition-colors focus:outline-none ${
+              isReceptionist ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer hover:bg-surface-container dark:hover:bg-inverse-surface'
+            } ${
+              activeTab === 'finance'
+                ? 'bg-primary text-on-primary font-bold shadow-sm'
+                : 'text-on-surface-variant'
+            }`}
+          >
+            <div className="flex items-center gap-3">
+              <span className="material-symbols-outlined text-[20px]">payments</span>
+              <span>Financeiro</span>
+            </div>
+            {isReceptionist && <span className="material-symbols-outlined text-sm text-outline">lock</span>}
+          </button>
+
+          <button
+            disabled={!isAdmin}
+            onClick={() => {
+              setActiveTab('admin');
+              setMobileSidebarOpen(false);
+            }}
+            className={`w-full flex items-center justify-between px-4 py-3 rounded-lg font-title-sm text-title-sm text-left transition-colors focus:outline-none ${
+              !isAdmin ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer hover:bg-surface-container dark:hover:bg-inverse-surface'
+            } ${
+              activeTab === 'admin'
+                ? 'bg-primary text-on-primary font-bold shadow-sm'
+                : 'text-on-surface-variant'
+            }`}
+          >
+            <div className="flex items-center gap-3">
+              <span className="material-symbols-outlined text-[20px]">settings</span>
+              <span>Configurações</span>
+            </div>
+            {!isAdmin && <span className="material-symbols-outlined text-sm text-outline">lock</span>}
+          </button>
+        </nav>
+
+        {/* Sidebar Footer Developer Simulator */}
+        <div className="border-t border-outline-variant dark:border-outline/20 pt-4 mt-auto space-y-4">
+          <div className="space-y-1">
+            <label className="font-label-sm text-[10px] text-outline uppercase tracking-wider block font-semibold">Simulador de Papel</label>
+            <div className="relative">
+              <select
+                value={currentUser.id}
+                onChange={(e) => {
+                  const matched = simulatedStaffMembers.find(m => m.id === e.target.value);
+                  if (matched) {
+                    onRoleSwitch(matched);
+                    setMobileSidebarOpen(false);
+                  }
+                }}
+                className="w-full text-xs bg-surface-container-low dark:bg-inverse-surface border border-outline-variant/60 dark:border-outline/40 p-2 rounded-lg text-on-surface focus:outline-none focus:ring-1 focus:ring-primary"
+              >
+                {simulatedStaffMembers.map(m => {
+                  let labelRole = m.role === 'clinic_admin' ? 'Dono' : m.role === 'receptionist' ? 'Recepção' : 'Dentista/Médico';
+                  return (
+                    <option key={m.id} value={m.id}>
+                      {m.name} ({labelRole})
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
+          </div>
+          
+          <button 
+            onClick={onLogout} 
+            className="w-full flex items-center justify-center gap-2 p-2.5 bg-error/10 hover:bg-error/20 text-error rounded-lg text-xs font-semibold cursor-pointer transition-colors focus:outline-none"
+          >
+            <span className="material-symbols-outlined text-sm">logout</span>
+            <span>Sair do Consultório</span>
           </button>
         </div>
-      </header>
+      </aside>
 
-      {/* 2. Overdue Subscription Blocker Screen */}
-      {activeTenant.status === 'suspended' ? (
-        <div className="flex-1 flex items-center justify-center p-6">
-          <div className={`max-w-md w-full p-8 rounded-2xl border text-center space-y-6 shadow-2xl ${
-            darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'
-          }`}>
-            <div className="mx-auto w-16 h-16 bg-rose-500/10 text-rose-500 rounded-full flex items-center justify-center">
-              <ShieldX className="h-10 w-10 stroke-[2.5]" />
+      {/* 2. Main Workspace Layout Area (Right side) */}
+      <div className="flex-1 flex flex-col min-w-0 min-h-screen overflow-y-auto">
+        
+        {/* Top Header bar */}
+        <header className="h-16 border-b border-outline-variant dark:border-outline/20 bg-white dark:bg-slate-900 px-6 flex items-center justify-between sticky top-0 z-20 shadow-sm">
+          
+          {/* Mobile menu toggle */}
+          <button 
+            onClick={() => setMobileSidebarOpen(!mobileSidebarOpen)}
+            className="p-2 text-on-surface-variant hover:bg-surface-container dark:hover:bg-inverse-surface rounded-lg md:hidden mr-2 cursor-pointer focus:outline-none"
+          >
+            <span className="material-symbols-outlined">menu</span>
+          </button>
+
+          {/* Left pill search input */}
+          <div className="relative w-[280px] group hidden sm:block">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <span className="material-symbols-outlined text-outline group-focus-within:text-primary transition-colors text-[20px]">search</span>
             </div>
+            <input 
+              type="text" 
+              placeholder="Buscar paciente..." 
+              className="w-full pl-9 pr-4 py-1.5 bg-surface-container-lowest dark:bg-inverse-surface border border-outline-variant dark:border-outline rounded-full font-body-sm text-body-sm focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none transition-all outline-none" 
+            />
+          </div>
 
-            <div className="space-y-2">
-              <span className="bg-rose-500/10 text-rose-500 border border-rose-500/20 text-[9px] uppercase tracking-widest font-extrabold px-2.5 py-0.5 rounded-full">
-                ACESSO BLOQUEADO AUTOMATICAMENTE
-              </span>
-              <h2 className="text-xl font-bold">Faturamento Vencido há +15 dias</h2>
-              <p className="text-slate-400 text-xs leading-relaxed">
-                Olá, <strong>{activeTenant.ownerName}</strong>. O faturamento mensal do EasyClin Silver referente à clínica <strong>{activeTenant.name}</strong> não foi conciliado. Por motivos de segurança e LGPD, a operação comercial está suspensa.
-              </p>
-            </div>
-
-            {/* Simulated Regularize / pay button */}
-            <div className="p-4 rounded-xl bg-slate-950 border border-slate-850 space-y-3">
-              <p className="text-[10px] text-slate-400 font-medium leading-tight">Como administrador de homologação, você pode liquidar este boleto fictício em 1 clique para testar as dependências instantâneas de liberação de login do SaaS:</p>
-              
-              <button
-                onClick={handleClearAtraso}
-                className="w-full bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold py-2.5 flex items-center justify-center gap-2 cursor-pointer shadow-md shadow-emerald-500/10 transition-transform active:scale-95"
-              >
-                <RefreshCw className="h-3.5 w-3.5 animate-spin" />
-                <span>Registrar Pagamento Simulado</span>
-              </button>
-            </div>
-
-            <button
-              onClick={onLogout}
-              className="px-4 py-1.5 border hover:bg-slate-50 dark:hover:bg-slate-850 rounded-xl text-xs font-semibold"
-            >
-              Voltar à escolha de perfil
+          {/* Right actions and active profile */}
+          <div className="flex items-center gap-4 ml-auto">
+            <button className="p-2 text-on-surface-variant hover:bg-surface-container dark:hover:bg-inverse-surface rounded-full transition-colors relative cursor-pointer focus:outline-none">
+              <span className="material-symbols-outlined text-[22px]">notifications</span>
+              <span className="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
             </button>
-          </div>
-        </div>
-      ) : (
-        /* 3. NORMAL OPERATOR PATHWAYS SCREEN */
-        <>
-          {/* Subheader summary stats & trial alerts */}
-          <div className={`px-4 md:px-8 py-3.5 flex flex-wrap justify-between items-center gap-3 border-b text-xs ${
-            darkMode ? 'bg-slate-950/40 border-slate-850' : 'bg-slate-100/50 border-slate-200'
-          }`}>
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
-              <span className="text-slate-400 flex items-center gap-1">
-                <Users className="h-3.5 w-3.5 text-blue-500" />
-                Pacientes: <strong>{patients.length}</strong>
-              </span>
-              <span className="text-slate-400 flex items-center gap-1">
-                <Calendar className="h-3.5 w-3.5 text-blue-500" />
-                Agenda Hoje: <strong>{appointments.length} Consultas</strong>
-              </span>
-              <span className="text-slate-400 flex items-center gap-1">
-                <Calculator className="h-3.5 w-3.5 text-blue-500" />
-                Catálogo: <strong>{procedures.length} Tratamentos</strong>
-              </span>
-            </div>
 
-            {/* Trial period notification alerts */}
-            {activeTenant.status === 'trial' && (
-              <div className="bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 rounded-xl px-4 py-1.5 flex items-center gap-2 font-semibold">
-                <AlertTriangle className="h-4 w-4 animate-bounce" />
-                <span>Você está rodando no modo TRIAL de Testes (Expira em breve).</span>
+            <div className="h-6 w-px bg-outline-variant dark:bg-outline/20"></div>
+
+            {/* User profile */}
+            <div className="flex items-center gap-3">
+              {currentUser.avatarUrl ? (
+                <img 
+                  src={currentUser.avatarUrl} 
+                  alt={currentUser.name} 
+                  className="w-9 h-9 object-cover rounded-full shrink-0 border border-primary/10" 
+                  referrerPolicy="no-referrer"
+                />
+              ) : (
+                <div className="w-9 h-9 rounded-full bg-primary-container text-primary flex items-center justify-center font-bold text-sm shrink-0 border border-outline-variant">
+                  {currentUser.name.charAt(0)}
+                </div>
+              )}
+              <div className="text-left hidden md:block leading-none">
+                <h4 className="font-body-md text-body-md font-semibold text-on-surface truncate max-w-[120px] mb-0.5">{currentUser.name}</h4>
+                <span className="font-label-sm text-[10px] text-outline uppercase tracking-wider block font-bold truncate max-w-[120px]">
+                  {currentUser.role === 'clinic_admin' ? 'Dono/Administrador' : currentUser.role === 'receptionist' ? 'Recepção' : currentUser.specialty || 'Dentista'}
+                </span>
               </div>
-            )}
+            </div>
           </div>
+        </header>
 
-          {/* Core Dashboard Grid Layout */}
-          <div className="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 md:grid-cols-4 gap-6">
+        {/* 3. Main Workspace Container Panel */}
+        {activeTenant.status === 'suspended' ? (
+          /* Locked Suspended Screen */
+          <div className="flex-1 flex items-center justify-center p-6">
+            <div className="max-w-md w-full p-8 rounded-2xl border border-outline-variant dark:border-outline/20 bg-white dark:bg-slate-900 text-center space-y-6 shadow-2xl">
+              <div className="mx-auto w-16 h-16 bg-error/10 text-error rounded-full flex items-center justify-center">
+                <span className="material-symbols-outlined text-[40px]" style={{ fontVariationSettings: "'wght' 500" }}>gpp_maybe</span>
+              </div>
+
+              <div className="space-y-2">
+                <span className="bg-error/10 text-error border border-error/20 text-[9px] uppercase tracking-widest font-extrabold px-2.5 py-0.5 rounded-full">
+                  ACESSO SUSPENSO AUTOMATICAMENTE
+                </span>
+                <h2 className="text-xl font-bold">Faturamento Vencido há +15 dias</h2>
+                <p className="text-outline text-xs leading-relaxed">
+                  Olá, <strong>{activeTenant.ownerName}</strong>. O faturamento mensal do EasyClin Silver referente à clínica <strong>{activeTenant.name}</strong> não foi conciliado. Por motivos de segurança e conformidade LGPD, a operação comercial está suspensa.
+                </p>
+              </div>
+
+              {/* Developer simulator unlock button */}
+              <div className="p-4 rounded-xl bg-surface-container-low dark:bg-inverse-surface border border-outline-variant/60 dark:border-outline/20 space-y-3">
+                <p className="text-[10px] text-on-surface-variant font-medium leading-tight">Como administrador de homologação, você pode liquidar este boleto fictício em 1 clique para testar as dependências instantâneas de liberação de login do SaaS:</p>
+                
+                <button
+                  onClick={handleClearAtraso}
+                  className="w-full bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold py-2.5 flex items-center justify-center gap-2 cursor-pointer shadow-md shadow-emerald-500/10 transition-transform active:scale-95 focus:outline-none"
+                >
+                  <span className="material-symbols-outlined text-sm animate-spin">refresh</span>
+                  <span>Registrar Pagamento Simulado</span>
+                </button>
+              </div>
+
+              <button
+                onClick={onLogout}
+                className="px-4 py-1.5 border border-outline-variant hover:bg-surface-container rounded-xl text-xs font-semibold cursor-pointer focus:outline-none"
+              >
+                Voltar à escolha de perfil
+              </button>
+            </div>
+          </div>
+        ) : (
+          /* Normal pathways screen Workspace */
+          <main className="flex-1 p-6 space-y-6 max-w-[1440px] w-full mx-auto">
             
-            {/* Left sidebar nav container */}
-            <div className="col-span-1 border-r border-slate-200 dark:border-slate-800 pr-0 md:pr-4 flex flex-col gap-1.5">
+            {/* Summary statistics subheader widgets */}
+            <div className="px-6 py-4 flex flex-wrap justify-between items-center gap-4 bg-surface-container-low dark:bg-slate-900/60 rounded-xl border border-outline-variant dark:border-outline/20">
+              <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-body-md text-on-surface-variant font-medium">
+                <span className="flex items-center gap-2">
+                  <span className="material-symbols-outlined text-primary dark:text-primary-fixed-dim text-base">group</span>
+                  <span>Pacientes Cadastrados: <strong className="text-on-surface font-bold">{patients.length}</strong></span>
+                </span>
+                <span className="flex items-center gap-2">
+                  <span className="material-symbols-outlined text-primary dark:text-primary-fixed-dim text-base">calendar_today</span>
+                  <span>Consultas Hoje: <strong className="text-on-surface font-bold">{appointments.length}</strong></span>
+                </span>
+                <span className="flex items-center gap-2">
+                  <span className="material-symbols-outlined text-primary dark:text-primary-fixed-dim text-base">calculate</span>
+                  <span>Tratamentos Disponíveis: <strong className="text-on-surface font-bold">{procedures.length}</strong></span>
+                </span>
+              </div>
               
-              {/* Agenda Tab */}
-              <button
-                onClick={() => setActiveTab('agenda')}
-                className={`w-full p-3 rounded-xl text-left flex items-center gap-3 transition-colors ${
-                  activeTab === 'agenda'
-                    ? 'bg-blue-600 text-white font-bold shadow-lg shadow-blue-500/10'
-                    : 'hover:bg-slate-100 dark:hover:bg-slate-900 border border-transparent'
-                }`}
-              >
-                <Calendar className="h-4.5 w-4.5 shrink-0" />
-                <div>
-                  <p className="text-xs">Agenda Central</p>
-                  <span className="text-[10px] opacity-75 font-normal">Operações e WhatsApp CRM</span>
+              {activeTenant.status === 'trial' && (
+                <div className="bg-tertiary-container text-on-tertiary-container rounded-full px-3.5 py-1 flex items-center gap-1.5 font-semibold font-label-md text-label-md animate-pulse">
+                  <span className="material-symbols-outlined text-base">info</span>
+                  <span>Modo de Teste (Trial de 15 Dias)</span>
                 </div>
-              </button>
-
-              {/* Patients Tab */}
-              <button
-                onClick={() => setActiveTab('patients')}
-                className={`w-full p-3 rounded-xl text-left flex items-center gap-3 transition-colors ${
-                  activeTab === 'patients'
-                    ? 'bg-blue-600 text-white font-bold shadow-lg shadow-blue-500/10'
-                    : 'hover:bg-slate-100 dark:hover:bg-slate-900 border border-transparent'
-                }`}
-              >
-                <Users className="h-4.5 w-4.5 shrink-0" />
-                <div>
-                  <p className="text-xs">Fichas e Prontuários</p>
-                  <span className="text-[10px] opacity-75 font-normal">Evoluções em conformidade LGPD</span>
-                </div>
-              </button>
-
-              {/* Budgets Tab (Blocked for Receptionists) */}
-              <button
-                onClick={() => {
-                  if (isReceptionist) return;
-                  setActiveTab('budgets');
-                }}
-                disabled={isReceptionist}
-                className={`w-full p-3 rounded-xl text-left flex items-center justify-between transition-colors ${
-                  isReceptionist ? 'opacity-40 cursor-not-allowed' : ''
-                } ${
-                  activeTab === 'budgets'
-                    ? 'bg-blue-600 text-white font-bold shadow-lg shadow-blue-500/10'
-                    : 'hover:bg-slate-100 dark:hover:bg-slate-900 border border-transparent'
-                }`}
-              >
-                <div className="flex items-center gap-3">
-                  <FileSpreadsheet className="h-4.5 w-4.5 shrink-0" />
-                  <div>
-                    <p className="text-xs">Orçamentos Propostos</p>
-                    <span className="text-[10px] opacity-75 font-normal">Valores e Custos do Paciente</span>
-                  </div>
-                </div>
-                {isReceptionist && <Lock className="h-3 w-3 text-slate-400 shrink-0" />}
-              </button>
-
-              {/* QiDent Pricing Tab (Admin Only simulation) */}
-              <button
-                onClick={() => {
-                  if (isReceptionist || isProfessional) return;
-                  setActiveTab('pricing');
-                }}
-                disabled={isReceptionist || isProfessional}
-                className={`w-full p-3 rounded-xl text-left flex items-center justify-between transition-colors ${
-                  isReceptionist || isProfessional ? 'opacity-40 cursor-not-allowed' : ''
-                } ${
-                  activeTab === 'pricing'
-                    ? 'bg-blue-600 text-white font-bold shadow-lg shadow-blue-500/10'
-                    : 'hover:bg-slate-100 dark:hover:bg-slate-900 border border-transparent'
-                }`}
-              >
-                <div className="flex items-center gap-3">
-                  <Calculator className="h-4.5 w-4.5 shrink-0" />
-                  <div>
-                    <p className="text-xs">Fórmula de Precificação</p>
-                    <span className="text-[10px] opacity-75 font-normal">Parâmetros de Margem QiDent</span>
-                  </div>
-                </div>
-                {(isReceptionist || isProfessional) && <Lock className="h-3 w-3 text-slate-400 shrink-0" />}
-              </button>
-
-              {/* Finance Tab (Restricted) */}
-              <button
-                onClick={() => {
-                  if (isReceptionist) return;
-                  setActiveTab('finance');
-                }}
-                disabled={isReceptionist}
-                className={`w-full p-3 rounded-xl text-left flex items-center justify-between transition-colors ${
-                  isReceptionist ? 'opacity-40 cursor-not-allowed' : ''
-                } ${
-                  activeTab === 'finance'
-                    ? 'bg-blue-600 text-white font-bold shadow-lg shadow-blue-500/10'
-                    : 'hover:bg-slate-100 dark:hover:bg-slate-900 border border-transparent'
-                }`}
-              >
-                <div className="flex items-center gap-3">
-                  <PiggyBank className="h-4.5 w-4.5 shrink-0" />
-                  <div>
-                    <p className="text-xs">Financeiro e Caixa</p>
-                    <span className="text-[10px] opacity-75 font-normal">Fluxos de despesa e receita</span>
-                  </div>
-                </div>
-                {isReceptionist && <Lock className="h-3 w-3 text-slate-400 shrink-0" />}
-              </button>
-
-              {/* Admin/Settings Tab */}
-              <button
-                onClick={() => {
-                  if (!isAdmin) return;
-                  setActiveTab('admin');
-                }}
-                disabled={!isAdmin}
-                className={`w-full p-3 rounded-xl text-left flex items-center justify-between transition-colors ${
-                  !isAdmin ? 'opacity-40 cursor-not-allowed' : ''
-                } ${
-                  activeTab === 'admin'
-                    ? 'bg-blue-600 text-white font-bold shadow-lg shadow-blue-500/10'
-                    : 'hover:bg-slate-100 dark:hover:bg-slate-900 border border-transparent'
-                }`}
-              >
-                <div className="flex items-center gap-3">
-                  <Settings className="h-4.5 w-4.5 shrink-0" />
-                  <div>
-                    <p className="text-xs">Clínica & Colaboradores</p>
-                    <span className="text-[10px] opacity-75 font-normal">Permissões e Auditoria</span>
-                  </div>
-                </div>
-                {!isAdmin && <Lock className="h-3 w-3 text-slate-400 shrink-0" />}
-              </button>
-
+              )}
             </div>
 
-            {/* Right details workspace column */}
-            <div className="col-span-1 md:col-span-3 space-y-4">
-              
+            {/* Render sub-panels based on selected tab */}
+            <div className="min-h-0">
               {activeTab === 'agenda' && (
                 <AgendaPanel
                   tenantId={activeTenant.id}
@@ -485,98 +524,89 @@ export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch, d
                 />
               )}
 
-              {/* Local Tenant Admin - adding collaborators and local audit trails */}
               {activeTab === 'admin' && (
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                   
                   {/* Local collaborator list & creation (Left) */}
-                  <div className={`col-span-1 lg:col-span-1 p-5 rounded-2xl border space-y-4 ${
-                    darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'
-                  }`}>
-                    <h4 className="font-extrabold text-xs uppercase tracking-wider text-slate-400 flex items-center gap-1">
-                      <Users className="h-4.5 w-4.5 text-blue-500" />
-                      <span>Gerenciar Staff</span>
+                  <div className="col-span-1 p-6 rounded-xl border border-outline-variant dark:border-outline/20 bg-white dark:bg-slate-900 space-y-4">
+                    <h4 className="font-extrabold text-xs uppercase tracking-wider text-outline flex items-center gap-2 border-b dark:border-slate-800 pb-2.5">
+                      <span className="material-symbols-outlined text-primary text-base">group</span>
+                      <span>Gerenciar Colaboradores</span>
                     </h4>
 
                     {/* Listing collaborators */}
-                    <div className="space-y-2 border-b dark:border-slate-800 pb-4">
+                    <div className="space-y-2 border-b dark:border-slate-800 pb-4 max-h-[220px] overflow-y-auto pr-1">
                       {allUsers.map((u) => {
                         let shortRole = u.role === 'clinic_admin' ? 'Dono' : u.role === 'receptionist' ? 'Recepção' : 'Profissional';
                         return (
-                          <div key={u.id} className="p-2.5 rounded-lg border dark:border-slate-800 flex justify-between items-center text-xs">
-                            <div>
-                              <p className="font-bold">{u.name}</p>
-                              <span className="text-[10px] text-slate-500 font-mono">{u.email}</span>
+                          <div key={u.id} className="p-3 rounded-lg border border-outline-variant/60 dark:border-outline/40 flex justify-between items-center text-xs">
+                            <div className="min-w-0">
+                              <p className="font-bold text-on-surface truncate">{u.name}</p>
+                              <span className="text-[10px] text-outline font-mono truncate block">{u.email}</span>
                             </div>
-                            <span className="text-[10px] bg-slate-500/10 text-slate-400 px-1.5 py-0.2 rounded font-semibold">{shortRole}</span>
+                            <span className="text-[9px] bg-primary/10 text-primary dark:text-primary-fixed-dim px-2 py-0.5 rounded font-semibold shrink-0 uppercase">{shortRole}</span>
                           </div>
                         );
                       })}
                     </div>
 
                     {/* Registration input form */}
-                    <form onSubmit={handleRegisterStaff} className="space-y-3 font-semibold text-xs text-slate-400">
-                      <span className="text-[9px] uppercase tracking-wide font-mono block">Cadastrar Colaborador</span>
+                    <form onSubmit={handleRegisterStaff} className="space-y-4 text-xs">
+                      <span className="text-[10px] uppercase tracking-wide font-mono text-outline block font-semibold">Novo Colaborador</span>
                       
-                      <div>
-                        <label className="block text-[9px] mb-0.5 uppercase">Nome Completo</label>
+                      <div className="space-y-1">
+                        <label className="block text-[10px] uppercase text-on-surface-variant font-semibold">Nome Completo</label>
                         <input
                           type="text"
                           required
                           placeholder="Ex: Dra. Juliana Reis"
                           value={newStaffName}
                           onChange={(e) => setNewStaffName(e.target.value)}
-                          className={`w-full px-2.5 py-1.5 border rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 ${
-                            darkMode ? 'bg-slate-950 border-slate-800 text-white' : 'bg-slate-50 border-slate-200'
-                          }`}
+                          className="w-full px-3 py-2 bg-surface-container-lowest dark:bg-inverse-surface border border-outline-variant rounded-lg font-body-sm text-body-sm focus:ring-1 focus:ring-primary focus:outline-none transition-all outline-none"
                         />
                       </div>
 
-                      <div>
-                        <label className="block text-[9px] mb-0.5 uppercase">E-mail</label>
+                      <div className="space-y-1">
+                        <label className="block text-[10px] uppercase text-on-surface-variant font-semibold">E-mail</label>
                         <input
                           type="email"
                           required
                           placeholder="juliana@clinica.com"
                           value={newStaffEmail}
                           onChange={(e) => setNewStaffEmail(e.target.value)}
-                          className={`w-full px-2.5 py-1.5 border rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 ${
-                            darkMode ? 'bg-slate-950 border-slate-800 text-white' : 'bg-slate-50 border-slate-200'
-                          }`}
+                          className="w-full px-3 py-2 bg-surface-container-lowest dark:bg-inverse-surface border border-outline-variant rounded-lg font-body-sm text-body-sm focus:ring-1 focus:ring-primary focus:outline-none transition-all outline-none"
                         />
                       </div>
 
                       <div className="grid grid-cols-2 gap-2">
-                        <div>
-                          <label className="block text-[9px] mb-0.5 uppercase">Função</label>
+                        <div className="space-y-1">
+                          <label className="block text-[10px] uppercase text-on-surface-variant font-semibold">Função</label>
                           <select
                             value={newStaffRole}
                             onChange={(e) => setNewStaffRole(e.target.value as any)}
-                            className="w-full px-2 py-2 border border-slate-200 dark:border-slate-800 rounded-lg bg-transparent"
+                            className="w-full px-2 py-2 bg-surface-container-lowest dark:bg-inverse-surface border border-outline-variant rounded-lg text-xs"
                           >
                             <option value="health_professional">Profissional</option>
                             <option value="receptionist">Recepção</option>
                           </select>
                         </div>
 
-                        <div>
-                          <label className="block text-[9px] mb-0.5 uppercase">Especialidade</label>
+                        <div className="space-y-1">
+                          <label className="block text-[10px] uppercase text-on-surface-variant font-semibold">Especialidade</label>
                           <input
                             type="text"
-                            placeholder="Ex: Orto"
+                            placeholder="Ex: Pediatria"
                             disabled={newStaffRole !== 'health_professional'}
                             value={newStaffSpecialty}
                             onChange={(e) => setNewStaffSpecialty(e.target.value)}
-                            className={`w-full px-2.5 py-1.5 border rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 ${
-                              darkMode ? 'bg-slate-950 border-slate-800 text-white' : 'bg-slate-50 border-slate-200'
-                            }`}
+                            className="w-full px-3 py-2 bg-surface-container-lowest dark:bg-inverse-surface border border-outline-variant rounded-lg text-xs disabled:opacity-40 outline-none"
                           />
                         </div>
                       </div>
 
                       <button
                         type="submit"
-                        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded-lg text-xs mt-2 cursor-pointer"
+                        className="w-full bg-primary hover:bg-primary-container text-on-primary font-bold py-2.5 rounded-lg text-xs mt-2 cursor-pointer transition-colors"
                       >
                         Registrar Integrante
                       </button>
@@ -584,32 +614,29 @@ export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch, d
                   </div>
 
                   {/* Clinical and administrative Audit Trail logs specific to this clinical clinic tenant (Right) */}
-                  <div className={`col-span-1 lg:col-span-2 p-5 rounded-2xl border space-y-4 ${
-                    darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'
-                  }`}>
-                    <h4 className="font-extrabold text-xs uppercase tracking-wider text-slate-400 flex items-center gap-1 border-b pb-2.5 dark:border-slate-800">
-                      <ShieldCheck className="h-4.5 w-4.5 text-emerald-500" />
+                  <div className="col-span-1 lg:col-span-2 p-6 rounded-xl border border-outline-variant dark:border-outline/20 bg-white dark:bg-slate-900 space-y-4">
+                    <h4 className="font-extrabold text-xs uppercase tracking-wider text-outline flex items-center gap-2 border-b dark:border-slate-800 pb-2.5">
+                      <span className="material-symbols-outlined text-emerald-500 text-base" style={{ fontVariationSettings: "'FILL' 1" }}>shield_heart</span>
                       <span>Logs de Auditoria Interna (LGPD Certificado)</span>
                     </h4>
 
                     <div className="space-y-3.5 max-h-[460px] overflow-y-auto pr-1">
                       {auditLogs.length === 0 ? (
-                        <p className="text-xs text-slate-500 italic text-center py-6">Nenhum evento auditado.</p>
+                        <p className="text-xs text-outline italic text-center py-6">Nenhum evento auditado.</p>
                       ) : (
                         auditLogs.map((log) => (
                           <div 
                             key={log.id} 
-                            className={`p-3 rounded-xl border text-[11px] leading-relaxed relative font-mono ${
-                              darkMode ? 'bg-slate-950 border-slate-850' : 'bg-slate-50 border-slate-200'
-                            }`}
+                            className="p-3.5 rounded-xl border border-outline-variant/65 dark:border-outline/35 text-[11px] leading-relaxed relative bg-surface-container-lowest dark:bg-inverse-surface"
                           >
-                            <div className="flex justify-between border-b border-dashed dark:border-slate-800 pb-1 mb-1 text-slate-400 text-[10px]">
-                              <span className="font-bold text-blue-500">[{log.action}]</span>
-                              <span>{new Date(log.timestamp).toLocaleDateString()}</span>
+                            <div className="flex justify-between border-b border-dashed dark:border-slate-800 pb-1 mb-2 text-outline text-[10px] font-mono">
+                              <span className="font-bold text-primary dark:text-primary-fixed-dim uppercase">[{log.action}]</span>
+                              <span>{new Date(log.timestamp).toLocaleDateString()} {new Date(log.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                             </div>
-                            <p className="text-slate-700 dark:text-slate-300">{log.details}</p>
-                            <div className="text-[9px] text-slate-400 mt-2">
-                              <span>Operador: {log.userName} ({log.userRole}) • IP: {log.ip}</span>
+                            <p className="text-on-surface font-sans font-medium">{log.details}</p>
+                            <div className="text-[9px] text-outline mt-2.5 font-mono flex items-center justify-between">
+                              <span>Operador: <strong className="text-on-surface-variant">{log.userName}</strong> ({log.userRole})</span>
+                              <span>IP: {log.ip}</span>
                             </div>
                           </div>
                         ))
@@ -619,12 +646,12 @@ export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch, d
 
                 </div>
               )}
-
             </div>
 
-          </div>
-        </>
-      )}
+          </main>
+        )}
+
+      </div>
 
     </div>
   );

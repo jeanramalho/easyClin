@@ -6,7 +6,6 @@
 import React, { useState } from 'react';
 import { Appointment, Patient, Procedure, User, AppointmentStatus } from '../types';
 import { dbObj } from '../services/db';
-import { Calendar, UserPlus, PhoneOutgoing, BellDot, CheckCircle2, XCircle, Clock, Save, FilePlus } from 'lucide-react';
 
 interface AgendaPanelProps {
   tenantId: string;
@@ -132,39 +131,69 @@ export default function AgendaPanel({
     }, 2000);
   };
 
+  // Helper to resolve border left status color
+  const getStatusBorderColor = (status: AppointmentStatus) => {
+    switch (status) {
+      case 'completed': return 'border-l-success';
+      case 'confirmed': return 'border-l-primary';
+      case 'in_progress': return 'border-l-secondary';
+      case 'cancelled': return 'border-l-error';
+      default: return 'border-l-amber-500';
+    }
+  };
+
+  const getStatusBadgeStyles = (status: AppointmentStatus) => {
+    switch (status) {
+      case 'completed': return 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400';
+      case 'confirmed': return 'bg-primary/10 text-primary dark:text-primary-fixed-dim';
+      case 'in_progress': return 'bg-purple-500/10 text-purple-600 dark:text-purple-400';
+      case 'cancelled': return 'bg-error/10 text-error';
+      default: return 'bg-amber-500/10 text-amber-600 dark:text-amber-400';
+    }
+  };
+
   return (
     <div className="space-y-6">
       
       {/* Search and control banner */}
-      <div className={`p-5 rounded-2xl border flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 transition-all ${
-        darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'
-      }`}>
+      <div className="p-5 rounded-xl border border-outline-variant dark:border-outline/20 bg-white dark:bg-slate-900 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 shadow-sm">
         <div>
-          <h3 className="text-md font-bold">Agenda Central Odontológica/Médica</h3>
-          <p className="text-xs text-slate-400">Controles operacionais e disparos de confirmação automática.</p>
+          <h3 className="font-title-md text-title-md text-on-surface font-bold">Agenda Central</h3>
+          <p className="font-body-md text-body-sm text-outline">Controles operacionais e disparos de confirmação automática.</p>
         </div>
         
-        <button
-          onClick={() => setShowAddModal(true)}
-          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs py-2 px-4 rounded-xl shadow-md cursor-pointer"
-        >
-          <Calendar className="h-4 w-4" />
-          <span>Novo Agendamento</span>
-        </button>
+        <div className="flex items-center gap-3 w-full sm:w-auto">
+          {/* Period Controller Mockup */}
+          <div className="flex items-center bg-surface-container dark:bg-inverse-surface border border-outline-variant/60 dark:border-outline/40 rounded-lg p-1 text-xs shrink-0">
+            <button type="button" className="p-1 px-2 hover:bg-surface-container-highest dark:hover:bg-slate-800 rounded transition-colors cursor-pointer focus:outline-none">
+              <span className="material-symbols-outlined text-sm block">chevron_left</span>
+            </button>
+            <span className="px-3 font-semibold text-on-surface">Hoje: 01 de Junho</span>
+            <button type="button" className="p-1 px-2 hover:bg-surface-container-highest dark:hover:bg-slate-800 rounded transition-colors cursor-pointer focus:outline-none">
+              <span className="material-symbols-outlined text-sm block">chevron_right</span>
+            </button>
+          </div>
+
+          <button
+            onClick={() => setShowAddModal(true)}
+            className="flex items-center justify-center gap-2 bg-primary hover:bg-primary-container text-on-primary font-semibold text-xs py-2.5 px-4 rounded-lg shadow-sm cursor-pointer transition-colors focus:outline-none ml-auto"
+          >
+            <span className="material-symbols-outlined text-sm">calendar_month</span>
+            <span>Novo Agendamento</span>
+          </button>
+        </div>
       </div>
 
       {/* Main timeline listing */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
         {/* Appointments Feed */}
-        <div className={`lg:col-span-2 p-5 rounded-2xl border ${
-          darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'
-        }`}>
-          <h4 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-4">Grade Diária de Horários</h4>
+        <div className="lg:col-span-2 p-6 rounded-xl border border-outline-variant dark:border-outline/20 bg-white dark:bg-slate-900 space-y-4">
+          <h4 className="font-label-md text-label-md text-outline uppercase tracking-wider font-semibold border-b dark:border-slate-800 pb-2">Grade Diária de Horários</h4>
 
           <div className="space-y-4">
             {appointments.length === 0 ? (
-              <p className="text-xs text-slate-500 text-center py-6">Nenhum compromisso agendado para o período.</p>
+              <p className="text-xs text-outline italic text-center py-8">Nenhum compromisso agendado para o período.</p>
             ) : (
               appointments.sort((a, b) => a.time.localeCompare(b.time)).map((app) => {
                 const patient = patients.find(p => p.id === app.patientId);
@@ -174,81 +203,72 @@ export default function AgendaPanel({
                 return (
                   <div 
                     key={app.id}
-                    className={`p-4 rounded-xl border flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 transition-all relative ${
-                      darkMode ? 'bg-slate-950 border-slate-850' : 'bg-slate-50 border-slate-200/80'
-                    }`}
+                    className={`glass-card rounded-xl p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 hover:shadow-md transition-all relative border-l-4 ${getStatusBorderColor(app.status)}`}
                   >
-                    {/* Time indicator */}
-                    <div className="flex items-center gap-3.5">
-                      <div className="px-3.5 py-1.5 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 font-mono text-center shrink-0 border border-blue-500/20">
-                        <span className="text-sm font-bold block">{app.time}</span>
-                        <span className="text-[9px] uppercase">{app.duration} min</span>
+                    {/* Left: time and details */}
+                    <div className="flex items-center gap-4 min-w-0">
+                      {/* Time indicator */}
+                      <div className="px-3.5 py-2 bg-surface-container dark:bg-inverse-surface rounded-lg text-center shrink-0 min-w-[70px] border border-outline-variant/30">
+                        <span className="font-title-md text-title-md font-bold text-on-surface block leading-none mb-1">{app.time}</span>
+                        <span className="font-label-sm text-[9px] text-outline uppercase block font-semibold">{app.duration} min</span>
                       </div>
                       
-                      <div>
-                        {/* Patient & specialty */}
-                        <p className="font-bold text-slate-900 dark:text-slate-100 flex items-center gap-1.5 text-xs sm:text-sm">
-                          {patient ? patient.name : 'Paciente Não Cadastrado'}
+                      <div className="min-w-0">
+                        {/* Patient */}
+                        <div className="flex flex-wrap items-center gap-2 mb-1">
+                          <p className="font-title-sm text-title-sm font-semibold text-on-surface truncate">
+                            {patient ? patient.name : 'Paciente Não Cadastrado'}
+                          </p>
                           {patient?.hasMedicalAlert && (
                             <span 
-                              className="text-[9px] bg-rose-500/15 text-rose-500 border border-rose-500/30 font-bold px-1.5 py-0.2 rounded"
+                              className="text-[9px] bg-error/10 text-error border border-error/25 font-bold px-2 py-0.5 rounded uppercase tracking-wider shrink-0"
                               title={patient.medicalAlertDescription}
                             >
                               Alerta Médico
                             </span>
                           )}
-                        </p>
+                        </div>
                         
-                        <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5 text-[10px] text-slate-500 mt-1">
+                        <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[10px] text-outline font-medium">
                           <span>Dr(a). {professional ? professional.name.split(' ')[1] : 'N/A'}</span>
-                          <span>•</span>
-                          <span>Proc: <strong className="text-slate-700 dark:text-slate-300">{procedure ? procedure.name : 'Consulta Geral'}</strong></span>
-                          <span>•</span>
-                          <span className="font-mono text-blue-500 font-semibold">Valor: R$ {app.value.toFixed(2)}</span>
+                          <span className="opacity-55">•</span>
+                          <span>Procedimento: <strong className="text-on-surface-variant">{procedure ? procedure.name : 'Consulta Geral'}</strong></span>
+                          <span className="opacity-55">•</span>
+                          <span className="font-mono text-primary dark:text-primary-fixed-dim font-bold">R$ {app.value.toFixed(2)}</span>
                         </div>
                       </div>
                     </div>
 
-                    {/* Right action control & status badges */}
-                    <div className="flex flex-col items-end gap-1.5 mt-2 sm:mt-0 w-full sm:w-auto">
-                      <div className="flex items-center gap-1.5">
-                        {/* WhatsApp automated notify action */}
+                    {/* Right: CRM action & status triggers */}
+                    <div className="flex flex-col items-end gap-2 shrink-0 w-full sm:w-auto">
+                      <div className="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
+                        {/* WhatsApp CRM Trigger */}
                         {app.status === 'pending' && (
                           <button
                             onClick={() => simulateNotification(app)}
                             disabled={alertMsg !== null}
-                            className="bg-emerald-600/10 hover:bg-emerald-600 text-emerald-600 hover:text-white border border-emerald-500/25 p-1.5 rounded-lg text-[10px] font-bold flex items-center gap-1 transition-all cursor-pointer disabled:opacity-50"
+                            className="bg-emerald-600/10 hover:bg-emerald-600 text-emerald-600 hover:text-white border border-emerald-500/25 px-2.5 py-1 rounded-lg text-[10px] font-bold flex items-center gap-1 transition-all cursor-pointer disabled:opacity-50 focus:outline-none"
                             title="Confirmar Presença automatizada"
                           >
-                            <PhoneOutgoing className="h-3.5 w-3.5" />
-                            <span>Remind</span>
+                            <span className="material-symbols-outlined text-[14px]">chat</span>
+                            <span>Lembrete</span>
                           </button>
                         )}
 
-                        {/* Status badge representation */}
-                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
-                          app.status === 'completed'
-                            ? 'bg-emerald-500/10 text-emerald-600'
-                            : app.status === 'confirmed'
-                            ? 'bg-blue-500/10 text-blue-600'
-                            : app.status === 'in_progress'
-                            ? 'bg-violet-500/10 text-violet-500'
-                            : app.status === 'cancelled'
-                            ? 'bg-rose-500/10 text-rose-500'
-                            : 'bg-yellow-500/10 text-yellow-600'
-                        }`}>
+                        {/* Status Badge */}
+                        <span className={`px-2.5 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wide shrink-0 ${getStatusBadgeStyles(app.status)}`}>
                           {app.status}
                         </span>
                       </div>
 
-                      {/* State transition triggers */}
-                      <div className="flex gap-1">
+                      {/* State transitions */}
+                      <div className="flex gap-1.5 justify-end w-full">
                         {app.status !== 'completed' && app.status !== 'cancelled' && (
                           <>
                             {app.status === 'confirmed' && (
                               <button
                                 onClick={() => handleChangeStatus(app.id, 'in_progress')}
-                                className="px-2 py-0.5 border text-purple-500 hover:bg-purple-500 hover:text-white rounded text-[10px] transition-colors"
+                                className="px-2.5 py-1 border border-outline-variant hover:bg-primary hover:text-on-primary rounded text-[10px] font-semibold transition-all cursor-pointer focus:outline-none"
                               >
                                 Chamar
                               </button>
@@ -256,7 +276,7 @@ export default function AgendaPanel({
                             {app.status === 'in_progress' && (
                               <button
                                 onClick={() => handleChangeStatus(app.id, 'completed')}
-                                className="px-2 py-0.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded text-[10px]"
+                                className="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded text-[10px] font-semibold transition-all cursor-pointer focus:outline-none"
                               >
                                 Finalizar
                               </button>
@@ -264,14 +284,14 @@ export default function AgendaPanel({
                             {app.status !== 'in_progress' && (
                               <button
                                 onClick={() => handleChangeStatus(app.id, 'confirmed')}
-                                className="px-2 py-0.5 border text-slate-500 hover:bg-slate-100 rounded text-[10px] dark:hover:bg-slate-800"
+                                className="px-2.5 py-1 border border-outline-variant hover:bg-surface-container rounded text-[10px] font-semibold text-on-surface-variant transition-all cursor-pointer focus:outline-none"
                               >
                                 Confirmar
                               </button>
                             )}
                             <button
                               onClick={() => handleChangeStatus(app.id, 'cancelled')}
-                              className="px-2 py-0.5 border text-rose-500 hover:bg-rose-500 hover:text-white rounded text-[10px] transition-colors"
+                              className="px-2.5 py-1 border border-error/30 text-error hover:bg-error hover:text-on-error rounded text-[10px] font-semibold transition-all cursor-pointer focus:outline-none"
                             >
                               Cancelar
                             </button>
@@ -280,12 +300,12 @@ export default function AgendaPanel({
                       </div>
                     </div>
 
-                    {/* Live notification simulated prompt overlay */}
+                    {/* Live CRM notification overlay */}
                     {alertMsg && alertMsg.id === app.id && (
-                      <div className="absolute inset-0 bg-slate-900/90 flex items-center justify-center text-xs text-white p-3 rounded-xl z-20">
-                        <div className="flex items-center gap-2">
-                          <BellDot className="h-4 w-4 text-emerald-400 animate-bounce" />
-                          <span>{alertMsg.text}</span>
+                      <div className="absolute inset-0 bg-slate-950/90 flex items-center justify-center text-xs text-white p-4 rounded-xl z-20 animate-in fade-in duration-200">
+                        <div className="flex items-center gap-2.5">
+                          <span className="material-symbols-outlined text-emerald-400 animate-bounce">notifications_active</span>
+                          <span className="font-semibold">{alertMsg.text}</span>
                         </div>
                       </div>
                     )}
@@ -296,27 +316,25 @@ export default function AgendaPanel({
           </div>
         </div>
 
-        {/* Calendar widget info sidebar */}
+        {/* Sidebar details & statistics widget */}
         <div className="col-span-1 space-y-4">
-          <div className={`p-5 rounded-2xl border ${
-            darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'
-          }`}>
-            <h4 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Informações de Agenda</h4>
-            <div className="space-y-3.5 text-xs">
-              <div className="flex justify-between pb-2 border-b dark:border-slate-800">
-                <span className="text-slate-500">Total Hoje:</span>
-                <span className="font-bold font-mono">{appointments.length} Consultas</span>
+          <div className="p-6 rounded-xl border border-outline-variant dark:border-outline/20 bg-white dark:bg-slate-900 space-y-4">
+            <h4 className="font-label-md text-label-md text-outline uppercase tracking-wider font-semibold border-b dark:border-slate-800 pb-2">Resumo Operacional</h4>
+            <div className="space-y-3.5 text-xs text-on-surface-variant font-medium">
+              <div className="flex justify-between pb-1.5 border-b dark:border-slate-800">
+                <span className="text-outline">Total Hoje:</span>
+                <span className="font-bold text-on-surface font-mono">{appointments.length} Consultas</span>
               </div>
-              <div className="flex justify-between pb-2 border-b dark:border-slate-800">
-                <span className="text-slate-500">Confirmadas:</span>
-                <span className="font-bold text-blue-500 font-mono">{appointments.filter(a => a.status === 'confirmed').length}</span>
+              <div className="flex justify-between pb-1.5 border-b dark:border-slate-800">
+                <span className="text-outline">Confirmadas:</span>
+                <span className="font-bold text-primary dark:text-primary-fixed-dim font-mono">{appointments.filter(a => a.status === 'confirmed').length}</span>
               </div>
-              <div className="flex justify-between pb-2 border-b dark:border-slate-800">
-                <span className="text-slate-500">Finalizadas:</span>
+              <div className="flex justify-between pb-1.5 border-b dark:border-slate-800">
+                <span className="text-outline">Finalizadas:</span>
                 <span className="font-bold text-emerald-500 font-mono">{appointments.filter(a => a.status === 'completed').length}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-500">Horas Clínicas Ativas:</span>
+                <span className="text-outline">Horas Clínicas Ativas:</span>
                 <span className="font-bold text-purple-500 font-mono">
                   {(appointments.reduce((sum, a) => sum + (a.status !== 'cancelled' ? a.duration : 0), 0) / 60).toFixed(1)}h
                 </span>
@@ -324,9 +342,14 @@ export default function AgendaPanel({
             </div>
           </div>
 
-          <div className="p-4 rounded-xl bg-blue-500/10 border border-blue-500/15 text-xs text-blue-700 dark:text-blue-300">
-            <span className="font-bold block mb-1">CRM Automatizado Ativado</span>
-            Os lembretes automáticos funcionam em tempo real. Dispare a funcionalidade <strong>Remind</strong> acima para simular a resposta automatizada do paciente via WhatsApp e seu auto-ajuste de status na agenda central!
+          <div className="p-4 rounded-xl bg-primary/10 border border-primary/20 text-xs text-primary dark:text-primary-fixed-dim space-y-1">
+            <span className="font-bold block flex items-center gap-1.5">
+              <span className="material-symbols-outlined text-sm font-semibold">info</span>
+              <span>CRM Automatizado Ativado</span>
+            </span>
+            <p className="text-on-surface-variant leading-relaxed">
+              Os lembretes automáticos funcionam em tempo real. Dispare a funcionalidade <strong>Lembrete</strong> em qualquer consulta pendente para simular a resposta automática do paciente via WhatsApp e seu auto-ajuste de status na agenda central!
+            </p>
           </div>
         </div>
 
@@ -334,25 +357,21 @@ export default function AgendaPanel({
 
       {/* Appointment Creation Modal Overlay */}
       {showAddModal && (
-        <div className="fixed inset-0 bg-slate-950/70 dark:bg-slate-950/80 z-50 flex items-center justify-center p-4">
-          <div className={`w-full max-w-md rounded-2xl p-6 border shadow-2xl ${
-            darkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-white border-slate-200 text-slate-800'
-          }`}>
-            <h3 className="text-lg font-bold mb-4 flex items-center gap-1.5">
-              <Calendar className="h-5 w-5 text-blue-500" />
+        <div className="fixed inset-0 bg-slate-950/70 dark:bg-slate-950/80 z-50 flex items-center justify-center p-4 animate-in fade-in duration-200">
+          <div className="w-full max-w-md rounded-xl p-6 border border-outline-variant bg-white dark:bg-slate-900 text-slate-850 dark:text-white space-y-4 shadow-2xl animate-in zoom-in-95 duration-200">
+            <h3 className="font-title-md text-title-md text-on-surface font-bold flex items-center gap-2">
+              <span className="material-symbols-outlined text-primary text-base">calendar_month</span>
               <span>Novo Agendamento Clínico</span>
             </h3>
 
-            <form onSubmit={handleCreateAppointment} className="space-y-4">
-              <div>
-                <label className="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Paciente</label>
+            <form onSubmit={handleCreateAppointment} className="space-y-4 text-xs font-semibold text-on-surface-variant">
+              <div className="space-y-1">
+                <label className="block text-[10px] uppercase text-outline">Paciente</label>
                 <select
                   required
                   value={patientId}
                   onChange={(e) => setPatientId(e.target.value)}
-                  className={`w-full px-3 py-2 border rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 ${
-                    darkMode ? 'bg-slate-950 border-slate-850' : 'bg-slate-50 border-slate-250 font-semibold'
-                  }`}
+                  className="w-full px-3 py-2 bg-surface-container-lowest dark:bg-inverse-surface border border-outline-variant rounded-lg font-body-sm text-body-sm focus:ring-1 focus:ring-primary focus:outline-none transition-all outline-none"
                 >
                   <option value="">Selecione o paciente...</option>
                   {patients.map(p => (
@@ -361,15 +380,13 @@ export default function AgendaPanel({
                 </select>
               </div>
 
-              <div>
-                <label className="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Profissional Conduzindo</label>
+              <div className="space-y-1">
+                <label className="block text-[10px] uppercase text-outline">Profissional Conduzindo</label>
                 <select
                   required
                   value={professionalId}
                   onChange={(e) => setProfessionalId(e.target.value)}
-                  className={`w-full px-3 py-2 border rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 ${
-                    darkMode ? 'bg-slate-950 border-slate-850' : 'bg-slate-50 border-slate-250 font-semibold'
-                  }`}
+                  className="w-full px-3 py-2 bg-surface-container-lowest dark:bg-inverse-surface border border-outline-variant rounded-lg font-body-sm text-body-sm focus:ring-1 focus:ring-primary focus:outline-none transition-all outline-none"
                 >
                   {professionals.map(p => (
                     <option key={p.id} value={p.id}>{p.name} ({p.specialty || 'Clínico Geral'})</option>
@@ -377,14 +394,12 @@ export default function AgendaPanel({
                 </select>
               </div>
 
-              <div>
-                <label className="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Procedimento Associado</label>
+              <div className="space-y-1">
+                <label className="block text-[10px] uppercase text-outline">Procedimento Associado</label>
                 <select
                   value={procedureId}
                   onChange={(e) => setProcedureId(e.target.value)}
-                  className={`w-full px-3 py-2 border rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 ${
-                    darkMode ? 'bg-slate-950 border-slate-850' : 'bg-slate-50 border-slate-250 font-semibold'
-                  }`}
+                  className="w-full px-3 py-2 bg-surface-container-lowest dark:bg-inverse-surface border border-outline-variant rounded-lg font-body-sm text-body-sm focus:ring-1 focus:ring-primary focus:outline-none transition-all outline-none"
                 >
                   <option value="">Consulta Simples / Diagnóstico Avulso (R$ 0)</option>
                   {procedures.map(proc => (
@@ -394,57 +409,51 @@ export default function AgendaPanel({
               </div>
 
               <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Data</label>
+                <div className="space-y-1">
+                  <label className="block text-[10px] uppercase text-outline">Data</label>
                   <input
                     type="date"
                     required
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
-                    className={`w-full px-3 py-2 border rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 ${
-                      darkMode ? 'bg-slate-950 border-slate-850 text-white' : 'bg-slate-50 border-slate-250'
-                    }`}
+                    className="w-full px-3 py-2 bg-surface-container-lowest dark:bg-inverse-surface border border-outline-variant rounded-lg font-body-sm text-body-sm focus:ring-1 focus:ring-primary focus:outline-none transition-all outline-none"
                   />
                 </div>
 
-                <div>
-                  <label className="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Horário</label>
+                <div className="space-y-1">
+                  <label className="block text-[10px] uppercase text-outline">Horário</label>
                   <input
                     type="time"
                     required
                     value={time}
                     onChange={(e) => setTime(e.target.value)}
-                    className={`w-full px-3 py-2 border rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 ${
-                      darkMode ? 'bg-slate-950 border-slate-850 text-white' : 'bg-slate-50 border-slate-250'
-                    }`}
+                    className="w-full px-3 py-2 bg-surface-container-lowest dark:bg-inverse-surface border border-outline-variant rounded-lg font-body-sm text-body-sm focus:ring-1 focus:ring-primary focus:outline-none transition-all outline-none"
                   />
                 </div>
               </div>
 
-              <div>
-                <label className="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Observações Internas</label>
+              <div className="space-y-1">
+                <label className="block text-[10px] uppercase text-outline">Observações Internas</label>
                 <textarea
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
                   placeholder="Instruções clínicas de apoio..."
                   rows={2}
-                  className={`w-full px-3 py-2 border rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 ${
-                    darkMode ? 'bg-slate-950 border-slate-850 text-white' : 'bg-slate-50 border-slate-250'
-                  }`}
+                  className="w-full px-3 py-2 bg-surface-container-lowest dark:bg-inverse-surface border border-outline-variant rounded-lg font-body-sm text-body-sm focus:ring-1 focus:ring-primary focus:outline-none transition-all outline-none"
                 />
               </div>
 
               <div className="flex gap-2.5 pt-2">
                 <button
                   type="submit"
-                  className="flex-1 bg-blue-600 hover:bg-blue-700 text-white p-2.5 rounded-xl font-semibold text-xs cursor-pointer text-center"
+                  className="flex-1 bg-primary hover:bg-primary-container text-on-primary p-2.5 rounded-lg font-semibold text-xs cursor-pointer text-center focus:outline-none"
                 >
                   Confirmar Agendamento
                 </button>
                 <button
                   type="button"
                   onClick={() => setShowAddModal(false)}
-                  className="px-4 py-2.5 border rounded-xl text-xs font-semibold hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                  className="px-4 py-2.5 border border-outline-variant hover:bg-surface-container rounded-lg text-xs font-semibold cursor-pointer transition-colors focus:outline-none"
                 >
                   Cancelar
                 </button>
