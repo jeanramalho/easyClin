@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+
+<html class="light" lang="pt-br"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .chart-gradient {
+            background: linear-gradient(180deg, rgba(0, 82, 255, 0.1) 0%, rgba(0, 82, 255, 0) 100%);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-background": "#131b2e",
+                        "outline": "#737688",
+                        "on-secondary": "#ffffff",
+                        "inverse-surface": "#283044",
+                        "on-tertiary-fixed": "#3c0800",
+                        "secondary-fixed-dim": "#b7c8e1",
+                        "inverse-on-surface": "#eef0ff",
+                        "background": "#faf8ff",
+                        "on-primary-fixed-variant": "#0038b6",
+                        "on-tertiary": "#ffffff",
+                        "tertiary": "#952200",
+                        "surface-container-high": "#e2e7ff",
+                        "on-primary-fixed": "#001452",
+                        "surface-bright": "#faf8ff",
+                        "surface-container-highest": "#dae2fd",
+                        "surface": "#faf8ff",
+                        "on-error-container": "#93000a",
+                        "surface-container-low": "#f2f3ff",
+                        "on-error": "#ffffff",
+                        "tertiary-container": "#bf3003",
+                        "on-surface-variant": "#434656",
+                        "secondary-container": "#d0e1fb",
+                        "on-secondary-container": "#54647a",
+                        "outline-variant": "#c3c5d9",
+                        "on-secondary-fixed-variant": "#38485d",
+                        "on-tertiary-container": "#ffddd5",
+                        "on-secondary-fixed": "#0b1c30",
+                        "error": "#ba1a1a",
+                        "primary-container": "#0052ff",
+                        "error-container": "#ffdad6",
+                        "primary": "#003ec7",
+                        "tertiary-fixed": "#ffdbd2",
+                        "surface-dim": "#d2d9f4",
+                        "on-surface": "#131b2e",
+                        "primary-fixed-dim": "#b7c4ff",
+                        "on-primary-container": "#dfe3ff",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#891e00",
+                        "tertiary-fixed-dim": "#ffb4a1",
+                        "surface-container": "#eaedff",
+                        "surface-tint": "#004ced",
+                        "inverse-primary": "#b7c4ff",
+                        "secondary-fixed": "#d3e4fe",
+                        "secondary": "#505f76",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-variant": "#dae2fd",
+                        "primary-fixed": "#dde1ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "container-max": "1440px",
+                        "margin-desktop": "40px",
+                        "margin-mobile": "16px",
+                        "unit": "8px"
+                    },
+                    "fontFamily": {
+                        "code-sm": ["jetbrainsMono"],
+                        "headline-lg": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "title-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "label-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "code-sm": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased">
+<!-- SideNavBar -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-surface dark:bg-inverse-surface shadow-sm flex flex-col py-gutter px-4 z-50">
+<div class="mb-10 px-2">
+<h1 class="font-headline-lg text-headline-lg text-primary dark:text-inverse-primary font-bold">EasyClin</h1>
+<p class="text-secondary dark:text-secondary-fixed-dim text-label-md">Health Management</p>
+</div>
+<nav class="flex-1 space-y-1">
+<!-- Nav Items Mapping -->
+<a class="flex items-center gap-3 px-3 py-2 text-secondary dark:text-secondary-fixed-dim hover:bg-secondary-container dark:hover:bg-secondary-fixed-variant transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-secondary dark:text-secondary-fixed-dim hover:bg-secondary-container dark:hover:bg-secondary-fixed-variant transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
+<span class="font-body-md">Agenda</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-secondary dark:text-secondary-fixed-dim hover:bg-secondary-container dark:hover:bg-secondary-fixed-variant transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined" data-icon="groups">groups</span>
+<span class="font-body-md">Patients</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-secondary dark:text-secondary-fixed-dim hover:bg-secondary-container dark:hover:bg-secondary-fixed-variant transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+<span class="font-body-md">Records</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-secondary dark:text-secondary-fixed-dim hover:bg-secondary-container dark:hover:bg-secondary-fixed-variant transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined" data-icon="request_quote">request_quote</span>
+<span class="font-body-md">Quotes</span>
+</a>
+<!-- Active Tab: Finance -->
+<a class="flex items-center gap-3 px-3 py-2 text-primary dark:text-inverse-primary font-bold border-r-4 border-primary bg-primary-container/10 transition-colors rounded-l-lg group" href="#">
+<span class="material-symbols-outlined" data-icon="payments" style="font-variation-settings: 'FILL' 1;">payments</span>
+<span class="font-body-md">Finance</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-secondary dark:text-secondary-fixed-dim hover:bg-secondary-container dark:hover:bg-secondary-fixed-variant transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined" data-icon="card_membership">card_membership</span>
+<span class="font-body-md">Subscription</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-secondary dark:text-secondary-fixed-dim hover:bg-secondary-container dark:hover:bg-secondary-fixed-variant transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined" data-icon="admin_panel_settings">admin_panel_settings</span>
+<span class="font-body-md">Admin</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-secondary dark:text-secondary-fixed-dim hover:bg-secondary-container dark:hover:bg-secondary-fixed-variant transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-body-md">Settings</span>
+</a>
+</nav>
+<div class="mt-auto space-y-1 pt-6 border-t border-outline-variant">
+<button class="w-full bg-primary text-on-primary py-3 px-4 rounded-xl font-bold flex items-center justify-center gap-2 mb-4 active:scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined text-[20px]" data-icon="add">add</span>
+                New Appointment
+            </button>
+<a class="flex items-center gap-3 px-3 py-2 text-secondary dark:text-secondary-fixed-dim hover:bg-secondary-container dark:hover:bg-secondary-fixed-variant transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+<span class="font-body-md">Profile</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-secondary dark:text-secondary-fixed-dim hover:bg-secondary-container dark:hover:bg-secondary-fixed-variant transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-body-md">Logout</span>
+</a>
+</div>
+</aside>
+<!-- TopAppBar -->
+<header class="fixed top-0 right-0 w-[calc(100%-16rem)] z-40 bg-surface dark:bg-surface-container-low border-b border-outline-variant dark:border-outline flex justify-between items-center h-16 px-gutter ml-64">
+<div class="flex items-center flex-1">
+<div class="relative w-full max-w-md group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary transition-colors" data-icon="search">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container-lowest border border-outline-variant rounded-full focus:ring-2 focus:ring-primary focus:border-primary transition-all text-body-md outline-none" placeholder="Search transactions, patients..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2">
+<button class="bg-surface-container-low text-primary border border-primary px-4 py-2 rounded-lg font-bold text-body-md hover:bg-primary-container/10 active:scale-98 transition-all">+ Novo Paciente</button>
+<button class="bg-primary text-on-primary px-4 py-2 rounded-lg font-bold text-body-md hover:bg-primary-container active:scale-98 transition-all">+ Novo Agendamento</button>
+</div>
+<div class="flex items-center gap-1 border-l border-outline-variant pl-4">
+<button class="hover:bg-surface-container-high dark:hover:bg-inverse-surface rounded-full p-2 relative active:scale-98 transition-all">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="notifications">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full border-2 border-surface"></span>
+</button>
+<div class="w-10 h-10 rounded-full overflow-hidden border border-outline-variant ml-2">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="A professional headshot of a smiling male doctor in his 40s wearing a white clinical coat and a stethoscope. The background is a brightly lit, modern medical office with soft, warm lighting. The image conveys trust, expertise, and approachable professionalism in a high-end healthcare setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC24OzHwJ2KCJ-AkmTCo13cAjm8mEVc2RQGKLiZNO_FmLTdnxaA-tRoTvxAvBB9_ABgGfCwIV1LNVTeNB-ltGA42KAKUog_ouIQs2K3RHkjhQHbP9v3arzyH9C7MGDO39bOqQdkiqlbXP5hI10f2KIJiyNb0C7kl5NS84ht0-L0CWSeSklsk8l0ikFrrxeZvGEqEAhAF83Rkc9qt2tBuQOVewaWh9I_VJhWFvJhnnhhe0UqSxzU_BjfJnBLz1ciA4hLoyQid3HGt4Mv"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-64 pt-16 min-h-screen">
+<div class="p-gutter max-w-container-max mx-auto space-y-gutter">
+<!-- Page Header & Filters -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Gestão Financeira</h2>
+<div class="flex items-center gap-2 mt-1">
+<span class="flex items-center gap-1 px-2 py-0.5 rounded-full bg-green-100 text-green-700 text-label-md font-bold">
+<span class="material-symbols-outlined text-[14px]" data-icon="check_circle">check_circle</span>
+                            Operação Saudável
+                        </span>
+<span class="text-on-surface-variant text-body-md">Atualizado em tempo real</span>
+</div>
+</div>
+<div class="flex flex-wrap items-center gap-3">
+<div class="flex items-center bg-surface-container rounded-lg p-1 border border-outline-variant">
+<button class="px-4 py-1.5 text-body-md rounded-md bg-surface text-primary font-bold shadow-sm">Mensal</button>
+<button class="px-4 py-1.5 text-body-md text-on-surface-variant hover:text-on-surface transition-colors">Trimestral</button>
+<button class="px-4 py-1.5 text-body-md text-on-surface-variant hover:text-on-surface transition-colors">Anual</button>
+</div>
+<div class="relative">
+<button class="flex items-center gap-2 px-4 py-2 bg-surface-container-lowest border border-outline-variant rounded-lg text-body-md text-on-surface-variant hover:border-primary transition-all">
+<span class="material-symbols-outlined text-[18px]" data-icon="calendar_month">calendar_month</span>
+                            Outubro 2023
+                            <span class="material-symbols-outlined text-[18px]" data-icon="expand_more">expand_more</span>
+</button>
+</div>
+<button class="flex items-center gap-2 px-4 py-2 bg-surface-container-lowest border border-outline-variant rounded-lg text-body-md text-on-surface-variant hover:border-primary transition-all">
+<span class="material-symbols-outlined text-[18px]" data-icon="filter_list">filter_list</span>
+                        Filtros
+                    </button>
+</div>
+</div>
+<!-- KPI Cards Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<!-- Contas a Receber -->
+<div class="bg-surface border border-outline-variant rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-primary-container/10 rounded-lg">
+<span class="material-symbols-outlined text-primary" data-icon="trending_up">trending_up</span>
+</div>
+<span class="text-green-600 text-label-md font-bold">+12.5%</span>
+</div>
+<p class="text-on-surface-variant text-body-md mb-1">Contas a Receber</p>
+<h3 class="text-headline-lg font-bold text-on-surface">R$ 42.500,00</h3>
+<p class="text-outline text-label-md mt-2">18 faturas pendentes</p>
+</div>
+<!-- Contas a Pagar -->
+<div class="bg-surface border border-outline-variant rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-tertiary-fixed rounded-lg">
+<span class="material-symbols-outlined text-tertiary" data-icon="trending_down">trending_down</span>
+</div>
+<span class="text-tertiary text-label-md font-bold">-4.2%</span>
+</div>
+<p class="text-on-surface-variant text-body-md mb-1">Contas a Pagar</p>
+<h3 class="text-headline-lg font-bold text-on-surface">R$ 12.180,00</h3>
+<p class="text-outline text-label-md mt-2">Vencendo hoje: R$ 1.200</p>
+</div>
+<!-- Inadimplência -->
+<div class="bg-surface border border-outline-variant rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-error-container/10 rounded-lg">
+<span class="material-symbols-outlined text-error" data-icon="warning">warning</span>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-error-container/20 text-error text-[10px] font-bold uppercase tracking-wider">Alerta</span>
+</div>
+<p class="text-on-surface-variant text-body-md mb-1">Inadimplência</p>
+<h3 class="text-headline-lg font-bold text-on-surface">2.4%</h3>
+<p class="text-error text-label-md mt-2">Acima da meta (2.0%)</p>
+</div>
+<!-- Fluxo de Caixa -->
+<div class="bg-surface border border-outline-variant rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow bg-gradient-to-br from-surface to-primary-container/5">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-primary text-on-primary rounded-lg shadow-sm">
+<span class="material-symbols-outlined" data-icon="account_balance_wallet">account_balance_wallet</span>
+</div>
+</div>
+<p class="text-on-surface-variant text-body-md mb-1">Fluxo de Caixa Mensal</p>
+<h3 class="text-headline-lg font-bold text-on-surface">R$ 30.320,00</h3>
+<div class="w-full bg-outline-variant h-1 rounded-full mt-4 overflow-hidden">
+<div class="bg-primary h-full w-[72%]"></div>
+</div>
+</div>
+</div>
+<!-- Main Data Section: Forecast & Transactions -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+<!-- Revenue Forecast Chart Placeholder -->
+<div class="lg:col-span-2 bg-surface border border-outline-variant rounded-xl overflow-hidden flex flex-col shadow-sm">
+<div class="p-6 border-b border-outline-variant flex justify-between items-center">
+<div>
+<h4 class="font-title-md text-title-md text-on-surface">Previsão de Receita</h4>
+<p class="text-on-surface-variant text-body-md">Projeção baseada em agendamentos futuros</p>
+</div>
+<button class="text-primary hover:bg-primary-container/10 p-2 rounded-lg transition-colors">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+<div class="flex-1 p-6 flex items-end gap-2 h-64 relative chart-gradient">
+<!-- Simulated Chart Bars -->
+<div class="flex-1 bg-primary-container/20 rounded-t-lg transition-all hover:bg-primary h-[40%] group relative">
+<div class="absolute -top-10 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface text-[10px] py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Nov: R$ 38k</div>
+</div>
+<div class="flex-1 bg-primary-container/20 rounded-t-lg transition-all hover:bg-primary h-[55%] group relative">
+<div class="absolute -top-10 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface text-[10px] py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Dez: R$ 45k</div>
+</div>
+<div class="flex-1 bg-primary-container/20 rounded-t-lg transition-all hover:bg-primary h-[45%] group relative"></div>
+<div class="flex-1 bg-primary-container/20 rounded-t-lg transition-all hover:bg-primary h-[60%] group relative border-t-2 border-dashed border-primary"></div>
+<div class="flex-1 bg-primary-container/20 rounded-t-lg transition-all hover:bg-primary h-[75%] group relative border-t-2 border-dashed border-primary"></div>
+<div class="flex-1 bg-primary-container/20 rounded-t-lg transition-all hover:bg-primary h-[65%] group relative border-t-2 border-dashed border-primary"></div>
+<div class="flex-1 bg-primary-container/20 rounded-t-lg transition-all hover:bg-primary h-[85%] group relative border-t-2 border-dashed border-primary"></div>
+<!-- Chart Legend -->
+<div class="absolute bottom-2 left-6 flex gap-4 text-label-md text-outline">
+<div class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-primary-container/30"></span> Realizado</div>
+<div class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-primary border border-dashed border-primary"></span> Projetado</div>
+</div>
+</div>
+</div>
+<!-- Quick Actions / Mini Stats -->
+<div class="bg-surface border border-outline-variant rounded-xl p-6 shadow-sm">
+<h4 class="font-title-md text-title-md text-on-surface mb-6">Conciliação Bancária</h4>
+<div class="space-y-4">
+<div class="p-4 rounded-xl border border-outline-variant bg-surface-container-lowest flex items-center justify-between group hover:border-primary transition-all cursor-pointer">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center">
+<img alt="Bank Logo" class="w-6 h-6 object-contain" data-alt="A clean, modern logo of a financial institution with minimalist blue branding. The logo is displayed on a crisp white background with soft studio lighting, representing stability, trust, and contemporary digital banking services." src="https://lh3.googleusercontent.com/aida-public/AB6AXuALXooiJH3cLDVjMn9PMmAfnhxZa-1GColNIPbJ01vac9Wp7CrB4HPUuoRfkd4vwRpXMhXEjMmyS-1gHoaWopz_wjULrdGZ5wHttQkRUUBtoVN7W_E2anom7PvcSBzSCi7CLmHSWHDIXbABYkXh0-nBHamV0XvJ01j4NX3iyKl7SzFlIX49ykU2hqmnEVo2oA7Jo4BOfOOR2AOcyygg-f0gy7tIFvUEc795RcR1Jp8MKHQg81FjZ1y7dILwOt9kvZRJIRfRnVe4d8hG"/>
+</div>
+<div>
+<p class="font-bold text-body-md text-on-surface">Itaú Personnalité</p>
+<p class="text-label-md text-outline">Ag: 0451 CC: 12345-0</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-bold text-body-md text-green-600">R$ 15.420,00</p>
+<p class="text-[10px] text-outline uppercase tracking-wider">Sincronizado</p>
+</div>
+</div>
+<div class="p-4 rounded-xl border border-outline-variant bg-surface-container-lowest flex items-center justify-between group hover:border-primary transition-all cursor-pointer">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-purple-50 flex items-center justify-center">
+<img alt="Bank Logo" class="w-6 h-6 object-contain" data-alt="The distinctive purple branding of a modern fintech bank logo. The design is sleek, geometric, and professional, positioned on a neutral light background with subtle depth and high-end aesthetic appeal, evoking a sense of innovative financial management." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxFoa9ZpLO0bP2U1Gjzh7QIYXNSTx62O8soLURX69zaOBMRIM1F-CKV7xBcVOrbYMFf6VJkosPuhCZOyUS7W3ecf3Q8UV-5ekWjw0DWLViW64JvZd7bnhR9GirwmdAbz9vOfRN8wGR7TxFG6mquBC_WhtfSpr9VTwogAOYAVJ7S7oj7IsAtPB3TSjsl6AAP0_siQ1jrl7yDROf4hPTlUx5y4-69pX_DBzWzmGJjaOOXOYMuV0deQbqFHJthaJXd4tGbemP3cU3h18w"/>
+</div>
+<div>
+<p class="font-bold text-body-md text-on-surface">Nubank Business</p>
+<p class="text-label-md text-outline">Ag: 0001 CC: 98765-4</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-bold text-body-md text-green-600">R$ 8.905,20</p>
+<p class="text-[10px] text-outline uppercase tracking-wider">Sincronizado</p>
+</div>
+</div>
+</div>
+<button class="w-full mt-6 py-3 border-2 border-dashed border-outline-variant rounded-xl text-outline font-bold text-body-md hover:border-primary hover:text-primary transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+                        Vincular Nova Conta
+                    </button>
+</div>
+</div>
+<!-- Transactions Table -->
+<div class="bg-surface border border-outline-variant rounded-xl shadow-sm overflow-hidden">
+<div class="p-6 border-b border-outline-variant flex flex-col md:flex-row md:items-center justify-between gap-4">
+<h4 class="font-title-md text-title-md text-on-surface">Transações Recentes</h4>
+<div class="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0">
+<span class="text-body-md text-outline mr-2">Filtrar por:</span>
+<button class="px-3 py-1 bg-surface-container rounded-full text-label-md font-bold text-on-surface-variant border border-outline-variant">Todos</button>
+<button class="px-3 py-1 hover:bg-surface-container rounded-full text-label-md text-on-surface-variant border border-transparent transition-colors">Receitas</button>
+<button class="px-3 py-1 hover:bg-surface-container rounded-full text-label-md text-on-surface-variant border border-transparent transition-colors">Despesas</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low text-on-surface-variant text-label-md font-bold uppercase tracking-wider">
+<th class="px-6 py-4">Data</th>
+<th class="px-6 py-4">Descrição</th>
+<th class="px-6 py-4">Categoria</th>
+<th class="px-6 py-4">Valor</th>
+<th class="px-6 py-4">Status</th>
+<th class="px-6 py-4 text-right">Ações</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<!-- Paid Transaction -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-6 py-4 text-body-md text-on-surface">15 Out, 2023</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-container/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[18px]" data-icon="person">person</span>
+</div>
+<span class="font-bold text-on-surface">Consulta: Mariana Silva</span>
+</div>
+</td>
+<td class="px-6 py-4"><span class="px-2 py-1 rounded bg-surface-container text-label-md text-on-surface-variant">Serviços Médicos</span></td>
+<td class="px-6 py-4 font-bold text-green-600">R$ 450,00</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-green-100 text-green-700 text-label-md font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-green-700"></span>
+                                        Pago
+                                    </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-outline hover:text-primary transition-colors"><span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span></button>
+</td>
+</tr>
+<!-- Pending Transaction -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-6 py-4 text-body-md text-on-surface">16 Out, 2023</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-secondary-container/20 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[18px]" data-icon="shopping_cart">shopping_cart</span>
+</div>
+<span class="font-bold text-on-surface">Material de Escritório (PaperMax)</span>
+</div>
+</td>
+<td class="px-6 py-4"><span class="px-2 py-1 rounded bg-surface-container text-label-md text-on-surface-variant">Insumos</span></td>
+<td class="px-6 py-4 font-bold text-tertiary">R$ 1.250,00</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-700 text-label-md font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-blue-700"></span>
+                                        Pendente
+                                    </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-outline hover:text-primary transition-colors"><span class="material-symbols-outlined" data-icon="more_horiz">more_horiz</span></button>
+</td>
+</tr>
+<!-- Overdue Transaction -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-6 py-4 text-body-md text-on-surface">10 Out, 2023</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-error-container/10 flex items-center justify-center text-error">
+<span class="material-symbols-outlined text-[18px]" data-icon="warning">warning</span>
+</div>
+<span class="font-bold text-on-surface">Laboratório BioLab Ltda</span>
+</div>
+</td>
+<td class="px-6 py-4"><span class="px-2 py-1 rounded bg-surface-container text-label-md text-on-surface-variant">Exames</span></td>
+<td class="px-6 py-4 font-bold text-error">R$ 3.800,00</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-red-100 text-red-700 text-label-md font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-red-700 animate-pulse"></span>
+                                        Atrasado
+                                    </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-outline hover:text-error transition-colors"><span class="material-symbols-outlined" data-icon="emergency_share">emergency_share</span></button>
+</td>
+</tr>
+<!-- Paid Transaction -->
+<tr class="hover:bg-surface-container-low transition-colors group border-b-0">
+<td class="px-6 py-4 text-body-md text-on-surface">14 Out, 2023</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-container/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[18px]" data-icon="medical_services">medical_services</span>
+</div>
+<span class="font-bold text-on-surface">Cirurgia: Ricardo Amorim</span>
+</div>
+</td>
+<td class="px-6 py-4"><span class="px-2 py-1 rounded bg-surface-container text-label-md text-on-surface-variant">Serviços Médicos</span></td>
+<td class="px-6 py-4 font-bold text-green-600">R$ 12.000,00</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-green-100 text-green-700 text-label-md font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-green-700"></span>
+                                        Pago
+                                    </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-outline hover:text-primary transition-colors"><span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span></button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-6 py-4 bg-surface-container-low border-t border-outline-variant flex items-center justify-between">
+<p class="text-label-md text-outline">Mostrando 1-4 de 128 transações</p>
+<div class="flex items-center gap-2">
+<button class="p-1 rounded hover:bg-surface-container transition-colors disabled:opacity-30" disabled="">
+<span class="material-symbols-outlined" data-icon="chevron_left">chevron_left</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Floating Action Button (Contextual for Finance) -->
+<button class="fixed bottom-8 right-8 w-14 h-14 bg-primary text-on-primary rounded-full shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all flex items-center justify-center group z-50">
+<span class="material-symbols-outlined text-[28px]" data-icon="add">add</span>
+<span class="absolute right-full mr-4 bg-inverse-surface text-inverse-on-surface px-3 py-1 rounded text-label-md font-bold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">Nova Transação</span>
+</button>
+<script>
+        // Simple Micro-interaction for KPI Hover
+        document.querySelectorAll('.grid > div').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.classList.add('scale-[1.01]');
+            });
+            card.addEventListener('mouseleave', () => {
+                card.classList.remove('scale-[1.01]');
+            });
+        });
+    </script>
+</body></html>

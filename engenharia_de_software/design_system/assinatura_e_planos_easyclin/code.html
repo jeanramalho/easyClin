@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+
+<html class="light" lang="pt-br"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d2d9f4;
+            border-radius: 10px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-background": "#131b2e",
+                      "outline": "#737688",
+                      "on-secondary": "#ffffff",
+                      "inverse-surface": "#283044",
+                      "on-tertiary-fixed": "#3c0800",
+                      "secondary-fixed-dim": "#b7c8e1",
+                      "inverse-on-surface": "#eef0ff",
+                      "background": "#faf8ff",
+                      "on-primary-fixed-variant": "#0038b6",
+                      "on-tertiary": "#ffffff",
+                      "tertiary": "#952200",
+                      "surface-container-high": "#e2e7ff",
+                      "on-primary-fixed": "#001452",
+                      "surface-bright": "#faf8ff",
+                      "surface-container-highest": "#dae2fd",
+                      "surface": "#faf8ff",
+                      "on-error-container": "#93000a",
+                      "surface-container-low": "#f2f3ff",
+                      "on-error": "#ffffff",
+                      "tertiary-container": "#bf3003",
+                      "on-surface-variant": "#434656",
+                      "secondary-container": "#d0e1fb",
+                      "on-secondary-container": "#54647a",
+                      "outline-variant": "#c3c5d9",
+                      "on-secondary-fixed-variant": "#38485d",
+                      "on-tertiary-container": "#ffddd5",
+                      "on-secondary-fixed": "#0b1c30",
+                      "error": "#ba1a1a",
+                      "primary-container": "#0052ff",
+                      "error-container": "#ffdad6",
+                      "primary": "#003ec7",
+                      "tertiary-fixed": "#ffdbd2",
+                      "surface-dim": "#d2d9f4",
+                      "on-surface": "#131b2e",
+                      "primary-fixed-dim": "#b7c4ff",
+                      "on-primary-container": "#dfe3ff",
+                      "on-primary": "#ffffff",
+                      "on-tertiary-fixed-variant": "#891e00",
+                      "tertiary-fixed-dim": "#ffb4a1",
+                      "surface-container": "#eaedff",
+                      "surface-tint": "#004ced",
+                      "inverse-primary": "#b7c4ff",
+                      "secondary-fixed": "#d3e4fe",
+                      "secondary": "#505f76",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-variant": "#dae2fd",
+                      "primary-fixed": "#dde1ff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gutter": "24px",
+                      "container-max": "1440px",
+                      "margin-desktop": "40px",
+                      "margin-mobile": "16px",
+                      "unit": "8px"
+              },
+              "fontFamily": {
+                      "code-sm": ["jetbrainsMono"],
+                      "headline-lg": ["Inter"],
+                      "headline-lg-mobile": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "body-md": ["Inter"],
+                      "title-md": ["Inter"],
+                      "display-lg": ["Inter"],
+                      "label-md": ["Inter"]
+              },
+              "fontSize": {
+                      "code-sm": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-surface text-on-surface font-body-md">
+<!-- SideNavBar -->
+<aside class="bg-surface dark:bg-inverse-surface shadow-sm h-screen w-64 fixed left-0 top-0 flex flex-col py-gutter px-4 z-50">
+<div class="mb-8 px-2 flex items-center gap-3">
+<div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-white" style="font-variation-settings: 'FILL' 1;">medical_services</span>
+</div>
+<div>
+<h1 class="font-headline-lg text-headline-lg text-primary dark:text-inverse-primary font-bold leading-none" style="font-size: 20px;">EasyClin</h1>
+<p class="text-xs text-outline opacity-70">Health Management</p>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-secondary dark:text-secondary-fixed-dim hover:bg-secondary-container dark:hover:bg-secondary-fixed-variant transition-colors group" href="#">
+<span class="material-symbols-outlined text-xl">dashboard</span>
+<span class="font-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-secondary dark:text-secondary-fixed-dim hover:bg-secondary-container dark:hover:bg-secondary-fixed-variant transition-colors group" href="#">
+<span class="material-symbols-outlined text-xl">calendar_today</span>
+<span class="font-body-md">Agenda</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-secondary dark:text-secondary-fixed-dim hover:bg-secondary-container dark:hover:bg-secondary-fixed-variant transition-colors group" href="#">
+<span class="material-symbols-outlined text-xl">groups</span>
+<span class="font-body-md">Patients</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-secondary dark:text-secondary-fixed-dim hover:bg-secondary-container dark:hover:bg-secondary-fixed-variant transition-colors group" href="#">
+<span class="material-symbols-outlined text-xl">description</span>
+<span class="font-body-md">Records</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-secondary dark:text-secondary-fixed-dim hover:bg-secondary-container dark:hover:bg-secondary-fixed-variant transition-colors group" href="#">
+<span class="material-symbols-outlined text-xl">request_quote</span>
+<span class="font-body-md">Quotes</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-secondary dark:text-secondary-fixed-dim hover:bg-secondary-container dark:hover:bg-secondary-fixed-variant transition-colors group" href="#">
+<span class="material-symbols-outlined text-xl">payments</span>
+<span class="font-body-md">Finance</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-primary dark:text-inverse-primary font-bold border-r-4 border-primary bg-secondary-container/30" href="#">
+<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">card_membership</span>
+<span class="font-body-md">Subscription</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-secondary dark:text-secondary-fixed-dim hover:bg-secondary-container dark:hover:bg-secondary-fixed-variant transition-colors group" href="#">
+<span class="material-symbols-outlined text-xl">admin_panel_settings</span>
+<span class="font-body-md">Admin</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-secondary dark:text-secondary-fixed-dim hover:bg-secondary-container dark:hover:bg-secondary-fixed-variant transition-colors group" href="#">
+<span class="material-symbols-outlined text-xl">settings</span>
+<span class="font-body-md">Settings</span>
+</a>
+</nav>
+<div class="mt-auto border-t border-outline-variant pt-4 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-secondary hover:bg-secondary-container transition-colors" href="#">
+<span class="material-symbols-outlined text-xl">account_circle</span>
+<span class="font-body-md">Profile</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-error hover:bg-error-container transition-colors" href="#">
+<span class="material-symbols-outlined text-xl">logout</span>
+<span class="font-body-md">Logout</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-64 min-h-screen">
+<!-- TopAppBar -->
+<header class="bg-surface fixed top-0 right-0 w-[calc(100%-16rem)] z-40 flex justify-between items-center h-16 px-gutter border-b border-outline-variant">
+<div class="flex items-center flex-1 max-w-xl relative">
+<span class="material-symbols-outlined absolute left-3 text-outline">search</span>
+<input class="w-full bg-surface-container-low border-none rounded-full py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary/20" placeholder="Search patients, invoices, settings..." type="text"/>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2">
+<button class="bg-surface-container-low text-primary px-4 py-2 rounded-full font-label-md text-label-md hover:bg-surface-container-high transition-all active:scale-95">
+                        + Novo Paciente
+                    </button>
+<button class="bg-primary text-white px-4 py-2 rounded-full font-label-md text-label-md shadow-sm hover:brightness-110 transition-all active:scale-95">
+                        + Novo Agendamento
+                    </button>
+</div>
+<div class="w-[1px] h-6 bg-outline-variant mx-2"></div>
+<button class="hover:bg-surface-container-high rounded-full p-2 relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full border-2 border-surface"></span>
+</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant">
+<img alt="Dr. Marcos" data-alt="A professional portrait of a confident male doctor in a modern healthcare office. He wears a clean white coat and a friendly expression. The background shows a blurred, high-end clinical environment with soft natural lighting and minimalist decor in shades of light blue and white." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC046_JXPwL3BARICF94RBjxATM9QOwiZSXulJ4AFhU0B_naDcM5R_y4y6zVdmzeBLX1WA3h9LnbHSrSamZ9W9941K6xFBHdrVKQcsOfCJPAL5dXr9TuAXYuOumzfKxboDfPaW51LPsggr7S5nR_eLV2mtU_ehh4KPUgKaDCStumshzCrQD6Q7OYRkBG1pdSs7tI40O3pY_Nd98TZCQYeIAlJ0FoNEp_ofJvb8rO5FQ6IMKbxMl08r19uYq3JciVBx7OFhonw248Us3"/>
+</div>
+</div>
+</header>
+<!-- Content Canvas -->
+<div class="pt-24 pb-12 px-gutter space-y-10">
+<!-- Header Section -->
+<section class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Assinatura e Planos</h2>
+<p class="text-on-surface-variant mt-1">Gerencie seu plano, pagamentos e histórico de faturamento.</p>
+</div>
+<div class="flex items-center gap-3">
+<div class="bg-primary/10 text-primary px-4 py-2 rounded-xl flex items-center gap-2 font-medium border border-primary/20">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+                        Conta Ativa
+                    </div>
+</div>
+</section>
+<!-- Current Plan Highlight (Bento Style) -->
+<section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Current Plan Card -->
+<div class="lg:col-span-2 bg-primary-container text-on-primary-container p-8 rounded-xl shadow-lg relative overflow-hidden flex flex-col justify-between">
+<div class="absolute top-[-20%] right-[-5%] w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+<div class="z-10">
+<div class="flex justify-between items-start">
+<div>
+<span class="bg-white/20 text-white text-[10px] uppercase tracking-widest font-bold px-2 py-1 rounded-md">Plano Atual</span>
+<h3 class="text-3xl font-bold mt-2">Plano Profissional - Ativo</h3>
+<p class="text-on-primary-container/80 mt-1">Sua próxima renovação será em 15 de Outubro, 2023.</p>
+</div>
+<div class="text-right">
+<p class="text-sm opacity-80">Mensal</p>
+<p class="text-2xl font-bold">R$ 189,90</p>
+</div>
+</div>
+<div class="mt-8 grid grid-cols-3 gap-4 border-t border-white/20 pt-6">
+<div>
+<p class="text-xs opacity-70">Pacientes</p>
+<p class="font-bold">Ilimitados</p>
+</div>
+<div>
+<p class="text-xs opacity-70">Armazenamento</p>
+<p class="font-bold">50 GB</p>
+</div>
+<div>
+<p class="text-xs opacity-70">Usuários</p>
+<p class="font-bold">Até 5</p>
+</div>
+</div>
+</div>
+<div class="mt-8 z-10">
+<button class="bg-white text-primary px-6 py-2.5 rounded-lg font-bold hover:bg-opacity-90 transition-all active:scale-95">
+                            Mudar de Plano
+                        </button>
+</div>
+</div>
+<!-- Payment Method Card -->
+<div class="bg-surface-container-lowest border border-outline-variant p-8 rounded-xl shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-6">
+<h4 class="font-bold text-lg">Método de Pagamento</h4>
+<button class="text-primary text-sm font-bold hover:underline">Editar</button>
+</div>
+<div class="bg-surface-container-low p-4 rounded-xl flex items-center gap-4">
+<div class="w-12 h-8 bg-inverse-surface rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-xl">credit_card</span>
+</div>
+<div>
+<p class="font-bold text-sm">•••• •••• •••• 4242</p>
+<p class="text-xs text-on-surface-variant">Expira em 12/28</p>
+</div>
+</div>
+<p class="mt-4 text-xs text-on-surface-variant leading-relaxed">
+                            Suas faturas são enviadas mensalmente para o e-mail cadastrado: <b>financeiro@clinica.com.br</b>
+</p>
+</div>
+<div class="mt-6 pt-6 border-t border-outline-variant">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-sm">lock</span>
+<span class="text-xs font-medium">Pagamento seguro via Stripe</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Plan Comparison -->
+<section class="space-y-6">
+<div class="text-center max-w-2xl mx-auto mb-10">
+<h3 class="font-headline-lg text-title-md">Encontre o plano ideal para seu crescimento</h3>
+<p class="text-on-surface-variant">Scalabilidade para consultórios individuais até grandes redes hospitalares.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Essential -->
+<div class="bg-surface-container-lowest border border-outline-variant p-6 rounded-xl hover:shadow-md transition-shadow">
+<div class="mb-6">
+<h4 class="font-bold text-lg">Essential</h4>
+<p class="text-sm text-on-surface-variant">Para profissionais autônomos.</p>
+</div>
+<div class="mb-6">
+<span class="text-4xl font-bold text-on-surface">R$ 89</span>
+<span class="text-on-surface-variant">/mês</span>
+</div>
+<ul class="space-y-3 mb-8">
+<li class="flex items-start gap-2 text-sm">
+<span class="material-symbols-outlined text-green-500 text-lg">check_circle</span>
+                                Até 100 pacientes
+                            </li>
+<li class="flex items-start gap-2 text-sm text-outline">
+<span class="material-symbols-outlined text-outline text-lg">check_circle</span>
+                                Agenda Básica
+                            </li>
+<li class="flex items-start gap-2 text-sm text-outline">
+<span class="material-symbols-outlined text-outline text-lg">check_circle</span>
+                                Suporte via E-mail
+                            </li>
+</ul>
+<button class="w-full py-2.5 border border-primary text-primary font-bold rounded-lg hover:bg-primary/5 transition-colors">Assinar Essential</button>
+</div>
+<!-- Plus (Active Highlight) -->
+<div class="bg-surface-container-lowest border-2 border-primary p-6 rounded-xl shadow-lg relative">
+<div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Seu Plano</div>
+<div class="mb-6">
+<h4 class="font-bold text-lg">Profissional</h4>
+<p class="text-sm text-on-surface-variant">Para clínicas em expansão.</p>
+</div>
+<div class="mb-6">
+<span class="text-4xl font-bold text-on-surface">R$ 189</span>
+<span class="text-on-surface-variant">/mês</span>
+</div>
+<ul class="space-y-3 mb-8">
+<li class="flex items-start gap-2 text-sm">
+<span class="material-symbols-outlined text-green-500 text-lg">check_circle</span>
+                                Pacientes Ilimitados
+                            </li>
+<li class="flex items-start gap-2 text-sm">
+<span class="material-symbols-outlined text-green-500 text-lg">check_circle</span>
+                                Agenda Inteligente &amp; Telemedicina
+                            </li>
+<li class="flex items-start gap-2 text-sm">
+<span class="material-symbols-outlined text-green-500 text-lg">check_circle</span>
+                                Faturamento &amp; Repasses
+                            </li>
+<li class="flex items-start gap-2 text-sm">
+<span class="material-symbols-outlined text-green-500 text-lg">check_circle</span>
+                                Suporte Prioritário
+                            </li>
+</ul>
+<button class="w-full py-2.5 bg-surface-container-high text-on-surface-variant font-bold rounded-lg cursor-default" disabled="">Atualmente Ativo</button>
+</div>
+<!-- Enterprise -->
+<div class="bg-surface-container-lowest border border-outline-variant p-6 rounded-xl hover:shadow-md transition-shadow">
+<div class="mb-6">
+<h4 class="font-bold text-lg">Enterprise</h4>
+<p class="text-sm text-on-surface-variant">Soluções customizadas para redes.</p>
+</div>
+<div class="mb-6">
+<span class="text-4xl font-bold text-on-surface">Sob Consulta</span>
+</div>
+<ul class="space-y-3 mb-8">
+<li class="flex items-start gap-2 text-sm">
+<span class="material-symbols-outlined text-green-500 text-lg">check_circle</span>
+                                Tudo do Profissional
+                            </li>
+<li class="flex items-start gap-2 text-sm">
+<span class="material-symbols-outlined text-green-500 text-lg">check_circle</span>
+                                Multi-unidades &amp; API
+                            </li>
+<li class="flex items-start gap-2 text-sm">
+<span class="material-symbols-outlined text-green-500 text-lg">check_circle</span>
+                                Gerente de Conta Dedicado
+                            </li>
+</ul>
+<button class="w-full py-2.5 bg-inverse-surface text-white font-bold rounded-lg hover:bg-opacity-90 transition-colors">Falar com Consultor</button>
+</div>
+</div>
+</section>
+<!-- Invoices Table -->
+<section class="space-y-4">
+<div class="flex justify-between items-end">
+<div>
+<h3 class="font-title-md text-title-md">Histórico de Faturamento</h3>
+<p class="text-on-surface-variant text-sm">Acesse e baixe suas faturas anteriores.</p>
+</div>
+<button class="flex items-center gap-2 text-primary font-bold text-sm hover:underline">
+<span class="material-symbols-outlined text-lg">download</span>
+                        Exportar Relatório
+                    </button>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-low border-b border-outline-variant">
+<tr>
+<th class="px-6 py-4 font-bold text-xs uppercase tracking-wider text-on-surface-variant">ID da Fatura</th>
+<th class="px-6 py-4 font-bold text-xs uppercase tracking-wider text-on-surface-variant">Data</th>
+<th class="px-6 py-4 font-bold text-xs uppercase tracking-wider text-on-surface-variant">Valor</th>
+<th class="px-6 py-4 font-bold text-xs uppercase tracking-wider text-on-surface-variant">Status</th>
+<th class="px-6 py-4 font-bold text-xs uppercase tracking-wider text-on-surface-variant">Ação</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-6 py-4 font-code-sm text-code-sm text-outline">INV-2023-0982</td>
+<td class="px-6 py-4 text-sm">15 Set, 2023</td>
+<td class="px-6 py-4 font-bold text-sm">R$ 189,90</td>
+<td class="px-6 py-4">
+<span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold inline-flex items-center gap-1">
+<span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
+                                        Pago
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<button class="text-primary hover:text-primary-container p-1 rounded-full hover:bg-primary/5 transition-all">
+<span class="material-symbols-outlined">receipt_long</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-6 py-4 font-code-sm text-code-sm text-outline">INV-2023-0854</td>
+<td class="px-6 py-4 text-sm">15 Ago, 2023</td>
+<td class="px-6 py-4 font-bold text-sm">R$ 189,90</td>
+<td class="px-6 py-4">
+<span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold inline-flex items-center gap-1">
+<span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
+                                        Pago
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<button class="text-primary hover:text-primary-container p-1 rounded-full hover:bg-primary/5 transition-all">
+<span class="material-symbols-outlined">receipt_long</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-6 py-4 font-code-sm text-code-sm text-outline">INV-2023-0721</td>
+<td class="px-6 py-4 text-sm">15 Jul, 2023</td>
+<td class="px-6 py-4 font-bold text-sm">R$ 189,90</td>
+<td class="px-6 py-4">
+<span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-bold inline-flex items-center gap-1">
+<span class="w-1.5 h-1.5 bg-red-500 rounded-full"></span>
+                                        Vencida
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<button class="text-error hover:brightness-90 font-bold text-sm">Regularizar</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</div>
+</main>
+<!-- Floating Atmosphere Elements -->
+<div class="fixed bottom-10 right-10 z-50">
+<button class="w-14 h-14 bg-primary text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all group" title="Ajuda &amp; Suporte">
+<span class="material-symbols-outlined text-2xl">question_answer</span>
+<span class="absolute -top-12 right-0 bg-inverse-surface text-white text-[10px] px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-xl">Precisa de ajuda?</span>
+</button>
+</div>
+<script>
+        // Simple Micro-interactions
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('mousedown', () => {
+                button.classList.add('scale-95');
+            });
+            button.addEventListener('mouseup', () => {
+                button.classList.remove('scale-95');
+            });
+        });
+
+        // Search highlight effect
+        const searchInput = document.querySelector('input[type="text"]');
+        searchInput.addEventListener('focus', () => {
+            searchInput.parentElement.classList.add('ring-2', 'ring-primary/20');
+        });
+        searchInput.addEventListener('blur', () => {
+            searchInput.parentElement.classList.remove('ring-2', 'ring-primary/20');
+        });
+    </script>
+</body></html>
