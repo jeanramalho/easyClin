@@ -6,7 +6,6 @@
 import React, { useState } from 'react';
 import { dbObj } from '../services/db';
 import { User, UserRole, SubscriptionStatus } from '../types';
-import { Shield, Sparkles, Building2, Stethoscope, UserCheck, CheckCircle2, Lock, ArrowRight, Activity } from 'lucide-react';
 
 interface AuthProps {
   onLoginSuccess: (user: User) => void;
@@ -19,13 +18,13 @@ export default function Auth({ onLoginSuccess, darkMode }: AuthProps) {
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [clinicName, setClinicName] = useState('');
-  const [role, setRole] = useState<UserRole>('clinic_admin');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPresets, setShowPresets] = useState(false);
   const [message, setMessage] = useState<{ type: 'error' | 'success'; text: string } | null>(null);
 
   const preConfiguredUsers = dbObj.getUsers();
 
   const handlePresetLogin = (user: User) => {
-    // Audit log integration
     const tenant = dbObj.getTenants().find(t => t.id === user.tenantId);
     dbObj.logAction(
       user.id,
@@ -36,7 +35,6 @@ export default function Auth({ onLoginSuccess, darkMode }: AuthProps) {
       user.tenantId
     );
 
-    // Save session
     dbObj.currentUser = user;
     
     setMessage({ type: 'success', text: `Bem vindo, ${user.name}! Redirecionando...` });
@@ -125,286 +123,249 @@ export default function Auth({ onLoginSuccess, darkMode }: AuthProps) {
   };
 
   return (
-    <div className={`min-h-screen flex transition-colors duration-300 ${darkMode ? 'bg-slate-950 text-slate-100' : 'bg-slate-50 text-slate-900'}`}>
+    <div className="min-h-screen flex items-center justify-center p-4 soft-gradient transition-colors duration-300">
       
-      {/* Visual Banner Left */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-blue-700 via-blue-800 to-indigo-900 p-12 text-white flex-col justify-between relative overflow-hidden">
+      <main className="w-full max-w-[440px] animate-in fade-in slide-in-from-bottom-4 duration-700">
         
-        {/* Abstract Background Design Elements */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl -mr-20 -mt-20"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl -ml-20 -mb-20"></div>
-
-        {/* Brand Header */}
-        <div className="flex items-center gap-3 relative z-10">
-          <div className="bg-white text-blue-700 p-2.5 rounded-xl shadow-lg">
-            <Activity className="h-6 w-6 stroke-[2.5]" />
+        {/* Logo Header */}
+        <div className="flex flex-col items-center mb-6 space-y-3">
+          <div className="w-16 h-16 bg-white dark:bg-inverse-surface rounded-2xl shadow-sm flex items-center justify-center p-2 overflow-hidden border border-outline-variant/30">
+            <span className="material-symbols-outlined text-primary dark:text-primary-fixed-dim text-[40px]" style={{ fontVariationSettings: "'FILL' 1" }}>
+              medical_services
+            </span>
           </div>
-          <span className="text-2xl font-bold tracking-tight">Easy<span className="text-blue-300">Clin</span></span>
-          <span className="text-xs bg-blue-600/50 text-blue-200 border border-blue-500 px-2 py-0.5 rounded-full font-mono">SaaS MVP v1.0</span>
-        </div>
-
-        {/* Hero Features Block */}
-        <div className="max-w-md relative z-10 my-auto">
-          <h1 className="text-4xl font-extrabold tracking-tight leading-tight mb-6">
-            A convergência entre <br />
-            <span className="text-blue-300 underline decoration-blue-400 decoration-wavy underline-offset-4">lucro real</span> e <span className="text-cyan-300">eficiência clínica</span>.
-          </h1>
-          <p className="text-blue-100 mb-8 text-md leading-relaxed">
-            Unimos a robustez operacional do Simples Dental com a inteligência mercadológica de margens líquidas reais do QiDent. O controle absoluto nas suas mãos.
-          </p>
-
-          <div className="space-y-4">
-            <div className="flex items-start gap-3">
-              <div className="p-1 px-1.5 bg-blue-600/60 rounded-full text-blue-300 mt-0.5 border border-blue-500">
-                <CheckCircle2 className="h-4 w-4" />
-              </div>
-              <div>
-                <h4 className="font-semibold text-sm text-white">Precificação e Lucro Real</h4>
-                <p className="text-xs text-blue-200">Defina o custo operacional do consultório, insumos e comissão para calcular a margem de cada tratamento.</p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-3">
-              <div className="p-1 px-1.5 bg-blue-600/60 rounded-full text-blue-300 mt-0.5 border border-blue-500">
-                <CheckCircle2 className="h-4 w-4" />
-              </div>
-              <div>
-                <h4 className="font-semibold text-sm text-white">Agenda, CRM e Prontuários</h4>
-                <p className="text-xs text-blue-200">Lembretes integrados, evolução médica blindada para LGPD e fluxos de atendimento sem atritos.</p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-3">
-              <div className="p-1 px-1.5 bg-blue-600/60 rounded-full text-blue-300 mt-0.5 border border-blue-500">
-                <CheckCircle2 className="h-4 w-4" />
-              </div>
-              <div>
-                <h4 className="font-semibold text-sm text-white">Multi-tenant Segregado</h4>
-                <p className="text-xs text-blue-200">Preparado para hospedar desde profissionais autônomos até franquias robustas com auditoria transparente.</p>
-              </div>
-            </div>
+          <div className="text-center">
+            <h1 className="font-headline-lg text-headline-lg text-primary dark:text-primary-fixed-dim tracking-tight">EasyClin</h1>
+            <p className="font-body-md text-body-md text-outline">Gestão inteligente para sua clínica</p>
           </div>
         </div>
 
-        {/* Footer info */}
-        <div className="flex items-center justify-between text-xs text-blue-200 border-t border-blue-600/40 pt-4 relative z-10">
-          <span>EasyClin © 2026 - Versão de Teste Completa</span>
-          <div className="flex items-center gap-1">
-            <Shield className="h-3 w-3" />
-            <span>LGPD Compliance</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Screen Forms Right */}
-      <div className="w-full lg:w-1/2 flex flex-col justify-center px-6 sm:px-12 md:px-20 py-12 relative overflow-y-auto">
-        <div className="max-w-md w-full mx-auto space-y-8">
-          
-          {/* Main heading */}
-          <div>
-            <div className="flex items-center gap-2 lg:hidden mb-6">
-              <div className="bg-blue-600 text-white p-2 rounded-xl">
-                <Activity className="h-5 w-5" />
-              </div>
-              <span className="text-xl font-bold tracking-tight">EasyClin</span>
-            </div>
-            <h2 className="text-3xl font-bold tracking-tight">
-              {isRegistering ? 'Crie sua conta clínica' : 'Bem-vindo ao EasyClin'}
-            </h2>
-            <p className="text-sm mt-2 text-slate-500 dark:text-slate-400">
-              {isRegistering 
-                ? 'Comece agora a calcular seus lucros reais e organizar sua agenda.' 
-                : 'Acesse o painel do seu consultório ou utilize logins de demonstração.'}
-            </p>
-          </div>
+        {/* Login Card */}
+        <div className="glass-card rounded-xl p-8 shadow-lg">
+          <h2 className="font-title-md text-title-md text-on-surface mb-6">
+            {isRegistering ? 'Crie sua conta clínica' : 'Acesse sua conta'}
+          </h2>
 
           {/* Quick Preset Selector for Demo Users */}
           {!isRegistering && (
-            <div className={`p-4 rounded-xl border ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-blue-50/50 border-blue-100'}`}>
-              <div className="flex items-center justify-between mb-3">
+            <div className="border border-primary/20 bg-primary/5 dark:bg-primary/10 rounded-xl p-3 mb-6">
+              <button 
+                type="button" 
+                onClick={() => setShowPresets(!showPresets)} 
+                className="w-full flex items-center justify-between text-xs font-semibold text-primary dark:text-primary-fixed-dim cursor-pointer focus:outline-none"
+              >
                 <div className="flex items-center gap-1.5">
-                  <Sparkles className="h-4 w-4 text-blue-600 dark:text-blue-400" />
-                  <span className="text-xs font-semibold uppercase tracking-wider text-blue-700 dark:text-blue-300">Piloto Automático (Selecione um papel para testar)</span>
+                  <span className="material-symbols-outlined text-base">bolt</span>
+                  <span>Acesso de Homologação (Pilotos Demo)</span>
                 </div>
-              </div>
-              
-              <div className="grid grid-cols-2 gap-2">
-                {preConfiguredUsers.slice(0, 4).map((u) => {
-                  let roleLabel = '';
-                  let icon = <Stethoscope className="h-3.5 w-3.5" />;
-                  if (u.role === 'super_admin') {
-                    roleLabel = 'Plataforma';
-                    icon = <Shield className="h-3.5 w-3.5 text-orange-500" />;
-                  } else if (u.role === 'clinic_admin') {
-                    roleLabel = 'Dono Clínica';
-                    icon = <Building2 className="h-3.5 w-3.5 text-blue-500" />;
-                  } else if (u.role === 'receptionist') {
-                    roleLabel = 'Recepção';
-                    icon = <UserCheck className="h-3.5 w-3.5 text-emerald-500" />;
-                  } else {
-                    roleLabel = 'Médico/Dentista';
-                    icon = <Stethoscope className="h-3.5 w-3.5 text-purple-500" />;
-                  }
+                <span className="material-symbols-outlined text-base transition-transform duration-200" style={{ transform: showPresets ? 'rotate(180deg)' : 'none' }}>
+                  expand_more
+                </span>
+              </button>
+              {showPresets && (
+                <div className="grid grid-cols-2 gap-2 mt-3 animate-in fade-in slide-in-from-top-2 duration-200">
+                  {preConfiguredUsers.slice(0, 4).map((u) => {
+                    let roleLabel = '';
+                    let iconName = 'medical_services';
+                    if (u.role === 'super_admin') {
+                      roleLabel = 'Plataforma';
+                      iconName = 'shield';
+                    } else if (u.role === 'clinic_admin') {
+                      roleLabel = 'Dono Clínica';
+                      iconName = 'home_clinic';
+                    } else if (u.role === 'receptionist') {
+                      roleLabel = 'Recepção';
+                      iconName = 'support_agent';
+                    } else {
+                      roleLabel = 'Médico/Dentista';
+                      iconName = 'stethoscope';
+                    }
 
-                  const tenantName = u.tenantId === 'system' ? 'EasyClin Cloud' : 'OdontoPremium';
+                    const tenantName = u.tenantId === 'system' ? 'EasyClin Cloud' : 'OdontoPremium';
 
-                  return (
-                    <button
-                      key={u.id}
-                      onClick={() => handlePresetLogin(u)}
-                      type="button"
-                      className={`text-left p-2 rounded-lg border text-xs transition-all hover:-translate-y-0.5 hover:shadow-sm ${
-                        darkMode 
-                          ? 'bg-slate-800 border-slate-700 hover:bg-slate-700 hover:border-slate-600' 
-                          : 'bg-white border-slate-200 hover:bg-slate-100 hover:border-slate-300'
-                      }`}
-                    >
-                      <div className="flex items-center gap-1 font-medium mb-0.5">
-                        {icon}
-                        <span className="truncate">{u.name}</span>
-                      </div>
-                      <div className="flex justify-between text-[10px] text-slate-500">
-                        <span>{roleLabel}</span>
-                        <span className="max-w-[70px] truncate">{tenantName}</span>
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
+                    return (
+                      <button
+                        key={u.id}
+                        onClick={() => handlePresetLogin(u)}
+                        type="button"
+                        className="text-left p-2 rounded-lg border border-outline-variant/60 dark:border-outline/40 bg-surface-container-lowest dark:bg-inverse-surface text-xs transition-all hover:scale-[1.02] active:scale-98 cursor-pointer shadow-sm hover:shadow-md focus:outline-none"
+                      >
+                        <div className="flex items-center gap-1.5 font-semibold text-on-surface mb-0.5">
+                          <span className="material-symbols-outlined text-sm text-primary dark:text-primary-fixed-dim">{iconName}</span>
+                          <span className="truncate">{u.name}</span>
+                        </div>
+                        <div className="flex justify-between text-[10px] text-on-surface-variant">
+                          <span>{roleLabel}</span>
+                          <span className="max-w-[70px] truncate">{tenantName}</span>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           )}
 
           {/* Alert Notification */}
           {message && (
-            <div className={`p-4 rounded-xl text-sm flex gap-2 border ${
+            <div className={`p-4 rounded-xl text-sm flex gap-2 border mb-6 ${
               message.type === 'error' 
                 ? 'bg-red-500/10 border-red-500/20 text-red-600 dark:text-red-400' 
                 : 'bg-emerald-500/10 border-emerald-500/20 text-emerald-600 dark:text-emerald-400'
             }`}>
-              {message.type === 'error' ? '❌' : '✓'}
+              <span className="material-symbols-outlined text-base">
+                {message.type === 'error' ? 'error' : 'check_circle'}
+              </span>
               <span>{message.text}</span>
             </div>
           )}
 
           {/* Auth form input panels */}
-          <form onSubmit={handleManualSubmit} className="space-y-4">
+          <form onSubmit={handleManualSubmit} className="space-y-6">
             
             {isRegistering && (
               <>
-                <div>
-                  <label className="block text-xs font-semibold mb-1 uppercase tracking-wider text-slate-500">Nome Completo</label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="Ex: Dr. Arthur Mendes"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className={`w-full px-4 py-2.5 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                      darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'
-                    }`}
-                  />
+                <div className="space-y-2">
+                  <label className="font-label-md text-label-md text-on-surface-variant block uppercase tracking-wider" htmlFor="name">Nome Completo</label>
+                  <div className="relative group">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <span className="material-symbols-outlined text-outline group-focus-within:text-primary transition-colors">person</span>
+                    </div>
+                    <input
+                      id="name"
+                      type="text"
+                      required
+                      placeholder="Dr. Arthur Mendes"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      className="w-full pl-10 pr-4 py-3 bg-surface-container-lowest dark:bg-inverse-surface border border-outline-variant dark:border-outline rounded-lg font-body-md text-body-md focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none transition-all outline-none"
+                    />
+                  </div>
                 </div>
 
-                <div>
-                  <label className="block text-xs font-semibold mb-1 uppercase tracking-wider text-slate-500">Nome da Clínica ou Consultório</label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="Ex: Clínica Belo Sorriso ou Odonto Mais"
-                    value={clinicName}
-                    onChange={(e) => setClinicName(e.target.value)}
-                    className={`w-full px-4 py-2.5 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                      darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'
-                    }`}
-                  />
+                <div className="space-y-2">
+                  <label className="font-label-md text-label-md text-on-surface-variant block uppercase tracking-wider" htmlFor="clinicName">Nome da Clínica</label>
+                  <div className="relative group">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <span className="material-symbols-outlined text-outline group-focus-within:text-primary transition-colors">home_clinic</span>
+                    </div>
+                    <input
+                      id="clinicName"
+                      type="text"
+                      required
+                      placeholder="Ex: Clínica OdontoPremium"
+                      value={clinicName}
+                      onChange={(e) => setClinicName(e.target.value)}
+                      className="w-full pl-10 pr-4 py-3 bg-surface-container-lowest dark:bg-inverse-surface border border-outline-variant dark:border-outline rounded-lg font-body-md text-body-md focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none transition-all outline-none"
+                    />
+                  </div>
                 </div>
               </>
             )}
 
-            <div>
-              <label className="block text-xs font-semibold mb-1 uppercase tracking-wider text-slate-500">Endereço de E-mail</label>
-              <input
-                type="email"
-                required
-                placeholder="nome@dominio.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className={`w-full px-4 py-2.5 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                  darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'
-                }`}
-              />
+            <div className="space-y-2">
+              <label className="font-label-md text-label-md text-on-surface-variant block uppercase tracking-wider" htmlFor="email">Email</label>
+              <div className="relative group">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <span className="material-symbols-outlined text-outline group-focus-within:text-primary transition-colors">mail</span>
+                </div>
+                <input
+                  id="email"
+                  type="email"
+                  required
+                  placeholder="exemplo@clinica.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full pl-10 pr-4 py-3 bg-surface-container-lowest dark:bg-inverse-surface border border-outline-variant dark:border-outline rounded-lg font-body-md text-body-md focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none transition-all outline-none"
+                />
+              </div>
             </div>
 
-            <div className="relative">
-              <div className="flex justify-between items-center mb-1 text-xs font-semibold uppercase tracking-wider text-slate-500">
-                <label>Senha de Acesso</label>
+            <div className="space-y-2">
+              <div className="flex justify-between items-center">
+                <label className="font-label-md text-label-md text-on-surface-variant block uppercase tracking-wider" htmlFor="password">Senha</label>
                 {!isRegistering && (
-                  <span className="text-blue-600 hover:underline cursor-pointer normal-case">Esqueceu a senha?</span>
+                  <button type="button" className="font-label-md text-label-md text-primary hover:underline transition-all bg-transparent border-none cursor-pointer focus:outline-none">
+                    Esqueci minha senha
+                  </button>
                 )}
               </div>
-              <div className="relative">
+              <div className="relative group">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <span className="material-symbols-outlined text-outline group-focus-within:text-primary transition-colors">lock</span>
+                </div>
                 <input
-                  type="password"
+                  id="password"
+                  type={showPassword ? 'text' : 'password'}
+                  required
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className={`w-full px-4 py-2.5 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                    darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'
-                  }`}
+                  className="w-full pl-10 pr-12 py-3 bg-surface-container-lowest dark:bg-inverse-surface border border-outline-variant dark:border-outline rounded-lg font-body-md text-body-md focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none transition-all outline-none"
                 />
-                <Lock className="absolute right-3.5 top-3 w-4 h-4 text-slate-400" />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-outline hover:text-primary transition-colors cursor-pointer focus:outline-none"
+                >
+                  <span className="material-symbols-outlined">
+                    {showPassword ? 'visibility_off' : 'visibility'}
+                  </span>
+                </button>
               </div>
             </div>
 
-            <button
+            {/* CTA Button */}
+            <button 
               type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm py-3 px-4 rounded-xl shadow-lg shadow-blue-500/10 flex items-center justify-center gap-2 hover:-translate-y-0.5 transition-all mt-4"
+              className="w-full py-3.5 bg-primary text-on-primary font-title-md text-title-md rounded-lg hover:bg-primary-container active:scale-95 transition-all shadow-md flex items-center justify-center group cursor-pointer focus:outline-none"
             >
-              <span>{isRegistering ? 'Cadastrar e Iniciar Teste de 15 Dias' : 'Acessar EasyClin'}</span>
-              <ArrowRight className="h-4 w-4" />
+              <span>{isRegistering ? 'Criar minha conta' : 'Entrar'}</span>
+              <span className="material-symbols-outlined ml-2 group-hover:translate-x-1 transition-transform">
+                arrow_forward
+              </span>
             </button>
           </form>
 
-          {/* Form Switcher */}
-          <div className="text-center text-xs text-slate-500 dark:text-slate-400 pt-2">
+          {/* Bottom Action Form Switcher */}
+          <div className="mt-8 pt-6 border-t border-outline-variant dark:border-outline text-center">
             {isRegistering ? (
-              <p>
+              <p className="font-body-md text-body-md text-on-surface-variant">
                 Já possui uma conta EasyClin?{' '}
                 <button
                   type="button"
                   onClick={() => setIsRegistering(false)}
-                  className="text-blue-600 dark:text-blue-400 font-semibold hover:underline cursor-pointer"
+                  className="text-primary font-semibold hover:underline bg-transparent border-none cursor-pointer focus:outline-none"
                 >
-                  Faça login!
+                  Acesse sua conta
                 </button>
               </p>
             ) : (
-              <p>
-                Ainda não gerencia sua clínica aqui?{' '}
+              <p className="font-body-md text-body-md text-on-surface-variant">
+                Primeiro acesso?{' '}
                 <button
                   type="button"
                   onClick={() => setIsRegistering(true)}
-                  className="text-blue-600 dark:text-blue-400 font-semibold hover:underline cursor-pointer"
+                  className="text-primary font-semibold hover:underline bg-transparent border-none cursor-pointer focus:outline-none"
                 >
-                  Crie sua conta grátis agora!
+                  Crie sua conta
                 </button>
               </p>
             )}
           </div>
-
-          {/* Admin Demo Helper Box */}
-          <div className={`p-3.5 rounded-xl border border-dashed flex gap-3 ${
-            darkMode ? 'bg-slate-950 border-slate-800 text-slate-400' : 'bg-slate-100 border-slate-200 text-slate-600'
-          }`}>
-            <Shield className="h-5 w-5 text-indigo-500 shrink-0 mt-0.5" />
-            <div className="text-xs">
-              <span className="font-semibold text-slate-800 dark:text-slate-200 block">Dica de Demonstração</span>
-              Selecione o <strong>Sérgio Ramos</strong> para acessar o <strong>Super Admin / SaaS Owner</strong> da plataforma e simular bloqueios, faturamentos, trials e auditoria geral de conformidade (LGPD) em todas as clínicas!
-            </div>
-          </div>
-
         </div>
-      </div>
+
+        {/* Footer / Legal */}
+        <footer className="mt-8 text-center space-y-4">
+          <div className="flex justify-center space-x-6">
+            <a className="font-label-md text-label-md text-outline hover:text-primary transition-colors" href="#">Termos de Uso</a>
+            <a className="font-label-md text-label-md text-outline hover:text-primary transition-colors" href="#">Privacidade</a>
+            <a className="font-label-md text-label-md text-outline hover:text-primary transition-colors" href="#">Suporte</a>
+          </div>
+          <p className="font-label-md text-label-md text-outline opacity-60">© 2026 EasyClin Health Management System</p>
+        </footer>
+
+      </main>
 
     </div>
   );

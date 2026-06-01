@@ -23,14 +23,14 @@ graph TD
 ## 🎨 FASE 1: Alinhamento com o Design System (Tarefa Prioritária)
 **Objetivo:** Elevar a qualidade visual do projeto ao padrão exato proposto pelas especificações e mockups contidos na pasta `engenharia_de_software/design_system`. 
 
-### [ ] Tarefa 1.1: Consolidação do Core Temático no Tailwind CSS v4
+### [x] Tarefa 1.1: Consolidação do Core Temático no Tailwind CSS v4
 - **O que fazer:** Ajustar o arquivo `src/index.css` na diretiva `@theme` para refletir as variáveis exatas de cores, tipografia, bordas e espaçamentos do arquivo `kinetic_medical/DESIGN.md`.
 - **Tokens a mapear:**
   - Cores: `primary (#003ec7)`, `primary-container (#0052ff)`, `surface (#faf8ff)`, `on-surface (#131b2e)`, `error (#ba1a1a)`, `success (#10b981)`, etc.
   - Border Radius: `lg: 0.5rem (8px)`, `xl: 0.75rem (12px)`, `full: 9999px`.
   - Fontes: `Inter` como fonte padrão e `JetBrains Mono` para dados tabulares.
 
-### [ ] Tarefa 1.2: Redesenho Completo da Tela de Autenticação (`Auth.tsx`)
+### [x] Tarefa 1.2: Redesenho Completo da Tela de Autenticação (`Auth.tsx`)
 - **O que fazer:** Refatorar a visualização de login seguindo os moldes exatos de `login_easyclin/code.html`.
 - **Elementos críticos:** Efeito de vidro (`glass-card`), gradiente suave de fundo (`soft-gradient`), cabeçalho da logo centralizado, inputs com ícones e estados de foco contornados em anel azul de 2px, suporte a modo escuro e transições animadas.
 
