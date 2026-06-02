@@ -231,9 +231,9 @@ export default function AgendaPanel({
                         
                         <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[10px] text-outline font-medium">
                           <span>Dr(a). {professional ? professional.name.split(' ')[1] : 'N/A'}</span>
-                          <span className="opacity-55">•</span>
+                          <span className="opacity-50">•</span>
                           <span>Procedimento: <strong className="text-on-surface-variant">{procedure ? procedure.name : 'Consulta Geral'}</strong></span>
-                          <span className="opacity-55">•</span>
+                          <span className="opacity-50">•</span>
                           <span className="font-mono text-primary dark:text-primary-fixed-dim font-bold">R$ {app.value.toFixed(2)}</span>
                         </div>
                       </div>
@@ -343,7 +343,7 @@ export default function AgendaPanel({
           </div>
 
           <div className="p-4 rounded-xl bg-primary/10 border border-primary/20 text-xs text-primary dark:text-primary-fixed-dim space-y-1">
-            <span className="font-bold block flex items-center gap-1.5">
+            <span className="font-bold inline-flex items-center gap-1.5">
               <span className="material-symbols-outlined text-sm font-semibold">info</span>
               <span>CRM Automatizado Ativado</span>
             </span>
