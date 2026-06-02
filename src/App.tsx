@@ -86,9 +86,7 @@ export default function App() {
   };
 
   return (
-    <div className={`min-h-screen font-sans antialiased transition-colors duration-350 ${
-      darkMode ? 'bg-slate-950 text-slate-100' : 'bg-slate-50 text-slate-900'
-    }`}>
+    <div className={`min-h-screen font-sans antialiased transition-colors duration-350`}>
       
       {/* Floating control capsule */}
       <div className="fixed bottom-4 left-4 z-40 bg-white/95 dark:bg-slate-900/95 border border-slate-200 dark:border-slate-800 p-2 rounded-2xl shadow-xl flex items-center gap-2 backdrop-blur">
