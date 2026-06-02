@@ -147,7 +147,7 @@ export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch, d
       )}
 
       {/* 1. Sidebar Left Navigation (aside) */}
-      <aside className={`fixed md:sticky top-0 left-0 h-screen z-40 w-[280px] bg-white dark:bg-slate-900 border-r border-outline-variant dark:border-outline/20 flex flex-col p-6 shrink-0 transition-transform duration-300 md:translate-x-0 ${
+      <aside className={`fixed md:sticky top-0 left-0 h-screen z-40 w-[280px] bg-surface-container-lowest dark:bg-inverse-surface border-r border-outline-variant dark:border-outline/20 flex flex-col p-6 shrink-0 transition-transform duration-300 md:translate-x-0 ${
         mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
       }`}>
         {/* Brand Header */}
@@ -347,7 +347,7 @@ export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch, d
       <div className="flex-1 flex flex-col min-w-0 min-h-screen overflow-y-auto">
         
         {/* Top Header bar */}
-        <header className="h-16 border-b border-outline-variant dark:border-outline/20 bg-white dark:bg-slate-900 px-6 flex items-center justify-between sticky top-0 z-20 shadow-sm">
+        <header className="h-16 border-b border-outline-variant dark:border-outline/20 bg-surface-container-lowest dark:bg-inverse-surface px-6 flex items-center justify-between sticky top-0 z-20 shadow-sm">
           
           {/* Mobile menu toggle */}
           <button 
@@ -406,7 +406,7 @@ export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch, d
         {activeTenant.status === 'suspended' ? (
           /* Locked Suspended Screen */
           <div className="flex-1 flex items-center justify-center p-6">
-            <div className="max-w-md w-full p-8 rounded-2xl border border-outline-variant dark:border-outline/20 bg-white dark:bg-slate-900 text-center space-y-6 shadow-2xl">
+            <div className="max-w-md w-full p-8 rounded-2xl border border-outline-variant dark:border-outline/20 bg-surface-container-lowest dark:bg-inverse-surface text-center space-y-6 shadow-2xl">
               <div className="mx-auto w-16 h-16 bg-error/10 text-error rounded-full flex items-center justify-center">
                 <span className="material-symbols-outlined text-[40px]" style={{ fontVariationSettings: "'wght' 500" }}>gpp_maybe</span>
               </div>
@@ -528,7 +528,7 @@ export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch, d
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                   
                   {/* Local collaborator list & creation (Left) */}
-                  <div className="col-span-1 p-6 rounded-xl border border-outline-variant dark:border-outline/20 bg-white dark:bg-slate-900 space-y-4">
+                  <div className="col-span-1 p-6 rounded-xl border border-outline-variant dark:border-outline/20 bg-surface-container-lowest dark:bg-inverse-surface space-y-4">
                     <h4 className="font-extrabold text-xs uppercase tracking-wider text-outline flex items-center gap-2 border-b dark:border-slate-800 pb-2.5">
                       <span className="material-symbols-outlined text-primary text-base">group</span>
                       <span>Gerenciar Colaboradores</span>
@@ -614,7 +614,7 @@ export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch, d
                   </div>
 
                   {/* Clinical and administrative Audit Trail logs specific to this clinical clinic tenant (Right) */}
-                  <div className="col-span-1 lg:col-span-2 p-6 rounded-xl border border-outline-variant dark:border-outline/20 bg-white dark:bg-slate-900 space-y-4">
+                  <div className="col-span-1 lg:col-span-2 p-6 rounded-xl border border-outline-variant dark:border-outline/20 bg-surface-container-lowest dark:bg-inverse-surface space-y-4">
                     <h4 className="font-extrabold text-xs uppercase tracking-wider text-outline flex items-center gap-2 border-b dark:border-slate-800 pb-2.5">
                       <span className="material-symbols-outlined text-emerald-500 text-base" style={{ fontVariationSettings: "'FILL' 1" }}>shield_heart</span>
                       <span>Logs de Auditoria Interna (LGPD Certificado)</span>

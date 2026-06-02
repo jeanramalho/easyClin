@@ -148,7 +148,7 @@ export default function SuperAdmin({ currentUser, onLogout, darkMode }: SuperAdm
         
         {/* MRR Card */}
         <div className={`p-6 rounded-2xl border transition-all ${
-          darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'
+          darkMode ? 'bg-inverse-surface border-outline/20' : 'bg-surface-container-lowest border-outline-variant'
         }`}>
           <div className="flex justify-between items-start">
             <div>
@@ -166,7 +166,7 @@ export default function SuperAdmin({ currentUser, onLogout, darkMode }: SuperAdm
 
         {/* Total Clínicas Ativas Card */}
         <div className={`p-6 rounded-2xl border transition-all ${
-          darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'
+          darkMode ? 'bg-inverse-surface border-outline/20' : 'bg-surface-container-lowest border-outline-variant'
         }`}>
           <div className="flex justify-between items-start">
             <div>
@@ -188,7 +188,7 @@ export default function SuperAdmin({ currentUser, onLogout, darkMode }: SuperAdm
 
         {/* Inadimplência Card */}
         <div className={`p-6 rounded-2xl border transition-all ${
-          darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'
+          darkMode ? 'bg-inverse-surface border-outline/20' : 'bg-surface-container-lowest border-outline-variant'
         }`}>
           <div className="flex justify-between items-start">
             <div>
@@ -208,7 +208,7 @@ export default function SuperAdmin({ currentUser, onLogout, darkMode }: SuperAdm
 
         {/* Segurança & LGP-D Auditoria Card */}
         <div className={`p-6 rounded-2xl border transition-all ${
-          darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'
+          darkMode ? 'bg-inverse-surface border-outline/20' : 'bg-surface-container-lowest border-outline-variant'
         }`}>
           <div className="flex justify-between items-start">
             <div>
@@ -261,7 +261,7 @@ export default function SuperAdmin({ currentUser, onLogout, darkMode }: SuperAdm
             
             {/* Left Block: Tenant List */}
             <div className={`col-span-1 lg:col-span-2 p-6 rounded-2xl border transition-all ${
-              darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'
+              darkMode ? 'bg-inverse-surface border-outline/20' : 'bg-surface-container-lowest border-outline-variant'
             }`}>
               <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-6">
                 <h2 className="text-lg font-bold">Base de Dados de Assinantes</h2>
@@ -398,7 +398,7 @@ export default function SuperAdmin({ currentUser, onLogout, darkMode }: SuperAdm
             <div className="col-span-1">
               {selectedTenant ? (
                 <div className={`p-6 rounded-2xl border transition-all sticky top-6 ${
-                  darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'
+                  darkMode ? 'bg-inverse-surface border-outline/20' : 'bg-surface-container-lowest border-outline-variant'
                 }`}>
                   <h3 className="text-md font-bold mb-4 flex items-center gap-1.5">
                     <Landmark className="h-4.5 w-4.5 text-blue-500" />
@@ -508,7 +508,7 @@ export default function SuperAdmin({ currentUser, onLogout, darkMode }: SuperAdm
                 </div>
               ) : (
                 <div className={`p-8 rounded-2xl border border-dashed text-center flex flex-col items-center justify-center ${
-                  darkMode ? 'bg-slate-900 border-slate-800 text-slate-500' : 'bg-white border-slate-200 text-slate-400'
+                  darkMode ? 'bg-inverse-surface border-outline/20 text-on-surface-variant' : 'bg-surface-container-lowest border-outline-variant text-on-surface-variant'
                 }`}>
                   <Landmark className="h-10 w-10 text-slate-300 mb-2.5" />
                   <p className="text-xs font-semibold">Nenhuma clínica selecionada</p>
@@ -523,7 +523,7 @@ export default function SuperAdmin({ currentUser, onLogout, darkMode }: SuperAdm
         ) : (
           /* AUDIT TAB - Compliance and security ledger */
           <div className={`p-6 rounded-2xl border transition-all ${
-            darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'
+            darkMode ? 'bg-inverse-surface border-outline/20' : 'bg-surface-container-lowest border-outline-variant'
           }`}>
             <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-6">
               <div>

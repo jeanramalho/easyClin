@@ -514,7 +514,7 @@ export default function PatientPanel({
                     onClick={() => setHasMedicalAlert(!hasMedicalAlert)}
                     className={`w-10 h-5 rounded-full transition-colors relative cursor-pointer ${hasMedicalAlert ? 'bg-error' : 'bg-outline/40'}`}
                   >
-                    <div className={`w-4 h-4 bg-white rounded-full absolute top-0.5 transition-all ${hasMedicalAlert ? 'left-5' : 'left-0.5'}`} />
+                    <div className={`w-4 h-4 bg-surface-container-lowest dark:bg-inverse-surface rounded-full absolute top-0.5 transition-all ${hasMedicalAlert ? 'left-5' : 'left-0.5'}`} />
                   </div>
                   <span className={`text-sm font-semibold ${hasMedicalAlert ? 'text-error' : 'text-on-surface-variant'}`}>
                     Paciente possui alerta médico crítico

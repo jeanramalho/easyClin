@@ -74,7 +74,7 @@ export default function FinancePanel({ tenantId, transactions, onRefresh, darkMo
         
         {/* Total balance card */}
         <div className={`p-6 rounded-2xl border ${
-          darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'
+          darkMode ? 'bg-inverse-surface border-outline/20' : 'bg-surface-container-lowest border-outline-variant'
         }`}>
           <div className="flex justify-between items-center">
             <div>
@@ -92,7 +92,7 @@ export default function FinancePanel({ tenantId, transactions, onRefresh, darkMo
 
         {/* Total Incoming */}
         <div className={`p-6 rounded-2xl border ${
-          darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'
+          darkMode ? 'bg-inverse-surface border-outline/20' : 'bg-surface-container-lowest border-outline-variant'
         }`}>
           <div className="flex justify-between items-center">
             <div>
@@ -110,7 +110,7 @@ export default function FinancePanel({ tenantId, transactions, onRefresh, darkMo
 
         {/* Total Outgoing */}
         <div className={`p-6 rounded-2xl border ${
-          darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'
+          darkMode ? 'bg-inverse-surface border-outline/20' : 'bg-surface-container-lowest border-outline-variant'
         }`}>
           <div className="flex justify-between items-center">
             <div>
@@ -132,7 +132,7 @@ export default function FinancePanel({ tenantId, transactions, onRefresh, darkMo
         
         {/* Left main transactions stream ledger */}
         <div className={`lg:col-span-2 p-5 rounded-2xl border ${
-          darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'
+          darkMode ? 'bg-inverse-surface border-outline/20' : 'bg-surface-container-lowest border-outline-variant'
         }`}>
           <div className="flex justify-between items-center mb-5">
             <div>
@@ -313,7 +313,7 @@ export default function FinancePanel({ tenantId, transactions, onRefresh, darkMo
             </form>
           ) : (
             <div className={`p-5 rounded-2xl border border-dashed text-center flex flex-col items-center justify-center ${
-              darkMode ? 'bg-slate-900 border-slate-800 text-slate-500' : 'bg-white border-slate-200 text-slate-400'
+              darkMode ? 'bg-inverse-surface border-outline/20 text-on-surface-variant' : 'bg-surface-container-lowest border-outline-variant text-on-surface-variant'
             }`}>
               <Landmark className="h-8 w-8 text-slate-300 mb-2" />
               <p className="text-xs font-semibold">Conciliação de Balanço</p>

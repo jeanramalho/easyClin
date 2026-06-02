@@ -129,7 +129,7 @@ export default function Auth({ onLoginSuccess, darkMode }: AuthProps) {
         
         {/* Logo Header */}
         <div className="flex flex-col items-center mb-6 space-y-3">
-          <div className="w-16 h-16 bg-white dark:bg-inverse-surface rounded-2xl shadow-sm flex items-center justify-center p-2 overflow-hidden border border-outline-variant/30">
+          <div className="w-16 h-16 bg-surface-container-lowest dark:bg-inverse-surface rounded-2xl shadow-sm flex items-center justify-center p-2 overflow-hidden border border-outline-variant/30">
             <span className="material-symbols-outlined text-primary dark:text-primary-fixed-dim text-[40px]" style={{ fontVariationSettings: "'FILL' 1" }}>
               medical_services
             </span>
