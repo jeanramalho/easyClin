@@ -111,11 +111,11 @@ export default function SuperAdmin({ currentUser, onLogout, darkMode }: SuperAdm
 
   return (
     <div className={`min-h-screen py-6 px-4 md:px-8 transition-colors duration-300 ${
-      darkMode ? 'bg-slate-950 text-slate-100' : 'bg-slate-50 text-slate-900'
+      darkMode ? 'bg-inverse-surface text-inverse-on-surface' : 'bg-surface text-on-surface'
     }`}>
       
       {/* Header Panel */}
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center border-b pb-5 mb-6 border-slate-200 dark:border-slate-800 gap-4">
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center border-b pb-5 mb-6 border-outline-variant dark:border-outline/20 gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30 text-[10px] uppercase tracking-wider font-extrabold px-2 py-0.5 rounded-full">
@@ -123,7 +123,7 @@ export default function SuperAdmin({ currentUser, onLogout, darkMode }: SuperAdm
             </span>
           </div>
           <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight">EasyClin Cloud Platform</h1>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+          <p className="text-xs text-on-surface-variant mt-1">
             Monitorando {tenants.length} clínicas parceiras. Licenciamento, inadimplência e auditoria sob a LGPD.
           </p>
         </div>
@@ -132,11 +132,11 @@ export default function SuperAdmin({ currentUser, onLogout, darkMode }: SuperAdm
         <div className="flex items-center gap-3">
           <div className="text-right">
             <p className="text-sm font-semibold">{currentUser.name}</p>
-            <p className="text-xs text-slate-400 font-mono">Suporte Global</p>
+            <p className="text-xs text-on-surface-variant font-mono">Suporte Global</p>
           </div>
           <button
             onClick={onLogout}
-            className="px-3.5 py-1.5 rounded-lg text-xs font-semibold border hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            className="px-3.5 py-1.5 rounded-lg text-xs font-semibold border hover:bg-surface-container/50 dark:hover:bg-inverse-surface/80 transition-colors"
           >
             Sair do Painel
           </button>
@@ -152,7 +152,7 @@ export default function SuperAdmin({ currentUser, onLogout, darkMode }: SuperAdm
         }`}>
           <div className="flex justify-between items-start">
             <div>
-              <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Faturamento Estimado (MRR)</p>
+              <p className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Faturamento Estimado (MRR)</p>
               <h3 className="text-2xl font-bold mt-2 font-mono">R$ {totalMRR.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</h3>
             </div>
             <div className="p-3.5 bg-blue-500/10 rounded-xl text-blue-500">
@@ -170,16 +170,16 @@ export default function SuperAdmin({ currentUser, onLogout, darkMode }: SuperAdm
         }`}>
           <div className="flex justify-between items-start">
             <div>
-              <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Clínicas Licenciadas</p>
+              <p className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Clínicas Licenciadas</p>
               <h3 className="text-2xl font-bold mt-2 font-mono">
-                {activeCount} <span className="text-sm font-normal text-slate-400">ativas</span>
+                {activeCount} <span className="text-sm font-normal text-on-surface-variant">ativas</span>
               </h3>
             </div>
             <div className="p-3.5 bg-emerald-500/10 rounded-xl text-emerald-500">
               <Users className="h-5 w-5" />
             </div>
           </div>
-          <div className="flex items-center gap-1 text-[11px] text-slate-500 mt-3">
+          <div className="flex items-center gap-1 text-[11px] text-on-surface-variant mt-3">
             <span className="font-semibold text-yellow-500">{trialCount} em Trial</span>
             <span>•</span>
             <span className="font-semibold text-rose-500">{suspendedCount} bloqueadas</span>
@@ -192,7 +192,7 @@ export default function SuperAdmin({ currentUser, onLogout, darkMode }: SuperAdm
         }`}>
           <div className="flex justify-between items-start">
             <div>
-              <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Atraso / Inadimplência</p>
+              <p className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Atraso / Inadimplência</p>
               <h3 className="text-2xl font-bold mt-2 font-mono text-rose-500">
                 {((overdueCount / (tenants.length || 1)) * 100).toFixed(0)}%
               </h3>
@@ -201,7 +201,7 @@ export default function SuperAdmin({ currentUser, onLogout, darkMode }: SuperAdm
               <AlertTriangle className="h-5 w-5" />
             </div>
           </div>
-          <div className="text-[11px] text-slate-400 mt-3">
+          <div className="text-[11px] text-on-surface-variant mt-3">
             <span>{overdueCount} faturamentos vencidos sem repasse</span>
           </div>
         </div>
@@ -212,9 +212,9 @@ export default function SuperAdmin({ currentUser, onLogout, darkMode }: SuperAdm
         }`}>
           <div className="flex justify-between items-start">
             <div>
-              <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Trilha de Auditoria (LGPD)</p>
+              <p className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Trilha de Auditoria (LGPD)</p>
               <h3 className="text-2xl font-bold mt-2 font-mono text-cyan-500">
-                {auditLogs.length} <span className="text-xs font-normal text-slate-400">eventos</span>
+                {auditLogs.length} <span className="text-xs font-normal text-on-surface-variant">eventos</span>
               </h3>
             </div>
             <div className="p-3.5 bg-cyan-500/10 rounded-xl text-cyan-500">
@@ -230,13 +230,13 @@ export default function SuperAdmin({ currentUser, onLogout, darkMode }: SuperAdm
       </div>
 
       {/* Main Tab bar */}
-      <div className="max-w-7xl mx-auto flex gap-4 border-b border-slate-200 dark:border-slate-800 mb-6">
+      <div className="max-w-7xl mx-auto flex gap-4 border-b border-outline-variant dark:border-outline/20 mb-6">
         <button
           onClick={() => setActiveTab('clinics')}
           className={`pb-3 font-medium text-sm border-b-2 transition-all px-1 flex items-center gap-2 ${
             activeTab === 'clinics'
               ? 'border-blue-600 text-blue-600 font-semibold'
-              : 'border-transparent text-slate-400 hover:text-slate-600'
+              : 'border-transparent text-on-surface-variant hover:text-on-surface'
           }`}
         >
           <Landmark className="h-4 w-4" />
@@ -247,7 +247,7 @@ export default function SuperAdmin({ currentUser, onLogout, darkMode }: SuperAdm
           className={`pb-3 font-medium text-sm border-b-2 transition-all px-1 flex items-center gap-2 ${
             activeTab === 'audit'
               ? 'border-blue-600 text-blue-600 font-semibold'
-              : 'border-transparent text-slate-400 hover:text-slate-600'
+              : 'border-transparent text-on-surface-variant hover:text-on-surface'
           }`}
         >
           <FileLock2 className="h-4 w-4" />
@@ -269,14 +269,14 @@ export default function SuperAdmin({ currentUser, onLogout, darkMode }: SuperAdm
                 {/* Filters */}
                 <div className="flex gap-2">
                   <div className="relative">
-                    <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
+                    <Search className="absolute left-3 top-2.5 h-4 w-4 text-on-surface-variant" />
                     <input
                       type="text"
                       placeholder="Buscar clínica..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                       className={`pl-9 pr-4 py-2 border rounded-xl text-xs w-[180px] focus:outline-none focus:ring-1 focus:ring-blue-500 ${
-                        darkMode ? 'bg-slate-950 border-slate-800 text-white' : 'bg-slate-50 border-slate-200 text-black'
+                        darkMode ? 'bg-inverse-surface border-outline/20 text-inverse-on-surface' : 'bg-surface-container-lowest border-outline-variant text-on-surface'
                       }`}
                     />
                   </div>
@@ -285,7 +285,7 @@ export default function SuperAdmin({ currentUser, onLogout, darkMode }: SuperAdm
                     value={statusFilter}
                     onChange={(e) => setStatusFilter(e.target.value)}
                     className={`px-3 py-2 border rounded-xl text-xs font-semibold focus:outline-none focus:ring-1 focus:ring-blue-500 ${
-                      darkMode ? 'bg-slate-950 border-slate-800 text-white' : 'bg-slate-50 border-slate-200 text-black'
+                      darkMode ? 'bg-inverse-surface border-outline/20 text-inverse-on-surface' : 'bg-surface-container-lowest border-outline-variant text-on-surface'
                     }`}
                   >
                     <option value="all">Todos status</option>
@@ -301,17 +301,17 @@ export default function SuperAdmin({ currentUser, onLogout, darkMode }: SuperAdm
               <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse">
                   <thead>
-                    <tr className="border-b border-slate-200 dark:border-slate-800 text-[11px] text-slate-400 uppercase tracking-wider font-semibold">
+                    <tr className="border-b border-outline-variant dark:border-outline/20 text-[11px] text-on-surface-variant uppercase tracking-wider font-semibold">
                       <th className="pb-3 text-left">Clínica / Responsável</th>
                       <th className="pb-3 text-left">Plano Contratado</th>
                       <th className="pb-3 text-left">Status Financeiro</th>
                       <th className="pb-3 text-left">Ações Rápidas</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-200 dark:divide-slate-800 text-xs">
+                  <tbody className="divide-y divide-outline-variant dark:divide-outline/20 text-xs">
                     {filteredTenants.length === 0 ? (
                       <tr>
-                        <td colSpan={4} className="py-8 text-center text-slate-500">Nenhuma clínica encontrada.</td>
+                        <td colSpan={4} className="py-8 text-center text-on-surface-variant">Nenhuma clínica encontrada.</td>
                       </tr>
                     ) : (
                       filteredTenants.map((t) => {
@@ -321,7 +321,7 @@ export default function SuperAdmin({ currentUser, onLogout, darkMode }: SuperAdm
                           <tr 
                             key={t.id} 
                             onClick={() => setSelectedTenant(t)}
-                            className={`group cursor-pointer hover:bg-slate-50/50 dark:hover:bg-slate-800/40 transition-colors ${
+                            className={`group cursor-pointer hover:bg-surface-container/50 dark:hover:bg-inverse-surface/40 transition-colors ${
                               selectedTenant?.id === t.id ? 'bg-blue-50/30 dark:bg-blue-900/10' : ''
                             }`}
                           >
@@ -340,14 +340,14 @@ export default function SuperAdmin({ currentUser, onLogout, darkMode }: SuperAdm
                                   </div>
                                 )}
                                 <div className="truncate max-w-[170px]">
-                                  <p className="font-semibold text-slate-900 dark:text-slate-100">{t.name}</p>
-                                  <p className="text-[10px] text-slate-500 truncate">{t.ownerName} • {t.ownerEmail}</p>
+                                  <p className="font-semibold text-on-surface dark:text-inverse-on-surface">{t.name}</p>
+                                  <p className="text-[10px] text-on-surface-variant truncate">{t.ownerName} • {t.ownerEmail}</p>
                                 </div>
                               </div>
                             </td>
                             <td className="py-3.5 pr-3">
                               <p className="font-medium">{plan ? plan.name : 'Plano Custom'}</p>
-                              <p className="text-[10px] text-slate-500 font-mono">R$ {plan ? plan.priceMonthly : 0}/mês</p>
+                              <p className="text-[10px] text-on-surface-variant font-mono">R$ {plan ? plan.priceMonthly : 0}/mês</p>
                             </td>
                             <td className="py-3.5 pr-3">
                               <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
@@ -357,12 +357,12 @@ export default function SuperAdmin({ currentUser, onLogout, darkMode }: SuperAdm
                                   ? 'bg-amber-500/15 text-amber-600 dark:text-amber-400' 
                                   : t.status === 'suspended'
                                   ? 'bg-rose-500/15 text-rose-600 dark:text-rose-400'
-                                  : 'bg-slate-500/15 text-slate-600 dark:text-slate-400'
+                                  : 'bg-surface-container-low text-on-surface dark:text-on-surface-variant'
                               }`}>
                                 <span className="h-1 w-1 rounded-full bg-current"></span>
                                 {t.status === 'active' ? 'Ativo / Pago' : t.status === 'trial' ? 'Período Trial' : t.status === 'suspended' ? 'Suspenso' : 'Cancelado'}
                               </span>
-                              <p className="text-[10px] text-slate-400 font-mono mt-0.5">Venc: {new Date(t.nextBillingAt).toLocaleDateString('pt-BR')}</p>
+                              <p className="text-[10px] text-on-surface-variant font-mono mt-0.5">Venc: {new Date(t.nextBillingAt).toLocaleDateString('pt-BR')}</p>
                             </td>
                             <td className="py-3.5" onClick={(e) => e.stopPropagation()}>
                               <div className="flex gap-1.5">
@@ -377,7 +377,7 @@ export default function SuperAdmin({ currentUser, onLogout, darkMode }: SuperAdm
                                 ) : (
                                   <button
                                     onClick={() => handleUpdateStatus(t.id, 'suspended')}
-                                    className="px-2.5 py-1 rounded bg-slate-200 dark:bg-slate-800 hover:bg-rose-600 hover:text-white transition-colors text-[10px]"
+                                    className="px-2.5 py-1 rounded bg-surface-container-lowest dark:bg-inverse-surface hover:bg-rose-600 hover:text-white transition-colors text-[10px]"
                                     title="Suspender Acesso"
                                   >
                                     Bloquear
@@ -405,31 +405,31 @@ export default function SuperAdmin({ currentUser, onLogout, darkMode }: SuperAdm
                     <span>Detalhes do Tenant</span>
                   </h3>
 
-                  <div className="space-y-4 pb-4 border-b border-slate-200 dark:border-slate-800">
+                  <div className="space-y-4 pb-4 border-b border-outline-variant dark:border-outline/20">
                     <div>
-                      <p className="text-[10px] uppercase font-semibold text-slate-400 tracking-wider">Identificador Único</p>
+                      <p className="text-[10px] uppercase font-semibold text-on-surface-variant tracking-wider">Identificador Único</p>
                       <p className="text-xs font-mono">{selectedTenant.id}</p>
                     </div>
 
                     <div>
-                      <p className="text-[10px] uppercase font-semibold text-slate-400 tracking-wider">Nome da Clínica / CNPJ</p>
+                      <p className="text-[10px] uppercase font-semibold text-on-surface-variant tracking-wider">Nome da Clínica / CNPJ</p>
                       <p className="text-sm font-semibold">{selectedTenant.name}</p>
-                      <p className="text-xs text-slate-500">{selectedTenant.cnpj || 'CNPJ Não Cadastrado'}</p>
+                      <p className="text-xs text-on-surface-variant">{selectedTenant.cnpj || 'CNPJ Não Cadastrado'}</p>
                     </div>
 
                     <div>
-                      <p className="text-[10px] uppercase font-semibold text-slate-400 tracking-wider">Admin Responsável</p>
+                      <p className="text-[10px] uppercase font-semibold text-on-surface-variant tracking-wider">Admin Responsável</p>
                       <p className="text-xs font-medium">{selectedTenant.ownerName} ({selectedTenant.ownerEmail})</p>
                     </div>
 
                     <div>
-                      <p className="text-[10px] uppercase font-semibold text-slate-400 tracking-wider">Informações da Assinatura</p>
+                      <p className="text-[10px] uppercase font-semibold text-on-surface-variant tracking-wider">Informações da Assinatura</p>
                       <div className="flex justify-between text-xs mt-1">
-                        <span className="text-slate-500">Início:</span>
+                        <span className="text-on-surface-variant">Início:</span>
                         <span className="font-mono">{new Date(selectedTenant.createdAt).toLocaleDateString()}</span>
                       </div>
                       <div className="flex justify-between text-xs mt-1">
-                        <span className="text-slate-500">Fim Trial:</span>
+                        <span className="text-on-surface-variant">Fim Trial:</span>
                         <span className="font-mono">{new Date(selectedTenant.trialEndsAt).toLocaleDateString()}</span>
                       </div>
                     </div>
@@ -437,18 +437,18 @@ export default function SuperAdmin({ currentUser, onLogout, darkMode }: SuperAdm
 
                   {/* Manual administrative actions */}
                   <div className="py-4 space-y-4">
-                    <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500">Comandos de Licenciamento</h4>
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Comandos de Licenciamento</h4>
                     
                     {/* Alter status directly */}
                     <div>
-                      <label className="block text-[11px] mb-1.5 text-slate-500">Alterar Status Comercial</label>
+                      <label className="block text-[11px] mb-1.5 text-on-surface-variant">Alterar Status Comercial</label>
                       <div className="grid grid-cols-2 gap-1.5">
                         <button
                           onClick={() => handleUpdateStatus(selectedTenant.id, 'active')}
                           className={`py-1.5 px-2 rounded-lg text-[10px] border font-semibold flex items-center justify-center gap-1.5 transition-colors ${
                             selectedTenant.status === 'active' 
                               ? 'bg-emerald-500 text-white border-emerald-500' 
-                              : 'bg-transparent border-slate-300 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800'
+                              : 'bg-transparent border-outline-variant dark:border-outline/20 hover:bg-surface-container/50 dark:hover:bg-inverse-surface'
                           }`}
                         >
                           <CheckCircle className="h-3 w-3" />
@@ -459,7 +459,7 @@ export default function SuperAdmin({ currentUser, onLogout, darkMode }: SuperAdm
                           className={`py-1.5 px-2 rounded-lg text-[10px] border font-semibold flex items-center justify-center gap-1.5 transition-colors ${
                             selectedTenant.status === 'trial' 
                               ? 'bg-amber-500 text-white border-amber-500' 
-                              : 'bg-transparent border-slate-300 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800'
+                              : 'bg-transparent border-outline-variant dark:border-outline/20 hover:bg-surface-container/50 dark:hover:bg-inverse-surface'
                           }`}
                         >
                           <Clock className="h-3 w-3" />
@@ -470,7 +470,7 @@ export default function SuperAdmin({ currentUser, onLogout, darkMode }: SuperAdm
                           className={`py-1.5 px-2 rounded-lg text-[10px] border font-semibold flex items-center justify-center gap-1.5 transition-colors col-span-2 ${
                             selectedTenant.status === 'suspended' 
                               ? 'bg-rose-500 text-white border-rose-500' 
-                              : 'bg-transparent border-slate-300 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800'
+                              : 'bg-transparent border-outline-variant dark:border-outline/20 hover:bg-surface-container/50 dark:hover:bg-inverse-surface'
                           }`}
                         >
                           <Lock className="h-3 w-3" />
@@ -481,7 +481,7 @@ export default function SuperAdmin({ currentUser, onLogout, darkMode }: SuperAdm
 
                     {/* Change plan */}
                     <div>
-                      <label className="block text-[11px] mb-1.5 text-slate-500">Atribuir Plano Comercial</label>
+                      <label className="block text-[11px] mb-1.5 text-on-surface-variant">Atribuir Plano Comercial</label>
                       <div className="space-y-1.5">
                         {PLANS.map((plan) => (
                           <button
@@ -490,12 +490,12 @@ export default function SuperAdmin({ currentUser, onLogout, darkMode }: SuperAdm
                             className={`w-full p-2.5 rounded-xl border text-left flex justify-between items-center transition-colors ${
                               selectedTenant.planId === plan.id
                                 ? 'bg-blue-500/10 border-blue-500/40 text-blue-600 dark:text-blue-400'
-                                : 'border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800'
+                                : 'border-outline-variant dark:border-outline/20 hover:bg-surface-container/50 dark:hover:bg-inverse-surface'
                             }`}
                           >
                             <div>
                               <p className="text-xs font-semibold">{plan.name}</p>
-                              <p className="text-[10px] text-slate-500">Até {plan.maxProfessionals} Profissionais</p>
+                              <p className="text-[10px] text-on-surface-variant">Até {plan.maxProfessionals} Profissionais</p>
                             </div>
                             <span className="text-xs font-bold font-mono">R$ {plan.priceMonthly}</span>
                           </button>
@@ -510,9 +510,9 @@ export default function SuperAdmin({ currentUser, onLogout, darkMode }: SuperAdm
                 <div className={`p-8 rounded-2xl border border-dashed text-center flex flex-col items-center justify-center ${
                   darkMode ? 'bg-inverse-surface border-outline/20 text-on-surface-variant' : 'bg-surface-container-lowest border-outline-variant text-on-surface-variant'
                 }`}>
-                  <Landmark className="h-10 w-10 text-slate-300 mb-2.5" />
+                  <Landmark className="h-10 w-10 text-on-surface-variant mb-2.5" />
                   <p className="text-xs font-semibold">Nenhuma clínica selecionada</p>
-                  <p className="text-[11px] text-slate-400 mt-1 max-w-[200px] mx-auto">
+                  <p className="text-[11px] text-on-surface-variant mt-1 max-w-[200px] mx-auto">
                     Selecione uma clínica na tabela ao lado para gerenciar licenças, status e planos.
                   </p>
                 </div>
@@ -531,7 +531,7 @@ export default function SuperAdmin({ currentUser, onLogout, darkMode }: SuperAdm
                   <ShieldCheck className="h-5 w-5 text-indigo-500" />
                   <span>Trilha de Auditoria Geral (LGPD Compliant)</span>
                 </h2>
-                <p className="text-xs text-slate-400 mt-1">
+                <p className="text-xs text-on-surface-variant mt-1">
                   De acordo com a Lei Geral de Proteção de Dados, todas as criações, bloqueios de registros clínicos e suspensões comerciais são persistidos em ledger imutável.
                 </p>
               </div>
@@ -541,7 +541,7 @@ export default function SuperAdmin({ currentUser, onLogout, darkMode }: SuperAdm
                   onClick={() => {
                     setAuditLogs(dbObj.getAuditLogs());
                   }}
-                  className="px-3.5 py-1.5 rounded-lg text-xs font-semibold border flex items-center gap-1.5 hover:bg-slate-100 dark:hover:bg-slate-800"
+                  className="px-3.5 py-1.5 rounded-lg text-xs font-semibold border flex items-center gap-1.5 hover:bg-surface-container/20 dark:hover:bg-inverse-surface/40"
                 >
                   <RefreshCcw className="h-3 w-3" />
                   <span>Atualizar Logs</span>
@@ -552,10 +552,10 @@ export default function SuperAdmin({ currentUser, onLogout, darkMode }: SuperAdm
             {/* Logs List representation */}
             <div className="space-y-3 font-mono">
               {auditLogs.length === 0 ? (
-                <p className="text-xs text-slate-500 text-center py-6">Nenhum evento registrado na auditoria.</p>
+                <p className="text-xs text-on-surface-variant text-center py-6">Nenhum evento registrado na auditoria.</p>
               ) : (
                 auditLogs.map((log) => {
-                  let alertTheme = 'text-slate-400';
+                  let alertTheme = 'text-on-surface-variant';
                   if (log.action.includes('Bloqueio') || log.action.includes('LGP-D')) {
                     alertTheme = 'text-cyan-400 font-semibold';
                   } else if (log.action.includes('Alteração') || log.action.includes('Excluir')) {
@@ -568,18 +568,18 @@ export default function SuperAdmin({ currentUser, onLogout, darkMode }: SuperAdm
                     <div 
                       key={log.id} 
                       className={`p-3.5 rounded-xl border text-xs leading-relaxed transition-all ${
-                        darkMode ? 'bg-slate-950 border-slate-800' : 'bg-slate-50 border-slate-200'
+                        darkMode ? 'bg-inverse-surface border-outline/20' : 'bg-surface-container-lowest border-outline-variant'
                       }`}
                     >
-                      <div className="flex flex-col sm:flex-row justify-between gap-1 mb-2 border-b border-dashed border-slate-200 dark:border-slate-800 pb-1.5">
+                      <div className="flex flex-col sm:flex-row justify-between gap-1 mb-2 border-b border-dashed border-outline-variant dark:border-outline/20 pb-1.5">
                         <span className={`uppercase font-bold tracking-wider ${alertTheme}`}>
                           [{log.action}]
                         </span>
-                        <span className="text-[10px] text-slate-400">{log.timestamp}</span>
+                        <span className="text-[10px] text-on-surface-variant">{log.timestamp}</span>
                       </div>
-                      <p className="text-slate-800 dark:text-slate-300">{log.details}</p>
+                      <p className="text-on-surface dark:text-inverse-on-surface">{log.details}</p>
                       
-                      <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2 text-[10px] text-slate-400 font-semibold pt-1 border-t border-dashed border-slate-200 dark:border-slate-800">
+                      <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2 text-[10px] text-on-surface-variant font-semibold pt-1 border-t border-dashed border-outline-variant dark:border-outline/20">
                         <span>Usuário: {log.userName} ({log.userRole})</span>
                         <span>•</span>
                         <span>IP de Referência: {log.ip}</span>

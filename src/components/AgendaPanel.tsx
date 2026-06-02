@@ -169,7 +169,7 @@ export default function AgendaPanel({
               <span className="material-symbols-outlined text-sm block">chevron_left</span>
             </button>
             <span className="px-3 font-semibold text-on-surface">Hoje: 01 de Junho</span>
-            <button type="button" className="p-1 px-2 hover:bg-surface-container-highest dark:hover:bg-slate-800 rounded transition-colors cursor-pointer focus:outline-none">
+            <button type="button" className="p-1 px-2 hover:bg-surface-container-highest dark:hover:bg-inverse-surface/80 rounded transition-colors cursor-pointer focus:outline-none">
               <span className="material-symbols-outlined text-sm block">chevron_right</span>
             </button>
           </div>
@@ -189,7 +189,7 @@ export default function AgendaPanel({
         
         {/* Appointments Feed */}
         <div className="lg:col-span-2 p-6 rounded-xl border border-outline-variant dark:border-outline/20 bg-surface-container-lowest dark:bg-inverse-surface space-y-4">
-          <h4 className="font-label-md text-label-md text-outline uppercase tracking-wider font-semibold border-b dark:border-slate-800 pb-2">Grade Diária de Horários</h4>
+          <h4 className="font-label-md text-label-md text-outline uppercase tracking-wider font-semibold border-b dark:border-outline/20 pb-2">Grade Diária de Horários</h4>
 
           <div className="space-y-4">
             {appointments.length === 0 ? (
@@ -319,17 +319,17 @@ export default function AgendaPanel({
         {/* Sidebar details & statistics widget */}
         <div className="col-span-1 space-y-4">
           <div className="p-6 rounded-xl border border-outline-variant dark:border-outline/20 bg-surface-container-lowest dark:bg-inverse-surface space-y-4">
-            <h4 className="font-label-md text-label-md text-outline uppercase tracking-wider font-semibold border-b dark:border-slate-800 pb-2">Resumo Operacional</h4>
+            <h4 className="font-label-md text-label-md text-outline uppercase tracking-wider font-semibold border-b dark:border-outline/20 pb-2">Resumo Operacional</h4>
             <div className="space-y-3.5 text-xs text-on-surface-variant font-medium">
-              <div className="flex justify-between pb-1.5 border-b dark:border-slate-800">
+              <div className="flex justify-between pb-1.5 border-b dark:border-outline/20">
                 <span className="text-outline">Total Hoje:</span>
                 <span className="font-bold text-on-surface font-mono">{appointments.length} Consultas</span>
               </div>
-              <div className="flex justify-between pb-1.5 border-b dark:border-slate-800">
+              <div className="flex justify-between pb-1.5 border-b dark:border-outline/20">
                 <span className="text-outline">Confirmadas:</span>
                 <span className="font-bold text-primary dark:text-primary-fixed-dim font-mono">{appointments.filter(a => a.status === 'confirmed').length}</span>
               </div>
-              <div className="flex justify-between pb-1.5 border-b dark:border-slate-800">
+              <div className="flex justify-between pb-1.5 border-b dark:border-outline/20">
                 <span className="text-outline">Finalizadas:</span>
                 <span className="font-bold text-emerald-500 font-mono">{appointments.filter(a => a.status === 'completed').length}</span>
               </div>

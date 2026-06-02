@@ -113,7 +113,7 @@ export default function BudgetPanel({ tenantId, budgets, patients, procedures, o
 
       {/* ── Header Bar ── */}
       <div className={`rounded-xl border px-6 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm ${
-        darkMode ? 'bg-slate-900 border-outline/20' : 'bg-surface-container-lowest border-outline-variant'
+        darkMode ? 'bg-inverse-surface border-outline/20' : 'bg-surface-container-lowest border-outline-variant'
       }`}>
         <div>
           <h3 className="font-bold text-on-surface text-base flex items-center gap-2">
@@ -136,7 +136,7 @@ export default function BudgetPanel({ tenantId, budgets, patients, procedures, o
       {showCreate ? (
         /* ── Create Budget Form ── */
         <div className={`rounded-xl border shadow-sm overflow-hidden ${
-          darkMode ? 'bg-slate-900 border-outline/20' : 'bg-surface-container-lowest border-outline-variant'
+          darkMode ? 'bg-inverse-surface border-outline/20' : 'bg-surface-container-lowest border-outline-variant'
         }`}>
           {/* Form Header */}
           <div className={`px-6 py-4 border-b flex items-center justify-between ${darkMode ? 'border-outline/20' : 'border-outline-variant'}`}>
@@ -320,7 +320,7 @@ export default function BudgetPanel({ tenantId, budgets, patients, procedures, o
       ) : (
         /* ── Budget List Table ── */
         <div className={`rounded-xl border overflow-hidden shadow-sm ${
-          darkMode ? 'bg-slate-900 border-outline/20' : 'bg-surface-container-lowest border-outline-variant'
+          darkMode ? 'bg-inverse-surface border-outline/20' : 'bg-surface-container-lowest border-outline-variant'
         }`}>
           <div className={`px-6 py-4 border-b ${darkMode ? 'border-outline/20' : 'border-outline-variant'}`}>
             <h4 className="font-semibold text-sm text-on-surface">

@@ -64,9 +64,9 @@ export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch, d
     reloadData();
   }, [currentUser]);
 
-  if (!activeTenant) {
+    if (!activeTenant) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-6 bg-slate-900 text-white">
+      <div className="min-h-screen flex items-center justify-center p-6 bg-surface dark:bg-inverse-surface text-on-surface dark:text-inverse-on-surface">
         <div className="text-center space-y-4">
           <span className="material-symbols-outlined text-[48px] text-rose-500">gpp_maybe</span>
           <p className="text-xs text-rose-500 font-extrabold uppercase tracking-widest">Sessão Corrompida</p>
@@ -529,13 +529,13 @@ export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch, d
                   
                   {/* Local collaborator list & creation (Left) */}
                   <div className="col-span-1 p-6 rounded-xl border border-outline-variant dark:border-outline/20 bg-surface-container-lowest dark:bg-inverse-surface space-y-4">
-                    <h4 className="font-extrabold text-xs uppercase tracking-wider text-outline flex items-center gap-2 border-b dark:border-slate-800 pb-2.5">
+                    <h4 className="font-extrabold text-xs uppercase tracking-wider text-outline flex items-center gap-2 border-b dark:border-outline/20 pb-2.5">
                       <span className="material-symbols-outlined text-primary text-base">group</span>
                       <span>Gerenciar Colaboradores</span>
                     </h4>
 
                     {/* Listing collaborators */}
-                    <div className="space-y-2 border-b dark:border-slate-800 pb-4 max-h-[220px] overflow-y-auto pr-1">
+                    <div className="space-y-2 border-b dark:border-outline/20 pb-4 max-h-[220px] overflow-y-auto pr-1">
                       {allUsers.map((u) => {
                         let shortRole = u.role === 'clinic_admin' ? 'Dono' : u.role === 'receptionist' ? 'Recepção' : 'Profissional';
                         return (
@@ -615,7 +615,7 @@ export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch, d
 
                   {/* Clinical and administrative Audit Trail logs specific to this clinical clinic tenant (Right) */}
                   <div className="col-span-1 lg:col-span-2 p-6 rounded-xl border border-outline-variant dark:border-outline/20 bg-surface-container-lowest dark:bg-inverse-surface space-y-4">
-                    <h4 className="font-extrabold text-xs uppercase tracking-wider text-outline flex items-center gap-2 border-b dark:border-slate-800 pb-2.5">
+                    <h4 className="font-extrabold text-xs uppercase tracking-wider text-outline flex items-center gap-2 border-b dark:border-outline/20 pb-2.5">
                       <span className="material-symbols-outlined text-emerald-500 text-base" style={{ fontVariationSettings: "'FILL' 1" }}>shield_heart</span>
                       <span>Logs de Auditoria Interna (LGPD Certificado)</span>
                     </h4>
@@ -629,7 +629,7 @@ export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch, d
                             key={log.id} 
                             className="p-3.5 rounded-xl border border-outline-variant/65 dark:border-outline/35 text-[11px] leading-relaxed relative bg-surface-container-lowest dark:bg-inverse-surface"
                           >
-                            <div className="flex justify-between border-b border-dashed dark:border-slate-800 pb-1 mb-2 text-outline text-[10px] font-mono">
+                            <div className="flex justify-between border-b border-dashed dark:border-outline/20 pb-1 mb-2 text-outline text-[10px] font-mono">
                               <span className="font-bold text-primary dark:text-primary-fixed-dim uppercase">[{log.action}]</span>
                               <span>{new Date(log.timestamp).toLocaleDateString()} {new Date(log.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                             </div>

@@ -78,7 +78,7 @@ export default function FinancePanel({ tenantId, transactions, onRefresh, darkMo
         }`}>
           <div className="flex justify-between items-center">
             <div>
-              <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Saldo em Caixa Consolidado</p>
+              <p className="text-[10px] font-semibold text-on-surface-variant uppercase tracking-wider">Saldo em Caixa Consolidado</p>
               <h3 className={`text-2xl font-bold mt-2 font-mono ${balance >= 0 ? 'text-emerald-500' : 'text-rose-500'}`}>
                 R$ {balance.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
               </h3>
@@ -87,7 +87,7 @@ export default function FinancePanel({ tenantId, transactions, onRefresh, darkMo
               <PiggyBank className="h-5 w-5" />
             </div>
           </div>
-          <p className="text-[10px] text-slate-400 font-medium mt-3">Soma líquida de recebimentos e gastos da clínica.</p>
+          <p className="text-[10px] text-on-surface-variant font-medium mt-3">Soma líquida de recebimentos e gastos da clínica.</p>
         </div>
 
         {/* Total Incoming */}
@@ -96,7 +96,7 @@ export default function FinancePanel({ tenantId, transactions, onRefresh, darkMo
         }`}>
           <div className="flex justify-between items-center">
             <div>
-              <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Total Receitas</p>
+              <p className="text-[10px] font-semibold text-on-surface-variant uppercase tracking-wider">Total Receitas</p>
               <h3 className="text-2xl font-bold mt-2 font-mono text-emerald-500">
                 +R$ {totalRevenue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
               </h3>
@@ -105,7 +105,7 @@ export default function FinancePanel({ tenantId, transactions, onRefresh, darkMo
               <ArrowUpRight className="h-5 w-5" />
             </div>
           </div>
-          <p className="text-[10px] text-slate-400 font-medium mt-3">Consultas, orçamentos e procedimentos faturados.</p>
+          <p className="text-[10px] text-on-surface-variant font-medium mt-3">Consultas, orçamentos e procedimentos faturados.</p>
         </div>
 
         {/* Total Outgoing */}
@@ -114,7 +114,7 @@ export default function FinancePanel({ tenantId, transactions, onRefresh, darkMo
         }`}>
           <div className="flex justify-between items-center">
             <div>
-              <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Total Despesas</p>
+              <p className="text-[10px] font-semibold text-on-surface-variant uppercase tracking-wider">Total Despesas</p>
               <h3 className="text-2xl font-bold mt-2 font-mono text-rose-500">
                 -R$ {totalExpense.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
               </h3>
@@ -123,7 +123,7 @@ export default function FinancePanel({ tenantId, transactions, onRefresh, darkMo
               <ArrowDownLeft className="h-5 w-5" />
             </div>
           </div>
-          <p className="text-[10px] text-slate-400 font-medium mt-3">Insumos de saúde, aluguel, laboratório e comissões.</p>
+          <p className="text-[10px] text-on-surface-variant font-medium mt-3">Insumos de saúde, aluguel, laboratório e comissões.</p>
         </div>
 
       </div>
@@ -137,7 +137,7 @@ export default function FinancePanel({ tenantId, transactions, onRefresh, darkMo
           <div className="flex justify-between items-center mb-5">
             <div>
               <h4 className="font-bold text-sm">Extrato de Fluxo de Caixa</h4>
-              <p className="text-xs text-slate-500">Trilha de registros fiscais e reconciliação.</p>
+              <p className="text-xs text-on-surface-variant">Trilha de registros fiscais e reconciliação.</p>
             </div>
             
             {!showAdd && (
