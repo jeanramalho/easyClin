@@ -96,7 +96,7 @@ export default function QiDentCalculator({ tenantId, procedures, onRefreshProced
       
       {/* List of custom procedures and margins */}
       <div className={`lg:col-span-2 p-5 rounded-2xl border ${
-        darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'
+        darkMode ? 'bg-inverse-surface border-outline/20' : 'bg-surface-container-lowest border-outline-variant'
       }`}>
         <div className="flex justify-between items-center mb-5">
           <div>
@@ -145,7 +145,7 @@ export default function QiDentCalculator({ tenantId, procedures, onRefreshProced
                     <tr 
                       key={proc.id}
                       onClick={() => handleEdit(proc)}
-                      className={`group cursor-pointer hover:bg-slate-50/50 dark:hover:bg-slate-800/40 transition-colors ${
+                      className={`group cursor-pointer hover:bg-surface-container/50 dark:hover:bg-inverse-surface/40 transition-colors ${
                         editingProc?.id === proc.id ? 'bg-blue-50/20 dark:bg-blue-900/10' : ''
                       }`}
                     >
@@ -184,7 +184,7 @@ export default function QiDentCalculator({ tenantId, procedures, onRefreshProced
       <div className="col-span-1">
         {editingProc ? (
           <form onSubmit={handleSave} className={`p-5 rounded-2xl border transition-all ${
-            darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'
+            darkMode ? 'bg-inverse-surface border-outline/20' : 'bg-surface-container-lowest border-outline-variant'
           }`}>
             <div className="flex items-center gap-2 mb-4">
               <Calculator className="h-5 w-5 text-blue-500" />
@@ -202,8 +202,8 @@ export default function QiDentCalculator({ tenantId, procedures, onRefreshProced
                   placeholder="Ex: Canal Molar ou Clareamento"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className={`w-full px-3 py-2 border rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 ${
-                    darkMode ? 'bg-slate-950 border-slate-850 text-white' : 'bg-slate-50 border-slate-250 text-black'
+                    className={`w-full px-3 py-2 border rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 ${
+                    darkMode ? 'bg-inverse-surface border-outline/20 text-inverse-on-surface' : 'bg-surface-container-lowest border-outline-variant text-on-surface'
                   }`}
                 />
               </div>
@@ -214,7 +214,7 @@ export default function QiDentCalculator({ tenantId, procedures, onRefreshProced
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
                   className={`w-full px-3 py-2 border rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 ${
-                    darkMode ? 'bg-slate-950 border-slate-850' : 'bg-slate-50 border-slate-250 font-medium'
+                    darkMode ? 'bg-inverse-surface border-outline/20' : 'bg-surface-container-lowest border-outline-variant font-medium'
                   }`}
                 >
                   <option value="Clínica Geral">Clínica Geral</option>

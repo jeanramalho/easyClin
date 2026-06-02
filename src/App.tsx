@@ -89,17 +89,17 @@ export default function App() {
     <div className={`min-h-screen font-sans antialiased transition-colors duration-350`}>
       
       {/* Floating control capsule */}
-      <div className="fixed bottom-4 left-4 z-40 bg-white/95 dark:bg-slate-900/95 border border-slate-200 dark:border-slate-800 p-2 rounded-2xl shadow-xl flex items-center gap-2 backdrop-blur">
+      <div className="fixed bottom-4 left-4 z-40 bg-surface-container-lowest/95 dark:bg-inverse-surface/95 border border-outline-variant dark:border-outline/40 p-2 rounded-2xl shadow-xl flex items-center gap-2 backdrop-blur">
         {/* Toggle dark mode */}
         <button
           onClick={() => setDarkMode(!darkMode)}
-          className="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 transition-colors cursor-pointer"
+          className="p-2 rounded-xl hover:bg-surface-container/50 dark:hover:bg-inverse-surface/80 text-on-surface-variant dark:text-on-surface-variant transition-colors cursor-pointer"
           title="Alternar Tema Visual"
         >
           {darkMode ? <Sun className="h-4 w-4 text-amber-500" /> : <Moon className="h-4 w-4 text-indigo-500" />}
         </button>
 
-        <span className="w-[1px] h-4 bg-slate-200 dark:bg-slate-850"></span>
+        <span className="w-[1px] h-4 bg-outline dark:bg-outline-variant"></span>
 
         {/* Reset Database */}
         <button

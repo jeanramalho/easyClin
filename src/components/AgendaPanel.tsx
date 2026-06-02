@@ -156,7 +156,7 @@ export default function AgendaPanel({
     <div className="space-y-6">
       
       {/* Search and control banner */}
-      <div className="p-5 rounded-xl border border-outline-variant dark:border-outline/20 bg-white dark:bg-slate-900 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 shadow-sm">
+      <div className="p-5 rounded-xl border border-outline-variant dark:border-outline/20 bg-surface-container-lowest dark:bg-inverse-surface flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 shadow-sm">
         <div>
           <h3 className="font-title-md text-title-md text-on-surface font-bold">Agenda Central</h3>
           <p className="font-body-md text-body-sm text-outline">Controles operacionais e disparos de confirmação automática.</p>
@@ -164,8 +164,8 @@ export default function AgendaPanel({
         
         <div className="flex items-center gap-3 w-full sm:w-auto">
           {/* Period Controller Mockup */}
-          <div className="flex items-center bg-surface-container dark:bg-inverse-surface border border-outline-variant/60 dark:border-outline/40 rounded-lg p-1 text-xs shrink-0">
-            <button type="button" className="p-1 px-2 hover:bg-surface-container-highest dark:hover:bg-slate-800 rounded transition-colors cursor-pointer focus:outline-none">
+            <div className="flex items-center bg-surface-container dark:bg-inverse-surface border border-outline-variant/60 dark:border-outline/40 rounded-lg p-1 text-xs shrink-0">
+            <button type="button" className="p-1 px-2 hover:bg-surface-container-highest dark:hover:bg-inverse-surface/80 rounded transition-colors cursor-pointer focus:outline-none">
               <span className="material-symbols-outlined text-sm block">chevron_left</span>
             </button>
             <span className="px-3 font-semibold text-on-surface">Hoje: 01 de Junho</span>
@@ -188,7 +188,7 @@ export default function AgendaPanel({
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
         {/* Appointments Feed */}
-        <div className="lg:col-span-2 p-6 rounded-xl border border-outline-variant dark:border-outline/20 bg-white dark:bg-slate-900 space-y-4">
+        <div className="lg:col-span-2 p-6 rounded-xl border border-outline-variant dark:border-outline/20 bg-surface-container-lowest dark:bg-inverse-surface space-y-4">
           <h4 className="font-label-md text-label-md text-outline uppercase tracking-wider font-semibold border-b dark:border-slate-800 pb-2">Grade Diária de Horários</h4>
 
           <div className="space-y-4">
@@ -302,7 +302,7 @@ export default function AgendaPanel({
 
                     {/* Live CRM notification overlay */}
                     {alertMsg && alertMsg.id === app.id && (
-                      <div className="absolute inset-0 bg-slate-950/90 flex items-center justify-center text-xs text-white p-4 rounded-xl z-20 animate-in fade-in duration-200">
+                      <div className="absolute inset-0 bg-inverse-surface/90 flex items-center justify-center text-xs text-white p-4 rounded-xl z-20 animate-in fade-in duration-200">
                         <div className="flex items-center gap-2.5">
                           <span className="material-symbols-outlined text-emerald-400 animate-bounce">notifications_active</span>
                           <span className="font-semibold">{alertMsg.text}</span>
@@ -318,7 +318,7 @@ export default function AgendaPanel({
 
         {/* Sidebar details & statistics widget */}
         <div className="col-span-1 space-y-4">
-          <div className="p-6 rounded-xl border border-outline-variant dark:border-outline/20 bg-white dark:bg-slate-900 space-y-4">
+          <div className="p-6 rounded-xl border border-outline-variant dark:border-outline/20 bg-surface-container-lowest dark:bg-inverse-surface space-y-4">
             <h4 className="font-label-md text-label-md text-outline uppercase tracking-wider font-semibold border-b dark:border-slate-800 pb-2">Resumo Operacional</h4>
             <div className="space-y-3.5 text-xs text-on-surface-variant font-medium">
               <div className="flex justify-between pb-1.5 border-b dark:border-slate-800">
@@ -357,8 +357,8 @@ export default function AgendaPanel({
 
       {/* Appointment Creation Modal Overlay */}
       {showAddModal && (
-        <div className="fixed inset-0 bg-slate-950/70 dark:bg-slate-950/80 z-50 flex items-center justify-center p-4 animate-in fade-in duration-200">
-          <div className="w-full max-w-md rounded-xl p-6 border border-outline-variant bg-white dark:bg-slate-900 text-slate-850 dark:text-white space-y-4 shadow-2xl animate-in zoom-in-95 duration-200">
+        <div className="fixed inset-0 bg-inverse-surface/70 dark:bg-inverse-surface/80 z-50 flex items-center justify-center p-4 animate-in fade-in duration-200">
+          <div className="w-full max-w-md rounded-xl p-6 border border-outline-variant bg-surface-container-lowest dark:bg-inverse-surface text-on-surface dark:text-inverse-on-surface space-y-4 shadow-2xl animate-in zoom-in-95 duration-200">
             <h3 className="font-title-md text-title-md text-on-surface font-bold flex items-center gap-2">
               <span className="material-symbols-outlined text-primary text-base">calendar_month</span>
               <span>Novo Agendamento Clínico</span>
