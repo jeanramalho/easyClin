@@ -208,7 +208,7 @@ export default function AgendaPanel({
                     {/* Left: time and details */}
                     <div className="flex items-center gap-4 min-w-0">
                       {/* Time indicator */}
-                      <div className="px-3.5 py-2 bg-surface-container dark:bg-inverse-surface rounded-lg text-center shrink-0 min-w-[70px] border border-outline-variant/30">
+                      <div className="px-3.5 py-2 bg-surface-container dark:bg-inverse-surface rounded-lg text-center shrink-0 min-w-17.5 border border-outline-variant/30">
                         <span className="font-title-md text-title-md font-bold text-on-surface block leading-none mb-1">{app.time}</span>
                         <span className="font-label-sm text-[9px] text-outline uppercase block font-semibold">{app.duration} min</span>
                       </div>
