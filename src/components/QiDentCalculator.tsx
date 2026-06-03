@@ -388,7 +388,7 @@ export default function QiDentCalculator({ tenantId, procedures, onRefreshProced
           }`}>
             <Calculator className="h-10 w-10 text-on-surface-variant mb-2.5" />
             <p className="text-xs font-semibold">Simule margens reais de lucro</p>
-            <p className="text-[11px] text-on-surface-variant mt-1 max-w-[200px] mx-auto">
+            <p className="text-[11px] text-on-surface-variant mt-1 max-w-50 mx-auto">
               Clique em um procedimento na tabela para editá-lo ou em "Adicionar Novo" no topo para simular o preço inteligente.
             </p>
           </div>
