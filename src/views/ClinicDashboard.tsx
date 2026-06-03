@@ -147,7 +147,7 @@ export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch, d
       )}
 
       {/* 1. Sidebar Left Navigation (aside) */}
-      <aside className={`fixed md:sticky top-0 left-0 h-screen z-40 w-[280px] bg-surface-container-lowest dark:bg-inverse-surface border-r border-outline-variant dark:border-outline/20 flex flex-col p-6 shrink-0 transition-transform duration-300 md:translate-x-0 ${
+      <aside className={`fixed md:sticky top-0 left-0 h-screen z-40 w-70 bg-surface-container-lowest border-r border-outline-variant flex flex-col p-6 shrink-0 transition-transform duration-300 md:translate-x-0 ${
         mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
       }`}>
         {/* Brand Header */}
@@ -358,7 +358,7 @@ export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch, d
           </button>
 
           {/* Left pill search input */}
-          <div className="relative w-[280px] group hidden sm:block">
+          <div className="relative w-70 group hidden sm:block">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <span className="material-symbols-outlined text-outline group-focus-within:text-primary transition-colors text-[20px]">search</span>
             </div>
@@ -393,8 +393,8 @@ export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch, d
                 </div>
               )}
               <div className="text-left hidden md:block leading-none">
-                <h4 className="font-body-md text-body-md font-semibold text-on-surface truncate max-w-[120px] mb-0.5">{currentUser.name}</h4>
-                <span className="font-label-sm text-[10px] text-outline uppercase tracking-wider block font-bold truncate max-w-[120px]">
+                <h4 className="font-body-md text-body-md font-semibold text-on-surface truncate max-w-30 mb-0.5">{currentUser.name}</h4>
+                <span className="font-label-sm text-[10px] text-outline uppercase tracking-wider block font-bold truncate max-w-30">
                   {currentUser.role === 'clinic_admin' ? 'Dono/Administrador' : currentUser.role === 'receptionist' ? 'Recepção' : currentUser.specialty || 'Dentista'}
                 </span>
               </div>
@@ -444,7 +444,7 @@ export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch, d
           </div>
         ) : (
           /* Normal pathways screen Workspace */
-          <main className="flex-1 p-6 space-y-6 max-w-[1440px] w-full mx-auto">
+          <main className="flex-1 p-6 space-y-6 max-w-container-max w-full mx-auto">
             
             {/* Summary statistics subheader widgets */}
             <div className="px-6 py-4 flex flex-wrap justify-between items-center gap-4 bg-surface-container-low dark:bg-slate-900/60 rounded-xl border border-outline-variant dark:border-outline/20">
@@ -535,7 +535,7 @@ export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch, d
                     </h4>
 
                     {/* Listing collaborators */}
-                    <div className="space-y-2 border-b dark:border-outline/20 pb-4 max-h-[220px] overflow-y-auto pr-1">
+                    <div className="space-y-2 border-b pb-4 max-h-55 overflow-y-auto pr-1">
                       {allUsers.map((u) => {
                         let shortRole = u.role === 'clinic_admin' ? 'Dono' : u.role === 'receptionist' ? 'Recepção' : 'Profissional';
                         return (
@@ -620,7 +620,7 @@ export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch, d
                       <span>Logs de Auditoria Interna (LGPD Certificado)</span>
                     </h4>
 
-                    <div className="space-y-3.5 max-h-[460px] overflow-y-auto pr-1">
+                    <div className="space-y-3.5 max-h-115 overflow-y-auto pr-1">
                       {auditLogs.length === 0 ? (
                         <p className="text-xs text-outline italic text-center py-6">Nenhum evento auditado.</p>
                       ) : (

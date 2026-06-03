@@ -125,7 +125,7 @@ export default function Auth({ onLoginSuccess, darkMode }: AuthProps) {
   return (
     <div className="min-h-screen flex items-center justify-center p-4 soft-gradient transition-colors duration-300">
       
-      <main className="w-full max-w-[440px] animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <main className="w-full max-w-110 animate-in fade-in slide-in-from-bottom-4 duration-700">
         
         {/* Logo Header */}
         <div className="flex flex-col items-center mb-6 space-y-3">
@@ -196,7 +196,7 @@ export default function Auth({ onLoginSuccess, darkMode }: AuthProps) {
                         </div>
                         <div className="flex justify-between text-[10px] text-on-surface-variant">
                           <span>{roleLabel}</span>
-                          <span className="max-w-[70px] truncate">{tenantName}</span>
+                          <span className="max-w-17.5 truncate">{tenantName}</span>
                         </div>
                       </button>
                     );

@@ -5,6 +5,7 @@
 
 import React, { useState } from 'react';
 import { Appointment, Patient, Procedure, User, AppointmentStatus } from '../types';
+import { Button, Input, Card, Modal, Grid } from './ui';
 import { dbObj } from '../services/db';
 
 interface AgendaPanelProps {
@@ -144,52 +145,51 @@ export default function AgendaPanel({
 
   const getStatusBadgeStyles = (status: AppointmentStatus) => {
     switch (status) {
-      case 'completed': return 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400';
-      case 'confirmed': return 'bg-primary/10 text-primary dark:text-primary-fixed-dim';
-      case 'in_progress': return 'bg-purple-500/10 text-purple-600 dark:text-purple-400';
+      case 'completed': return 'bg-emerald-500/10 text-emerald-600';
+      case 'confirmed': return 'bg-primary/10 text-primary';
+      case 'in_progress': return 'bg-purple-500/10 text-purple-600';
       case 'cancelled': return 'bg-error/10 text-error';
-      default: return 'bg-amber-500/10 text-amber-600 dark:text-amber-400';
+      default: return 'bg-amber-500/10 text-amber-600';
     }
   };
+
+  const formInput = 'w-full px-3 py-2 bg-surface-container border border-outline-variant rounded-lg text-sm text-on-surface focus:ring-1 focus:ring-primary focus:outline-none transition-all';
 
   return (
     <div className="space-y-6">
       
       {/* Search and control banner */}
-      <div className="p-5 rounded-xl border border-outline-variant dark:border-outline/20 bg-surface-container-lowest dark:bg-inverse-surface flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 shadow-sm">
+      <Card className="p-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h3 className="font-title-md text-title-md text-on-surface font-bold">Agenda Central</h3>
           <p className="font-body-md text-body-sm text-outline">Controles operacionais e disparos de confirmação automática.</p>
         </div>
-        
+
         <div className="flex items-center gap-3 w-full sm:w-auto">
           {/* Period Controller Mockup */}
-            <div className="flex items-center bg-surface-container dark:bg-inverse-surface border border-outline-variant/60 dark:border-outline/40 rounded-lg p-1 text-xs shrink-0">
-            <button type="button" className="p-1 px-2 hover:bg-surface-container-highest dark:hover:bg-inverse-surface/80 rounded transition-colors cursor-pointer focus:outline-none">
+          <div className="flex items-center bg-surface-container border border-outline-variant/60 rounded-lg p-1 text-xs shrink-0">
+            <button type="button" className="p-1 px-2 hover:bg-surface-container-highest rounded transition-colors cursor-pointer focus:outline-none">
               <span className="material-symbols-outlined text-sm block">chevron_left</span>
             </button>
             <span className="px-3 font-semibold text-on-surface">Hoje: 01 de Junho</span>
-            <button type="button" className="p-1 px-2 hover:bg-surface-container-highest dark:hover:bg-inverse-surface/80 rounded transition-colors cursor-pointer focus:outline-none">
+            <button type="button" className="p-1 px-2 hover:bg-surface-container-highest rounded transition-colors cursor-pointer focus:outline-none">
               <span className="material-symbols-outlined text-sm block">chevron_right</span>
             </button>
           </div>
 
-          <button
-            onClick={() => setShowAddModal(true)}
-            className="flex items-center justify-center gap-2 bg-primary hover:bg-primary-container text-on-primary font-semibold text-xs py-2.5 px-4 rounded-lg shadow-sm cursor-pointer transition-colors focus:outline-none ml-auto"
-          >
+          <Button variant="primary" className="ml-auto" onClick={() => setShowAddModal(true)}>
             <span className="material-symbols-outlined text-sm">calendar_month</span>
-            <span>Novo Agendamento</span>
-          </button>
+            <span className="ml-1">Novo Agendamento</span>
+          </Button>
         </div>
-      </div>
+      </Card>
 
       {/* Main timeline listing */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
         {/* Appointments Feed: Weekly Calendar Grid */}
-        <div className="lg:col-span-2 p-6 rounded-xl border border-outline-variant dark:border-outline/20 bg-surface-container-lowest dark:bg-inverse-surface">
-          <h4 className="font-label-md text-label-md text-outline uppercase tracking-wider font-semibold border-b dark:border-outline/20 pb-2">Agenda Semanal</h4>
+        <Card className="lg:col-span-2 p-6">
+          <h4 className="font-label-md text-label-md text-outline uppercase tracking-wider font-semibold border-b pb-2">Agenda Semanal</h4>
 
           {/* week controls */}
           <div className="flex items-center justify-between py-3">
@@ -276,22 +276,22 @@ export default function AgendaPanel({
               </div>
             </div>
           </div>
-        </div>
+        </Card>
 
         {/* Sidebar details & statistics widget */}
         <div className="col-span-1 space-y-4">
-          <div className="p-6 rounded-xl border border-outline-variant dark:border-outline/20 bg-surface-container-lowest dark:bg-inverse-surface space-y-4">
-            <h4 className="font-label-md text-label-md text-outline uppercase tracking-wider font-semibold border-b dark:border-outline/20 pb-2">Resumo Operacional</h4>
+          <Card className="p-6 space-y-4">
+            <h4 className="font-label-md text-label-md text-outline uppercase tracking-wider font-semibold border-b pb-2">Resumo Operacional</h4>
             <div className="space-y-3.5 text-xs text-on-surface-variant font-medium">
-              <div className="flex justify-between pb-1.5 border-b dark:border-outline/20">
+              <div className="flex justify-between pb-1.5 border-b">
                 <span className="text-outline">Total Hoje:</span>
                 <span className="font-bold text-on-surface font-mono">{appointments.length} Consultas</span>
               </div>
-              <div className="flex justify-between pb-1.5 border-b dark:border-outline/20">
+              <div className="flex justify-between pb-1.5 border-b">
                 <span className="text-outline">Confirmadas:</span>
-                <span className="font-bold text-primary dark:text-primary-fixed-dim font-mono">{appointments.filter(a => a.status === 'confirmed').length}</span>
+                <span className="font-bold text-primary font-mono">{appointments.filter(a => a.status === 'confirmed').length}</span>
               </div>
-              <div className="flex justify-between pb-1.5 border-b dark:border-outline/20">
+              <div className="flex justify-between pb-1.5 border-b">
                 <span className="text-outline">Finalizadas:</span>
                 <span className="font-bold text-emerald-500 font-mono">{appointments.filter(a => a.status === 'completed').length}</span>
               </div>
@@ -302,127 +302,97 @@ export default function AgendaPanel({
                 </span>
               </div>
             </div>
-          </div>
+          </Card>
 
-          <div className="p-4 rounded-xl bg-primary/10 border border-primary/20 text-xs text-primary dark:text-primary-fixed-dim space-y-1">
-            <span className="font-bold inline-flex items-center gap-1.5">
-              <span className="material-symbols-outlined text-sm font-semibold">info</span>
+          <Card className="p-4">
+            <div className="text-xs text-primary font-semibold inline-flex items-center gap-2">
+              <span className="material-symbols-outlined text-sm">info</span>
               <span>CRM Automatizado Ativado</span>
-            </span>
-            <p className="text-on-surface-variant leading-relaxed">
+            </div>
+            <p className="text-on-surface-variant leading-relaxed text-xs">
               Os lembretes automáticos funcionam em tempo real. Dispare a funcionalidade <strong>Lembrete</strong> em qualquer consulta pendente para simular a resposta automática do paciente via WhatsApp e seu auto-ajuste de status na agenda central!
             </p>
-          </div>
+          </Card>
         </div>
 
       </div>
 
       {/* Appointment Creation Modal Overlay */}
       {showAddModal && (
-        <div className="fixed inset-0 bg-inverse-surface/70 dark:bg-inverse-surface/80 z-50 flex items-center justify-center p-4 animate-in fade-in duration-200">
-          <div className="w-full max-w-md rounded-xl p-6 border border-outline-variant bg-surface-container-lowest dark:bg-inverse-surface text-on-surface dark:text-inverse-on-surface space-y-4 shadow-2xl animate-in zoom-in-95 duration-200">
-            <h3 className="font-title-md text-title-md text-on-surface font-bold flex items-center gap-2">
-              <span className="material-symbols-outlined text-primary text-base">calendar_month</span>
-              <span>Novo Agendamento Clínico</span>
-            </h3>
+        <Modal open={showAddModal} onClose={() => setShowAddModal(false)} title="Novo Agendamento Clínico">
+          <form onSubmit={handleCreateAppointment} className="space-y-4 text-xs font-semibold text-on-surface-variant">
+            <div className="space-y-1">
+              <label className="block text-[10px] uppercase text-outline">Paciente</label>
+              <select
+                required
+                value={patientId}
+                onChange={(e) => setPatientId(e.target.value)}
+                className={formInput}
+              >
+                <option value="">Selecione o paciente...</option>
+                {patients.map(p => (
+                  <option key={p.id} value={p.id}>{p.name} ({p.phone})</option>
+                ))}
+              </select>
+            </div>
 
-            <form onSubmit={handleCreateAppointment} className="space-y-4 text-xs font-semibold text-on-surface-variant">
+            <div className="space-y-1">
+              <label className="block text-[10px] uppercase text-outline">Profissional Conduzindo</label>
+              <select
+                required
+                value={professionalId}
+                onChange={(e) => setProfessionalId(e.target.value)}
+                className={formInput}
+              >
+                {professionals.map(p => (
+                  <option key={p.id} value={p.id}>{p.name} ({p.specialty || 'Clínico Geral'})</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="space-y-1">
+              <label className="block text-[10px] uppercase text-outline">Procedimento Associado</label>
+              <select
+                value={procedureId}
+                onChange={(e) => setProcedureId(e.target.value)}
+                className={formInput}
+              >
+                <option value="">Consulta Simples / Diagnóstico Avulso (R$ 0)</option>
+                {procedures.map(proc => (
+                  <option key={proc.id} value={proc.id}>{proc.name} (R$ {proc.finalPrice})</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1">
-                <label className="block text-[10px] uppercase text-outline">Paciente</label>
-                <select
-                  required
-                  value={patientId}
-                  onChange={(e) => setPatientId(e.target.value)}
-                  className="w-full px-3 py-2 bg-surface-container-lowest dark:bg-inverse-surface border border-outline-variant rounded-lg font-body-sm text-body-sm focus:ring-1 focus:ring-primary focus:outline-none transition-all outline-none"
-                >
-                  <option value="">Selecione o paciente...</option>
-                  {patients.map(p => (
-                    <option key={p.id} value={p.id}>{p.name} ({p.phone})</option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="space-y-1">
-                <label className="block text-[10px] uppercase text-outline">Profissional Conduzindo</label>
-                <select
-                  required
-                  value={professionalId}
-                  onChange={(e) => setProfessionalId(e.target.value)}
-                  className="w-full px-3 py-2 bg-surface-container-lowest dark:bg-inverse-surface border border-outline-variant rounded-lg font-body-sm text-body-sm focus:ring-1 focus:ring-primary focus:outline-none transition-all outline-none"
-                >
-                  {professionals.map(p => (
-                    <option key={p.id} value={p.id}>{p.name} ({p.specialty || 'Clínico Geral'})</option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="space-y-1">
-                <label className="block text-[10px] uppercase text-outline">Procedimento Associado</label>
-                <select
-                  value={procedureId}
-                  onChange={(e) => setProcedureId(e.target.value)}
-                  className="w-full px-3 py-2 bg-surface-container-lowest dark:bg-inverse-surface border border-outline-variant rounded-lg font-body-sm text-body-sm focus:ring-1 focus:ring-primary focus:outline-none transition-all outline-none"
-                >
-                  <option value="">Consulta Simples / Diagnóstico Avulso (R$ 0)</option>
-                  {procedures.map(proc => (
-                    <option key={proc.id} value={proc.id}>{proc.name} (R$ {proc.finalPrice})</option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-1">
-                  <label className="block text-[10px] uppercase text-outline">Data</label>
-                  <input
-                    type="date"
-                    required
-                    value={date}
-                    onChange={(e) => setDate(e.target.value)}
-                    className="w-full px-3 py-2 bg-surface-container-lowest dark:bg-inverse-surface border border-outline-variant rounded-lg font-body-sm text-body-sm focus:ring-1 focus:ring-primary focus:outline-none transition-all outline-none"
-                  />
-                </div>
-
-                <div className="space-y-1">
-                  <label className="block text-[10px] uppercase text-outline">Horário</label>
-                  <input
-                    type="time"
-                    required
-                    value={time}
-                    onChange={(e) => setTime(e.target.value)}
-                    className="w-full px-3 py-2 bg-surface-container-lowest dark:bg-inverse-surface border border-outline-variant rounded-lg font-body-sm text-body-sm focus:ring-1 focus:ring-primary focus:outline-none transition-all outline-none"
-                  />
-                </div>
+                <label className="block text-[10px] uppercase text-outline">Data</label>
+                <Input type="date" required value={date} onChange={(e) => setDate(e.target.value)} className="" />
               </div>
 
               <div className="space-y-1">
-                <label className="block text-[10px] uppercase text-outline">Observações Internas</label>
-                <textarea
-                  value={notes}
-                  onChange={(e) => setNotes(e.target.value)}
-                  placeholder="Instruções clínicas de apoio..."
-                  rows={2}
-                  className="w-full px-3 py-2 bg-surface-container-lowest dark:bg-inverse-surface border border-outline-variant rounded-lg font-body-sm text-body-sm focus:ring-1 focus:ring-primary focus:outline-none transition-all outline-none"
-                />
+                <label className="block text-[10px] uppercase text-outline">Horário</label>
+                <Input type="time" required value={time} onChange={(e) => setTime(e.target.value)} className="" />
               </div>
+            </div>
 
-              <div className="flex gap-2.5 pt-2">
-                <button
-                  type="submit"
-                  className="flex-1 bg-primary hover:bg-primary-container text-on-primary p-2.5 rounded-lg font-semibold text-xs cursor-pointer text-center focus:outline-none"
-                >
-                  Confirmar Agendamento
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setShowAddModal(false)}
-                  className="px-4 py-2.5 border border-outline-variant hover:bg-surface-container rounded-lg text-xs font-semibold cursor-pointer transition-colors focus:outline-none"
-                >
-                  Cancelar
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
+            <div className="space-y-1">
+              <label className="block text-[10px] uppercase text-outline">Observações Internas</label>
+              <textarea
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                placeholder="Instruções clínicas de apoio..."
+                rows={2}
+                className={formInput}
+              />
+            </div>
+
+            <div className="flex gap-2.5 pt-2">
+              <Button type="submit" className="flex-1" variant="primary">Confirmar Agendamento</Button>
+              <Button type="button" onClick={() => setShowAddModal(false)} variant="secondary">Cancelar</Button>
+            </div>
+          </form>
+        </Modal>
       )}
 
     </div>

@@ -275,7 +275,7 @@ export default function SuperAdmin({ currentUser, onLogout, darkMode }: SuperAdm
                       placeholder="Buscar clínica..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      className={`pl-9 pr-4 py-2 border rounded-xl text-xs w-[180px] focus:outline-none focus:ring-1 focus:ring-blue-500 ${
+                      className={`pl-9 pr-4 py-2 border rounded-xl text-xs w-45 focus:outline-none focus:ring-1 focus:ring-blue-500 ${
                         darkMode ? 'bg-inverse-surface border-outline/20 text-inverse-on-surface' : 'bg-surface-container-lowest border-outline-variant text-on-surface'
                       }`}
                     />
@@ -339,7 +339,7 @@ export default function SuperAdmin({ currentUser, onLogout, darkMode }: SuperAdm
                                     {t.name.charAt(0)}
                                   </div>
                                 )}
-                                <div className="truncate max-w-[170px]">
+                                <div className="truncate max-w-42.5">
                                   <p className="font-semibold text-on-surface dark:text-inverse-on-surface">{t.name}</p>
                                   <p className="text-[10px] text-on-surface-variant truncate">{t.ownerName} • {t.ownerEmail}</p>
                                 </div>
@@ -512,7 +512,7 @@ export default function SuperAdmin({ currentUser, onLogout, darkMode }: SuperAdm
                 }`}>
                   <Landmark className="h-10 w-10 text-on-surface-variant mb-2.5" />
                   <p className="text-xs font-semibold">Nenhuma clínica selecionada</p>
-                  <p className="text-[11px] text-on-surface-variant mt-1 max-w-[200px] mx-auto">
+                  <p className="text-[11px] text-on-surface-variant mt-1 max-w-50 mx-auto">
                     Selecione uma clínica na tabela ao lado para gerenciar licenças, status e planos.
                   </p>
                 </div>

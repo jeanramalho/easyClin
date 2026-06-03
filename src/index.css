@@ -88,18 +88,12 @@ html, body {
   border-radius: 99px;
 }
 
-.dark ::-webkit-scrollbar-thumb {
-  background: #334155;
-}
-
 /* Custom design system animations & gradient classes */
 .soft-gradient {
   background: radial-gradient(circle at top left, #f2f3ff 0%, #faf8ff 100%);
 }
 
-.dark .soft-gradient {
-  background: radial-gradient(circle at top left, #131b2e 0%, #0b1c30 100%);
-}
+/* soft-gradient has a single light-theme definition above */
 
 .glass-card {
   background: rgba(255, 255, 255, 0.8);
@@ -107,8 +101,5 @@ html, body {
   border: 1px solid rgba(226, 232, 240, 0.5);
 }
 
-.dark .glass-card {
-  background: rgba(40, 48, 68, 0.7);
-  border: 1px solid rgba(115, 118, 136, 0.2);
-}
+/* glass-card has a single light-theme definition above */
 

@@ -4,6 +4,7 @@
  */
 
 import React, { useState } from 'react';
+import { Button, Input, Card, Modal, Grid } from './ui';
 import { Patient, MedicalRecordEntry, User } from '../types';
 import { dbObj } from '../services/db';
 
@@ -130,35 +131,30 @@ export default function PatientPanel({
   const inputClass = `w-full px-3 py-2.5 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-surface-container-lowest border-outline-variant text-on-surface placeholder-outline`;
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      
+    <Grid cols="grid-cols-1 lg:grid-cols-3" className="gap-6">
       {/* ── 1. Patient Directory (Left Panel) ── */}
-      <div className={`col-span-1 rounded-xl border overflow-hidden flex flex-col shadow-sm bg-surface-container-lowest border-outline-variant`}>
+      <Card className="col-span-1">
         {/* Header */}
         <div className={`px-5 py-4 border-b flex items-center justify-between border-outline-variant`}>
           <div>
             <h3 className="font-semibold text-on-surface text-sm">Diretório de Pacientes</h3>
             <p className="text-outline text-xs mt-0.5">{patients.length} cadastrados</p>
           </div>
-          <button
-            onClick={() => setShowAddModal(true)}
-            className="flex items-center gap-1.5 bg-primary hover:bg-primary-container text-on-primary text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors cursor-pointer"
-          >
+          <Button variant="primary" size="sm" onClick={() => setShowAddModal(true)}>
             <span className="material-symbols-outlined text-sm">person_add</span>
-            <span>Novo</span>
-          </button>
+            <span className="ml-1">Novo</span>
+          </Button>
         </div>
 
         {/* Search */}
         <div className={`px-4 py-3 border-b border-outline-variant`}>
           <div className="relative">
             <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[18px]">search</span>
-            <input
-              type="text"
+            <Input
               placeholder="Buscar paciente..."
               value={search}
               onChange={e => setSearch(e.target.value)}
-              className={`w-full pl-9 pr-3 py-2 rounded-lg text-xs border focus:outline-none focus:ring-1 focus:ring-primary transition-all bg-surface-container border-outline-variant text-on-surface placeholder-outline`}
+              className="pl-9"
             />
           </div>
         </div>
@@ -210,10 +206,10 @@ export default function PatientPanel({
       {/* ── 2. Clinical Record Workspace (Right Panel – 2 cols) ── */}
       <div className="col-span-1 lg:col-span-2">
         {selectedPatient ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <Grid cols="grid-cols-1 md:grid-cols-2" className="gap-6">
 
             {/* ── 2a. Clinical Timeline ── */}
-            <div className={`rounded-xl border overflow-hidden flex flex-col shadow-sm bg-surface-container-lowest border-outline-variant`}>
+            <Card>
               {/* Patient Header */}
               <div className={`px-5 py-4 border-b border-outline-variant`}>
                 <div className="flex items-center gap-3">
@@ -329,10 +325,10 @@ export default function PatientPanel({
                   })
                 )}
               </div>
-            </div>
+            </Card>
 
             {/* ── 2b. New Evolution Form ── */}
-            <div className={`rounded-xl border overflow-hidden flex flex-col shadow-sm bg-surface-container-lowest border-outline-variant`}>
+            <Card>
               <div className={`px-5 py-4 border-b border-outline-variant`}>
                 <h4 className="font-semibold text-sm text-on-surface flex items-center gap-2">
                   <span className="material-symbols-outlined text-base text-primary" style={{ fontVariationSettings: "'FILL' 1" }}>edit_note</span>
@@ -403,7 +399,7 @@ export default function PatientPanel({
                   Registrar Evolução Médica
                 </button>
               </form>
-            </div>
+            </Card>
 
           </div>
         ) : (
@@ -420,99 +416,79 @@ export default function PatientPanel({
 
       {/* ── Patient Creation Modal ── */}
       {showAddModal && (
-        <div className="fixed inset-0 bg-black/10 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
-          <div className={`w-full max-w-lg rounded-2xl border shadow-2xl bg-surface-container-lowest border-outline-variant text-on-surface`}>
-            {/* Modal Header */}
-            <div className={`px-6 py-4 border-b flex items-center justify-between border-outline-variant`}>
-              <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-primary text-xl" style={{ fontVariationSettings: "'FILL' 1" }}>person_add</span>
-                <h3 className="font-bold text-base">Novo Cadastro de Paciente</h3>
-              </div>
-              <button onClick={() => setShowAddModal(false)} className="p-1 rounded-lg hover:bg-surface-container transition-colors cursor-pointer">
-                <span className="material-symbols-outlined text-outline">close</span>
-              </button>
+        <Modal open={showAddModal} onClose={() => setShowAddModal(false)} title="Novo Cadastro de Paciente">
+          <form onSubmit={handleCreatePatient} className="p-0 space-y-4">
+            <div className="space-y-1">
+              <label className="block text-[10px] font-semibold text-outline uppercase tracking-wider">Nome Completo *</label>
+              <Input type="text" required placeholder="Ex: Carlos Henrique Albuquerque" value={name}
+                onChange={e => setName(e.target.value)} className={inputClass} />
             </div>
 
-            {/* Modal Body */}
-            <form onSubmit={handleCreatePatient} className="p-6 space-y-4">
+            <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1">
-                <label className="block text-[10px] font-semibold text-outline uppercase tracking-wider">Nome Completo *</label>
-                <input type="text" required placeholder="Ex: Carlos Henrique Albuquerque" value={name}
-                  onChange={e => setName(e.target.value)} className={inputClass} />
+                <label className="block text-[10px] font-semibold text-outline uppercase tracking-wider">Telefone *</label>
+                <Input type="text" required placeholder="(11) 99999-8888" value={phone}
+                  onChange={e => setPhone(e.target.value)} className={inputClass} />
               </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-1">
-                  <label className="block text-[10px] font-semibold text-outline uppercase tracking-wider">Telefone *</label>
-                  <input type="text" required placeholder="(11) 99999-8888" value={phone}
-                    onChange={e => setPhone(e.target.value)} className={inputClass} />
-                </div>
-                <div className="space-y-1">
-                  <label className="block text-[10px] font-semibold text-outline uppercase tracking-wider">CPF</label>
-                  <input type="text" required placeholder="123.456.789-10" value={document}
-                    onChange={e => setDocument(e.target.value)} className={inputClass} />
-                </div>
-              </div>
-
               <div className="space-y-1">
-                <label className="block text-[10px] font-semibold text-outline uppercase tracking-wider">E-mail</label>
-                <input type="email" placeholder="paciente@email.com" value={email}
-                  onChange={e => setEmail(e.target.value)} className={inputClass} />
+                <label className="block text-[10px] font-semibold text-outline uppercase tracking-wider">CPF</label>
+                <Input type="text" required placeholder="123.456.789-10" value={document}
+                  onChange={e => setDocument(e.target.value)} className={inputClass} />
               </div>
+            </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-1">
-                  <label className="block text-[10px] font-semibold text-outline uppercase tracking-wider">Sexo/Gênero</label>
-                  <select value={gender} onChange={e => setGender(e.target.value)} className={inputClass}>
-                    <option value="Masculino">Masculino</option>
-                    <option value="Feminino">Feminino</option>
-                    <option value="Outro">Outro</option>
-                  </select>
+            <div className="space-y-1">
+              <label className="block text-[10px] font-semibold text-outline uppercase tracking-wider">E-mail</label>
+              <Input type="email" placeholder="paciente@email.com" value={email}
+                onChange={e => setEmail(e.target.value)} className={inputClass} />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-1">
+                <label className="block text-[10px] font-semibold text-outline uppercase tracking-wider">Sexo/Gênero</label>
+                <select value={gender} onChange={e => setGender(e.target.value)} className={inputClass}>
+                  <option value="Masculino">Masculino</option>
+                  <option value="Feminino">Feminino</option>
+                  <option value="Outro">Outro</option>
+                </select>
+              </div>
+              <div className="space-y-1">
+                <label className="block text-[10px] font-semibold text-outline uppercase tracking-wider">Data de Nascimento</label>
+                <Input type="date" required value={birthDate} onChange={e => setBirthDate(e.target.value)} className={inputClass} />
+              </div>
+            </div>
+
+            {/* Medical Alert Toggle */}
+            <div className={`p-4 rounded-xl border ${hasMedicalAlert ? 'bg-error/5 border-error/30' : 'border-outline-variant/60'}`}>
+              <label className="flex items-center gap-3 cursor-pointer select-none">
+                <div
+                  onClick={() => setHasMedicalAlert(!hasMedicalAlert)}
+                  className={`w-10 h-5 rounded-full transition-colors relative cursor-pointer ${hasMedicalAlert ? 'bg-error' : 'bg-outline/40'}`}
+                >
+                  <div className={`w-4 h-4 bg-surface-container-lowest rounded-full absolute top-0.5 transition-all ${hasMedicalAlert ? 'left-5' : 'left-0.5'}`} />
                 </div>
-                <div className="space-y-1">
-                  <label className="block text-[10px] font-semibold text-outline uppercase tracking-wider">Data de Nascimento</label>
-                  <input type="date" required value={birthDate} onChange={e => setBirthDate(e.target.value)} className={inputClass} />
-                </div>
-              </div>
+                <span className={`text-sm font-semibold ${hasMedicalAlert ? 'text-error' : 'text-on-surface-variant'}`}>
+                  Paciente possui alerta médico crítico
+                </span>
+              </label>
+              {hasMedicalAlert && (
+                <Input
+                  type="text"
+                  required
+                  placeholder="Ex: Alérgico a Penicilina / Cardiopata / Diabético..."
+                  value={medicalAlertDescription}
+                  onChange={e => setMedicalAlertDescription(e.target.value)}
+                  className={`${inputClass} mt-3 border-error/40 focus:ring-error/40`}
+                />
+              )}
+            </div>
 
-              {/* Medical Alert Toggle */}
-              <div className={`p-4 rounded-xl border ${hasMedicalAlert ? 'bg-error/5 border-error/30' : 'border-outline-variant/60'}`}>
-                <label className="flex items-center gap-3 cursor-pointer select-none">
-                  <div
-                    onClick={() => setHasMedicalAlert(!hasMedicalAlert)}
-                    className={`w-10 h-5 rounded-full transition-colors relative cursor-pointer ${hasMedicalAlert ? 'bg-error' : 'bg-outline/40'}`}
-                  >
-                    <div className={`w-4 h-4 bg-surface-container-lowest rounded-full absolute top-0.5 transition-all ${hasMedicalAlert ? 'left-5' : 'left-0.5'}`} />
-                  </div>
-                  <span className={`text-sm font-semibold ${hasMedicalAlert ? 'text-error' : 'text-on-surface-variant'}`}>
-                    Paciente possui alerta médico crítico
-                  </span>
-                </label>
-                {hasMedicalAlert && (
-                  <input
-                    type="text"
-                    required
-                    placeholder="Ex: Alérgico a Penicilina / Cardiopata / Diabético..."
-                    value={medicalAlertDescription}
-                    onChange={e => setMedicalAlertDescription(e.target.value)}
-                    className={`${inputClass} mt-3 border-error/40 focus:ring-error/40`}
-                  />
-                )}
-              </div>
-
-              <div className="flex gap-3 pt-1">
-                <button type="submit"
-                  className="flex-1 bg-primary hover:bg-primary-container text-on-primary font-bold py-2.5 rounded-xl text-sm cursor-pointer transition-colors">
-                  Confirmar Cadastro
-                </button>
-                <button type="button" onClick={() => setShowAddModal(false)}
-                  className={`px-5 py-2.5 border rounded-xl text-sm font-semibold cursor-pointer transition-colors border-outline-variant hover:bg-surface-container`}>
-                  Cancelar
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
+            <div className="flex gap-3 pt-1">
+              <Button type="submit" className="flex-1" variant="primary">Confirmar Cadastro</Button>
+              <Button type="button" onClick={() => setShowAddModal(false)} variant="secondary">Cancelar</Button>
+            </div>
+          </form>
+        </Modal>
       )}
     </div>
   );

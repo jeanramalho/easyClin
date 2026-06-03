@@ -333,7 +333,7 @@ export default function BudgetPanel({ tenantId, budgets, patients, procedures, o
             <div className="flex flex-col items-center justify-center py-16 text-center px-6">
               <span className="material-symbols-outlined text-5xl text-outline mb-3">description</span>
               <h4 className="font-semibold text-on-surface-variant text-sm">Nenhum orçamento criado</h4>
-              <p className="text-xs text-outline mt-1.5 max-w-[260px]">Clique em "Novo Orçamento" para criar a primeira proposta comercial para um paciente.</p>
+              <p className="text-xs text-outline mt-1.5 max-w-65">Clique em "Novo Orçamento" para criar a primeira proposta comercial para um paciente.</p>
             </div>
           ) : (
             <div className="overflow-x-auto">
@@ -363,9 +363,9 @@ export default function BudgetPanel({ tenantId, budgets, patients, procedures, o
                         </td>
                         <td className="px-4 py-4">
                           <p className="font-bold text-on-surface font-mono">R$ {bud.total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
-                          <span className="text-[10px] text-outline truncate max-w-[120px] block">{bud.paymentPlan}</span>
+                          <span className="text-[10px] text-outline truncate max-w-30 block">{bud.paymentPlan}</span>
                         </td>
-                        <td className="px-4 py-4 text-on-surface-variant max-w-[160px]">
+                        <td className="px-4 py-4 text-on-surface-variant max-w-40">
                           <p className="truncate text-xs">{bud.items.map(it => it.procedureName).join(', ')}</p>
                           <span className="text-[10px] text-outline">{bud.items.length} procedimento{bud.items.length !== 1 ? 's' : ''}</span>
                         </td>
