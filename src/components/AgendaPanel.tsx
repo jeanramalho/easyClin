@@ -187,132 +187,94 @@ export default function AgendaPanel({
       {/* Main timeline listing */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
-        {/* Appointments Feed */}
-        <div className="lg:col-span-2 p-6 rounded-xl border border-outline-variant dark:border-outline/20 bg-surface-container-lowest dark:bg-inverse-surface space-y-4">
-          <h4 className="font-label-md text-label-md text-outline uppercase tracking-wider font-semibold border-b dark:border-outline/20 pb-2">Grade Diária de Horários</h4>
+        {/* Appointments Feed: Weekly Calendar Grid */}
+        <div className="lg:col-span-2 p-6 rounded-xl border border-outline-variant dark:border-outline/20 bg-surface-container-lowest dark:bg-inverse-surface">
+          <h4 className="font-label-md text-label-md text-outline uppercase tracking-wider font-semibold border-b dark:border-outline/20 pb-2">Agenda Semanal</h4>
 
-          <div className="space-y-4">
-            {appointments.length === 0 ? (
-              <p className="text-xs text-outline italic text-center py-8">Nenhum compromisso agendado para o período.</p>
-            ) : (
-              appointments.sort((a, b) => a.time.localeCompare(b.time)).map((app) => {
-                const patient = patients.find(p => p.id === app.patientId);
-                const professional = professionals.find(p => p.id === app.professionalId);
-                const procedure = procedures.find(p => p.id === app.procedureId);
+          {/* week controls */}
+          <div className="flex items-center justify-between py-3">
+            <div className="flex items-center gap-3">
+              <button onClick={() => setShowAddModal(true)} className="px-3 py-1.5 bg-primary hover:bg-primary-container text-on-primary rounded-lg text-xs font-semibold">+ Novo</button>
+              <div className="text-xs text-on-surface-variant">Visualização: Semana</div>
+            </div>
+            <div className="text-xs text-on-surface-variant">Semana de {new Date().toLocaleDateString()}</div>
+          </div>
 
-                return (
-                  <div 
-                    key={app.id}
-                    className={`glass-card rounded-xl p-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 hover:shadow-md transition-all relative border-l-4 ${getStatusBorderColor(app.status)}`}
-                  >
-                    {/* Left: time and details */}
-                    <div className="flex items-center gap-4 min-w-0">
-                      {/* Time indicator */}
-                      <div className="px-4 py-3 bg-surface-container dark:bg-inverse-surface rounded-lg text-center shrink-0 min-w-20 border border-outline-variant/30">
-                        <span className="font-title-md text-title-md font-bold text-on-surface block leading-none mb-1">{app.time}</span>
-                        <span className="font-label-sm text-[10px] text-on-surface-variant uppercase block font-semibold">{app.duration} min</span>
-                      </div>
-                      
-                      <div className="min-w-0">
-                        {/* Patient */}
-                        <div className="flex flex-wrap items-center gap-2 mb-1">
-                          <p className="font-title-sm text-title-sm font-semibold text-on-surface truncate">
-                            {patient ? patient.name : 'Paciente Não Cadastrado'}
-                          </p>
-                          {patient?.hasMedicalAlert && (
-                            <span 
-                              className="text-[9px] bg-error/10 text-error border border-error/25 font-bold px-2 py-0.5 rounded uppercase tracking-wider shrink-0"
-                              title={patient.medicalAlertDescription}
+          {/* Calendar grid */}
+          <div className="flex gap-4">
+            {/* Time column */}
+            <div className="w-20 shrink-0">
+              <div className="h-12" />
+              <div className="flex flex-col text-xs text-on-surface-variant">
+                {Array.from({ length: 11 }).map((_, i) => {
+                  const hour = 8 + i;
+                  return (
+                    <div key={hour} className="h-12 flex items-start justify-end pr-2">{String(hour).padStart(2,'0')}:00</div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Days columns */}
+            <div className="flex-1 overflow-auto" style={{ maxHeight: 600 }}>
+              <div className="grid grid-cols-7 gap-2">
+                {Array.from({ length: 7 }).map((_, dayIndex) => {
+                  const today = new Date();
+                  const d = new Date(today);
+                  d.setDate(today.getDate() - today.getDay() + 1 + dayIndex); // Monday-based
+                  const dateKey = d.toISOString().split('T')[0];
+                  return (
+                    <div key={dayIndex} className="border rounded-lg bg-transparent">
+                      <div className="text-center py-2 text-xs font-semibold text-on-surface-variant border-b border-outline-variant/20">{d.toLocaleDateString(undefined, { weekday: 'short', day: 'numeric' })}</div>
+                      <div className="relative" style={{ height: 11 * 60 }}>
+                        {/* hour lines */}
+                        {Array.from({ length: 11 }).map((__, h) => (
+                          <div key={h} className="absolute left-0 right-0 border-t border-outline-variant/20" style={{ top: `${h * 60}px` }} />
+                        ))}
+
+                        {/* appointments for this day */}
+                        {appointments.filter(a => a.date === dateKey).map((app) => {
+                          const hourHeight = 60; // px per hour
+                          const [hh, mm] = app.time.split(':').map(Number);
+                          const startMinutes = (hh * 60 + mm) - (8 * 60);
+                          const top = Math.max(0, startMinutes) * (hourHeight / 60);
+                          const height = Math.max(28, app.duration * (hourHeight / 60));
+                          const patient = patients.find(p => p.id === app.patientId);
+                          return (
+                            <div
+                              key={app.id}
+                              style={{ top: `${top}px`, height: `${height}px` }}
+                              className={`absolute left-3 right-3 p-2 rounded-lg shadow-sm overflow-hidden ${getStatusBadgeStyles(app.status)} ${getStatusBorderColor(app.status)} bg-opacity-30`}
                             >
-                              Alerta Médico
-                            </span>
-                          )}
-                        </div>
-                        
-                        <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[10px] text-outline font-medium">
-                          <span>Dr(a). {professional ? professional.name.split(' ')[1] : 'N/A'}</span>
-                          <span className="opacity-50">•</span>
-                          <span>Procedimento: <strong className="text-on-surface-variant">{procedure ? procedure.name : 'Consulta Geral'}</strong></span>
-                          <span className="opacity-50">•</span>
-                          <span className="font-mono text-primary dark:text-primary-fixed-dim font-bold">R$ {app.value.toFixed(2)}</span>
-                        </div>
+                              <div className="text-[11px] font-semibold text-on-surface truncate">{patient ? patient.name : 'Paciente'}</div>
+                              <div className="text-[10px] text-on-surface-variant">{app.time} • {app.duration} min</div>
+                            </div>
+                          );
+                        })}
+
+                        {/* current time indicator */}
+                        {(() => {
+                          const now = new Date();
+                          const todayKey = new Date().toISOString().split('T')[0];
+                          if (dateKey === todayKey) {
+                            const nowMinutes = now.getHours() * 60 + now.getMinutes();
+                            const topNow = Math.max(0, (nowMinutes - 8 * 60)) * 1; // 1px per minute when hourHeight=60
+                            return (
+                              <div style={{ top: `${topNow}px` }} className="absolute left-0 right-0 pointer-events-none">
+                                <div className="h-0.5 bg-error w-full relative">
+                                  <span className="absolute -left-2 -top-2 w-3 h-3 bg-error rounded-full shadow-sm" />
+                                </div>
+                              </div>
+                            );
+                          }
+                          return null;
+                        })()}
                       </div>
                     </div>
-
-                    {/* Right: CRM action & status triggers */}
-                    <div className="flex flex-col items-end gap-2 shrink-0 w-full sm:w-auto">
-                      <div className="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
-                        {/* WhatsApp CRM Trigger */}
-                        {app.status === 'pending' && (
-                          <button
-                            onClick={() => simulateNotification(app)}
-                            disabled={alertMsg !== null}
-                            className="bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 border border-emerald-300/25 px-2.5 py-1 rounded-lg text-[10px] font-bold flex items-center gap-1 transition-all cursor-pointer disabled:opacity-50 focus:outline-none"
-                            title="Confirmar Presença automatizada"
-                          >
-                            <span className="material-symbols-outlined text-[14px]">chat</span>
-                            <span>Lembrete</span>
-                          </button>
-                        )}
-
-                        {/* Status Badge */}
-                        <span className={`px-2.5 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wide shrink-0 ${getStatusBadgeStyles(app.status)}`}>
-                          {app.status}
-                        </span>
-                      </div>
-
-                      {/* State transitions */}
-                      <div className="flex gap-1.5 justify-end w-full">
-                        {app.status !== 'completed' && app.status !== 'cancelled' && (
-                          <>
-                            {app.status === 'confirmed' && (
-                              <button
-                                onClick={() => handleChangeStatus(app.id, 'in_progress')}
-                                className="px-2.5 py-1 border border-outline-variant hover:bg-primary hover:text-on-primary rounded text-[10px] font-semibold transition-all cursor-pointer focus:outline-none"
-                              >
-                                Chamar
-                              </button>
-                            )}
-                            {app.status === 'in_progress' && (
-                              <button
-                                onClick={() => handleChangeStatus(app.id, 'completed')}
-                                className="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded text-[10px] font-semibold transition-all cursor-pointer focus:outline-none"
-                              >
-                                Finalizar
-                              </button>
-                            )}
-                            {app.status !== 'in_progress' && (
-                              <button
-                                onClick={() => handleChangeStatus(app.id, 'confirmed')}
-                                className="px-2.5 py-1 border border-outline-variant hover:bg-surface-container rounded text-[10px] font-semibold text-on-surface-variant transition-all cursor-pointer focus:outline-none"
-                              >
-                                Confirmar
-                              </button>
-                            )}
-                            <button
-                              onClick={() => handleChangeStatus(app.id, 'cancelled')}
-                              className="px-2.5 py-1 border border-error/30 text-error hover:bg-error hover:text-on-error rounded text-[10px] font-semibold transition-all cursor-pointer focus:outline-none"
-                            >
-                              Cancelar
-                            </button>
-                          </>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Live CRM notification overlay */}
-                    {alertMsg && alertMsg.id === app.id && (
-                      <div className="absolute inset-0 bg-inverse-surface/90 flex items-center justify-center text-xs text-white p-4 rounded-xl z-20 animate-in fade-in duration-200">
-                        <div className="flex items-center gap-2.5">
-                          <span className="material-symbols-outlined text-emerald-400 animate-bounce">notifications_active</span>
-                          <span className="font-semibold">{alertMsg.text}</span>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                );
-              })
-            )}
+                  );
+                })}
+              </div>
+            </div>
           </div>
         </div>
 

@@ -127,21 +127,15 @@ export default function PatientPanel({
     p.phone.toLowerCase().includes(search.toLowerCase())
   );
 
-  const inputClass = `w-full px-3 py-2.5 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all ${
-    darkMode ? 'bg-inverse-surface border-outline/30 text-white placeholder-outline' : 'bg-surface-container-lowest border-outline-variant text-on-surface placeholder-outline'
-  }`;
+  const inputClass = `w-full px-3 py-2.5 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-surface-container-lowest border-outline-variant text-on-surface placeholder-outline`;
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
       
       {/* ── 1. Patient Directory (Left Panel) ── */}
-      <div className={`col-span-1 rounded-xl border overflow-hidden flex flex-col shadow-sm ${
-        darkMode ? 'bg-slate-900 border-outline/20' : 'bg-surface-container-lowest border-outline-variant'
-      }`}>
+      <div className={`col-span-1 rounded-xl border overflow-hidden flex flex-col shadow-sm bg-surface-container-lowest border-outline-variant`}>
         {/* Header */}
-        <div className={`px-5 py-4 border-b flex items-center justify-between ${
-          darkMode ? 'border-outline/20' : 'border-outline-variant'
-        }`}>
+        <div className={`px-5 py-4 border-b flex items-center justify-between border-outline-variant`}>
           <div>
             <h3 className="font-semibold text-on-surface text-sm">Diretório de Pacientes</h3>
             <p className="text-outline text-xs mt-0.5">{patients.length} cadastrados</p>
@@ -156,7 +150,7 @@ export default function PatientPanel({
         </div>
 
         {/* Search */}
-        <div className={`px-4 py-3 border-b ${darkMode ? 'border-outline/20' : 'border-outline-variant'}`}>
+        <div className={`px-4 py-3 border-b border-outline-variant`}>
           <div className="relative">
             <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[18px]">search</span>
             <input
@@ -164,9 +158,7 @@ export default function PatientPanel({
               placeholder="Buscar paciente..."
               value={search}
               onChange={e => setSearch(e.target.value)}
-              className={`w-full pl-9 pr-3 py-2 rounded-lg text-xs border focus:outline-none focus:ring-1 focus:ring-primary transition-all ${
-                darkMode ? 'bg-inverse-surface border-outline/30 text-white placeholder-outline' : 'bg-surface-container border-outline-variant text-on-surface placeholder-outline'
-              }`}
+              className={`w-full pl-9 pr-3 py-2 rounded-lg text-xs border focus:outline-none focus:ring-1 focus:ring-primary transition-all bg-surface-container border-outline-variant text-on-surface placeholder-outline`}
             />
           </div>
         </div>
@@ -184,11 +176,7 @@ export default function PatientPanel({
                 key={p.id}
                 onClick={() => setSelectedPatient(p)}
                 className={`w-full text-left p-3 rounded-xl border transition-all cursor-pointer ${
-                  selectedPatient?.id === p.id
-                    ? 'bg-primary/10 border-primary/40'
-                    : darkMode
-                    ? 'bg-inverse-surface/40 border-outline/20 hover:border-outline/40'
-                    : 'bg-surface-container border-outline-variant/50 hover:border-primary/30 hover:bg-primary/5'
+                  selectedPatient?.id === p.id ? 'bg-primary/10 border-primary/40' : 'bg-surface-container border-outline-variant/50 hover:border-primary/30 hover:bg-primary/5'
                 }`}
               >
                 <div className="flex items-start justify-between gap-2">
@@ -225,11 +213,9 @@ export default function PatientPanel({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
             {/* ── 2a. Clinical Timeline ── */}
-            <div className={`rounded-xl border overflow-hidden flex flex-col shadow-sm ${
-              darkMode ? 'bg-slate-900 border-outline/20' : 'bg-surface-container-lowest border-outline-variant'
-            }`}>
+            <div className={`rounded-xl border overflow-hidden flex flex-col shadow-sm bg-surface-container-lowest border-outline-variant`}>
               {/* Patient Header */}
-              <div className={`px-5 py-4 border-b ${darkMode ? 'border-outline/20' : 'border-outline-variant'}`}>
+              <div className={`px-5 py-4 border-b border-outline-variant`}>
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-lg shrink-0">
                     {selectedPatient.name.charAt(0)}
@@ -259,7 +245,7 @@ export default function PatientPanel({
               )}
 
               {/* Timeline */}
-              <div className={`px-4 py-3 border-b ${darkMode ? 'border-outline/20' : 'border-outline-variant'}`}>
+              <div className={`px-4 py-3 border-b border-outline-variant`}>
                 <h5 className="text-[10px] font-bold text-outline uppercase tracking-wider flex items-center gap-1.5">
                   <span className="material-symbols-outlined text-sm">history</span>
                   Linha do Tempo Clínica · {records.length} registros
@@ -279,15 +265,11 @@ export default function PatientPanel({
                       <div
                         key={rec.id}
                         className={`rounded-xl border text-xs leading-relaxed overflow-hidden ${
-                          rec.isLocked
-                            ? darkMode ? 'bg-inverse-surface/30 border-outline/20' : 'bg-surface-container border-outline-variant'
-                            : darkMode ? 'bg-primary/5 border-primary/30' : 'bg-primary/5 border-primary/20'
-                        }`}
+                            rec.isLocked ? 'bg-surface-container border-outline-variant' : 'bg-primary/5 border-primary/20'
+                          }`}
                       >
                         {/* Record Header */}
-                        <div className={`px-3 py-2 flex justify-between items-center border-b ${
-                          darkMode ? 'border-outline/20' : 'border-outline-variant/50'
-                        }`}>
+                        <div className={`px-3 py-2 flex justify-between items-center border-b border-outline-variant/50`}>
                           <span className="text-[10px] text-outline font-mono">
                             {new Date(rec.date).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' })}
                           </span>
@@ -328,9 +310,7 @@ export default function PatientPanel({
                             </div>
                           )}
                           {rec.prescription && (
-                            <div className={`p-2 rounded-lg font-mono text-[10px] leading-relaxed mt-1 ${
-                              darkMode ? 'bg-inverse-surface/50 text-secondary-fixed-dim' : 'bg-surface-container text-on-surface-variant'
-                            }`}>
+                            <div className={`p-2 rounded-lg font-mono text-[10px] leading-relaxed mt-1 bg-surface-container text-on-surface-variant`}>
                               <span className="font-bold block mb-1 text-outline uppercase tracking-widest text-[9px]">📋 Prescrição</span>
                               {rec.prescription}
                             </div>
@@ -338,9 +318,7 @@ export default function PatientPanel({
                         </div>
 
                         {/* Record Footer */}
-                        <div className={`px-3 py-2 border-t flex justify-between items-center ${
-                          darkMode ? 'border-outline/20' : 'border-outline-variant/50'
-                        }`}>
+                        <div className={`px-3 py-2 border-t flex justify-between items-center border-outline-variant/50`}>
                           <span className="text-[10px] text-outline">Dr(a). {doc ? doc.name : 'Clínico Geral'}</span>
                           {rec.isLocked && (
                             <span className="text-[9px] font-mono text-outline">#{rec.id}</span>
@@ -354,10 +332,8 @@ export default function PatientPanel({
             </div>
 
             {/* ── 2b. New Evolution Form ── */}
-            <div className={`rounded-xl border overflow-hidden flex flex-col shadow-sm ${
-              darkMode ? 'bg-slate-900 border-outline/20' : 'bg-surface-container-lowest border-outline-variant'
-            }`}>
-              <div className={`px-5 py-4 border-b ${darkMode ? 'border-outline/20' : 'border-outline-variant'}`}>
+            <div className={`rounded-xl border overflow-hidden flex flex-col shadow-sm bg-surface-container-lowest border-outline-variant`}>
+              <div className={`px-5 py-4 border-b border-outline-variant`}>
                 <h4 className="font-semibold text-sm text-on-surface flex items-center gap-2">
                   <span className="material-symbols-outlined text-base text-primary" style={{ fontVariationSettings: "'FILL' 1" }}>edit_note</span>
                   Nova Evolução Clínica
@@ -414,9 +390,7 @@ export default function PatientPanel({
                 </div>
 
                 {/* LGPD Notice */}
-                <div className={`p-3 rounded-xl text-[10px] leading-relaxed border ${
-                  darkMode ? 'bg-primary/5 border-primary/20 text-secondary-fixed-dim' : 'bg-primary/5 border-primary/15 text-on-surface-variant'
-                }`}>
+                <div className={`p-3 rounded-xl text-[10px] leading-relaxed border bg-primary/5 border-primary/15 text-on-surface-variant`}>
                   <span className="material-symbols-outlined text-primary text-sm align-middle mr-1">shield</span>
                   O prontuário pode ser <strong>assinado digitalmente</strong> após criação, tornando-o imutável conforme a LGPD.
                 </div>
@@ -434,12 +408,10 @@ export default function PatientPanel({
           </div>
         ) : (
           /* Empty state */
-          <div className={`rounded-xl border border-dashed flex flex-col items-center justify-center h-full min-h-[400px] text-center p-8 ${
-            darkMode ? 'bg-slate-900/50 border-outline/20' : 'bg-surface-container/30 border-outline-variant'
-          }`}>
+          <div className={`rounded-xl border border-dashed flex flex-col items-center justify-center h-full min-h-100 text-center p-8 bg-surface-container/30 border-outline-variant`}>
             <span className="material-symbols-outlined text-5xl text-outline mb-3">person_search</span>
             <h4 className="font-semibold text-on-surface-variant text-sm">Selecione um paciente</h4>
-            <p className="text-[11px] text-outline mt-1.5 max-w-[240px] leading-relaxed">
+            <p className="text-[11px] text-outline mt-1.5 max-w-60 leading-relaxed">
               Escolha um paciente no diretório ao lado para acessar os prontuários, histórico clínico e prescrições.
             </p>
           </div>
@@ -448,12 +420,10 @@ export default function PatientPanel({
 
       {/* ── Patient Creation Modal ── */}
       {showAddModal && (
-        <div className="fixed inset-0 bg-slate-950/60 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
-          <div className={`w-full max-w-lg rounded-2xl border shadow-2xl ${
-            darkMode ? 'bg-slate-900 border-outline/20 text-white' : 'bg-surface-container-lowest border-outline-variant text-on-surface'
-          }`}>
+        <div className="fixed inset-0 bg-black/10 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+          <div className={`w-full max-w-lg rounded-2xl border shadow-2xl bg-surface-container-lowest border-outline-variant text-on-surface`}>
             {/* Modal Header */}
-            <div className={`px-6 py-4 border-b flex items-center justify-between ${darkMode ? 'border-outline/20' : 'border-outline-variant'}`}>
+            <div className={`px-6 py-4 border-b flex items-center justify-between border-outline-variant`}>
               <div className="flex items-center gap-2">
                 <span className="material-symbols-outlined text-primary text-xl" style={{ fontVariationSettings: "'FILL' 1" }}>person_add</span>
                 <h3 className="font-bold text-base">Novo Cadastro de Paciente</h3>
@@ -506,15 +476,13 @@ export default function PatientPanel({
               </div>
 
               {/* Medical Alert Toggle */}
-              <div className={`p-4 rounded-xl border ${
-                hasMedicalAlert ? 'bg-error/5 border-error/30' : darkMode ? 'border-outline/20' : 'border-outline-variant/60'
-              }`}>
+              <div className={`p-4 rounded-xl border ${hasMedicalAlert ? 'bg-error/5 border-error/30' : 'border-outline-variant/60'}`}>
                 <label className="flex items-center gap-3 cursor-pointer select-none">
                   <div
                     onClick={() => setHasMedicalAlert(!hasMedicalAlert)}
                     className={`w-10 h-5 rounded-full transition-colors relative cursor-pointer ${hasMedicalAlert ? 'bg-error' : 'bg-outline/40'}`}
                   >
-                    <div className={`w-4 h-4 bg-surface-container-lowest dark:bg-inverse-surface rounded-full absolute top-0.5 transition-all ${hasMedicalAlert ? 'left-5' : 'left-0.5'}`} />
+                    <div className={`w-4 h-4 bg-surface-container-lowest rounded-full absolute top-0.5 transition-all ${hasMedicalAlert ? 'left-5' : 'left-0.5'}`} />
                   </div>
                   <span className={`text-sm font-semibold ${hasMedicalAlert ? 'text-error' : 'text-on-surface-variant'}`}>
                     Paciente possui alerta médico crítico
@@ -538,9 +506,7 @@ export default function PatientPanel({
                   Confirmar Cadastro
                 </button>
                 <button type="button" onClick={() => setShowAddModal(false)}
-                  className={`px-5 py-2.5 border rounded-xl text-sm font-semibold cursor-pointer transition-colors ${
-                    darkMode ? 'border-outline/30 hover:bg-inverse-surface' : 'border-outline-variant hover:bg-surface-container'
-                  }`}>
+                  className={`px-5 py-2.5 border rounded-xl text-sm font-semibold cursor-pointer transition-colors border-outline-variant hover:bg-surface-container`}>
                   Cancelar
                 </button>
               </div>

@@ -14,20 +14,18 @@ import { Moon, Sun, RefreshCw, Activity, HeartCrack } from 'lucide-react';
 export default function App() {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [darkMode, setDarkMode] = useState<boolean>(() => {
-    // Check local preferences
-    const stored = localStorage.getItem('easyclin_dark_mode');
-    return stored ? stored === 'true' : true; // Default to eye-care dark mode
+    // Force light theme by default for initial work
+    // Ignore stored preference for now to keep UI consistently light
+    return false;
   });
 
   // Handle active class
   useEffect(() => {
     const root = window.document.documentElement;
-    if (darkMode) {
-      root.classList.add('dark');
-    } else {
-      root.classList.remove('dark');
-    }
-    localStorage.setItem('easyclin_dark_mode', String(darkMode));
+    // Ensure 'dark' class is removed so Tailwind dark: styles do not apply
+    root.classList.remove('dark');
+    // Persist as false so reload stays in light theme
+    localStorage.setItem('easyclin_dark_mode', 'false');
   }, [darkMode]);
 
   // Read active session on launch
@@ -99,7 +97,7 @@ export default function App() {
           {darkMode ? <Sun className="h-4 w-4 text-amber-500" /> : <Moon className="h-4 w-4 text-indigo-500" />}
         </button>
 
-        <span className="w-[1px] h-4 bg-outline dark:bg-outline-variant"></span>
+        <span className="w-px h-4 bg-outline dark:bg-outline-variant"></span>
 
         {/* Reset Database */}
         <button
