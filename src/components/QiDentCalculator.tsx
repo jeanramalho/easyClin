@@ -101,7 +101,7 @@ export default function QiDentCalculator({ tenantId, procedures, onRefreshProced
         <div className="flex justify-between items-center mb-5">
           <div>
             <h3 className="text-md font-bold">Catálogo de Procedimentos</h3>
-            <p className="text-xs text-slate-500">Cada item calcula os repasses de comissão e rentabilidade real da clínica.</p>
+            <p className="text-xs text-on-surface-variant">Cada item calcula os repasses de comissão e rentabilidade real da clínica.</p>
           </div>
           <button
             onClick={() => {
@@ -123,17 +123,17 @@ export default function QiDentCalculator({ tenantId, procedures, onRefreshProced
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead>
-              <tr className="border-b border-slate-200 dark:border-slate-800 text-slate-400 font-semibold uppercase tracking-wider text-[10px]">
+              <tr className="border-b border-outline-variant dark:border-outline/20 text-on-surface-variant font-semibold uppercase tracking-wider text-[10px]">
                 <th className="pb-2.5">Nome / Categoria</th>
                 <th className="pb-2.5">Insumos + Sala</th>
                 <th className="pb-2.5">Repasse Prof.</th>
-                <th className="pb-2.5 text-right font-bold text-slate-900 dark:text-slate-100">Praticado / Lucro Real</th>
+                <th className="pb-2.5 text-right font-bold text-on-surface dark:text-inverse-on-surface">Praticado / Lucro Real</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+            <tbody className="divide-y divide-outline-variant dark:divide-outline/20">
               {procedures.length === 0 ? (
                 <tr>
-                  <td colSpan={4} className="py-6 text-center text-slate-500">Nenhum procedimento cadastrado. Adicione um acima!</td>
+                  <td colSpan={4} className="py-6 text-center text-on-surface-variant">Nenhum procedimento cadastrado. Adicione um acima!</td>
                 </tr>
               ) : (
                 procedures.map((proc) => {
@@ -150,19 +150,19 @@ export default function QiDentCalculator({ tenantId, procedures, onRefreshProced
                       }`}
                     >
                       <td className="py-3 pr-2">
-                        <p className="font-semibold text-slate-900 dark:text-slate-100">{proc.name}</p>
-                        <span className="text-[10px] text-slate-500">{proc.category}</span>
+                        <p className="font-semibold text-on-surface dark:text-inverse-on-surface">{proc.name}</p>
+                        <span className="text-[10px] text-on-surface-variant">{proc.category}</span>
                       </td>
                       <td className="py-3 pr-2">
                         <p className="font-medium">R$ {(proc.costPrice + proc.clinicCost).toFixed(2)}</p>
-                        <span className="text-[10px] text-slate-400 font-mono">Insumo: {proc.costPrice} | Sala: {proc.clinicCost}h</span>
+                        <span className="text-[10px] text-on-surface-variant font-mono">Insumo: {proc.costPrice} | Sala: {proc.clinicCost}h</span>
                       </td>
                       <td className="py-3 pr-2">
                         <p className="font-semibold text-purple-600 dark:text-purple-400">{proc.professionalPercent}%</p>
-                        <span className="text-[10px] text-slate-400 font-mono">R$ {commission.toFixed(2)}</span>
+                        <span className="text-[10px] text-on-surface-variant font-mono">R$ {commission.toFixed(2)}</span>
                       </td>
                       <td className="py-3 text-right">
-                        <p className="font-bold text-slate-900 dark:text-slate-100 font-mono">R$ {proc.finalPrice.toFixed(2)}</p>
+                        <p className="font-bold text-on-surface dark:text-inverse-on-surface font-mono">R$ {proc.finalPrice.toFixed(2)}</p>
                         <span className={`inline-flex items-center gap-0.5 text-[10px] font-bold px-1.5 py-0.5 rounded ${
                           profit > 0 
                             ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' 
@@ -195,7 +195,7 @@ export default function QiDentCalculator({ tenantId, procedures, onRefreshProced
 
             <div className="space-y-4">
               <div>
-                <label className="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Nome do Tratamento/Consulta</label>
+                <label className="block text-[10px] font-semibold text-on-surface-variant uppercase tracking-wider mb-1">Nome do Tratamento/Consulta</label>
                 <input
                   type="text"
                   required
@@ -209,7 +209,7 @@ export default function QiDentCalculator({ tenantId, procedures, onRefreshProced
               </div>
 
               <div>
-                <label className="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Categoria de Atendimento</label>
+                <label className="block text-[10px] font-semibold text-on-surface-variant uppercase tracking-wider mb-1">Categoria de Atendimento</label>
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
@@ -229,9 +229,9 @@ export default function QiDentCalculator({ tenantId, procedures, onRefreshProced
               {/* Insumos & Sala Costs */}
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Insumos (Fixo)</label>
+                  <label className="block text-[10px] font-semibold text-on-surface-variant uppercase tracking-wider mb-1">Insumos (Fixo)</label>
                   <div className="relative">
-                    <span className="absolute left-2.5 top-2 text-[10px] text-slate-400 text-slate-500">R$</span>
+                    <span className="absolute left-2.5 top-2 text-[10px] text-on-surface-variant">R$</span>
                     <input
                       type="number"
                       min={0}
@@ -242,16 +242,16 @@ export default function QiDentCalculator({ tenantId, procedures, onRefreshProced
                         setFinalPracticed(Math.round(calculateSugerido(val, clinicCost, professionalPercent, desiredMargin)));
                       }}
                       className={`w-full pl-7 pr-2 py-1.5 border rounded-xl font-mono text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 ${
-                        darkMode ? 'bg-slate-950 border-slate-800 text-white' : 'bg-slate-50 border-slate-200'
+                        darkMode ? 'bg-inverse-surface border-outline/20 text-inverse-on-surface' : 'bg-surface-container-lowest border-outline-variant text-on-surface'
                       }`}
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Custo Sala (H)</label>
+                  <label className="block text-[10px] font-semibold text-on-surface-variant uppercase tracking-wider mb-1">Custo Sala (H)</label>
                   <div className="relative">
-                    <span className="absolute left-2.5 top-2 text-[10px] text-slate-400 text-slate-500">R$</span>
+                    <span className="absolute left-2.5 top-2 text-[10px] text-on-surface-variant">R$</span>
                     <input
                       type="number"
                       min={0}
@@ -271,7 +271,7 @@ export default function QiDentCalculator({ tenantId, procedures, onRefreshProced
 
               {/* Commission Slider */}
               <div>
-                <div className="flex justify-between items-center text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1">
+                  <div className="flex justify-between items-center text-[10px] font-semibold text-on-surface-variant uppercase tracking-wider mb-1">
                   <span>Comissão Profissional</span>
                   <span className="font-mono text-xs text-purple-500 font-bold">{professionalPercent}%</span>
                 </div>
