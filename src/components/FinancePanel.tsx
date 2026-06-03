@@ -131,7 +131,7 @@ export default function FinancePanel({ tenantId, transactions, onRefresh, darkMo
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
         {/* Left main transactions stream ledger */}
-        <div className={`lg:col-span-2 p-5 rounded-2xl border ${
+          <div className={`lg:col-span-2 p-5 rounded-2xl border ${
           darkMode ? 'bg-inverse-surface border-outline/20' : 'bg-surface-container-lowest border-outline-variant'
         }`}>
           <div className="flex justify-between items-center mb-5">
@@ -143,9 +143,9 @@ export default function FinancePanel({ tenantId, transactions, onRefresh, darkMo
             {!showAdd && (
               <button
                 onClick={() => setShowAdd(true)}
-                className="flex items-center gap-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs py-1.5 px-3 rounded-lg cursor-pointer"
+                className="flex items-center gap-2 bg-primary hover:bg-primary-container text-on-primary font-semibold text-xs py-2 px-3 rounded-lg cursor-pointer"
               >
-                <Plus className="h-3.5 w-3.5" />
+                <Plus className="h-4 w-4" />
                 <span>Lançar Gasto / Receita</span>
               </button>
             )}
@@ -154,30 +154,30 @@ export default function FinancePanel({ tenantId, transactions, onRefresh, darkMo
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead>
-                <tr className="border-b border-slate-200 dark:border-slate-800 text-slate-400 font-semibold uppercase tracking-wider text-[10px]">
+                <tr className="border-b border-outline-variant dark:border-outline/20 text-on-surface-variant font-semibold uppercase tracking-wider text-[10px]">
                   <th className="pb-2.5">Descrição</th>
                   <th className="pb-2.5">Data / Categoria</th>
                   <th className="pb-2.5">Meio</th>
                   <th className="pb-2.5 text-right">Valor</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+              <tbody className="divide-y divide-outline-variant/30 dark:divide-outline/20">
                 {transactions.length === 0 ? (
                   <tr>
-                    <td colSpan={4} className="py-6 text-center text-slate-500">Nenhum lançamento registrado no fluxo de caixa.</td>
+                    <td colSpan={4} className="py-6 text-center text-on-surface-variant">Nenhum lançamento registrado no fluxo de caixa.</td>
                   </tr>
                 ) : (
                   transactions.sort((a, b) => b.date.localeCompare(a.date)).map((tx) => (
-                    <tr key={tx.id} className="hover:bg-slate-50/15 dark:hover:bg-slate-800/15 transition-colors">
-                      <td className="py-3 pr-2 font-semibold text-slate-900 dark:text-slate-100">
+                    <tr key={tx.id} className="hover:bg-surface-container/30 dark:hover:bg-inverse-surface/20 transition-colors">
+                      <td className="py-3 pr-2 font-semibold text-on-surface dark:text-inverse-on-surface">
                         {tx.description}
-                        <span className="block text-[8px] uppercase tracking-wider font-bold text-slate-400 font-mono mt-0.5">ID: {tx.id}</span>
+                        <span className="block text-[8px] uppercase tracking-wider font-bold text-on-surface-variant font-mono mt-0.5">ID: {tx.id}</span>
                       </td>
                       <td className="py-3 pr-2">
-                        <p className="font-mono">{new Date(tx.date).toLocaleDateString()}</p>
-                        <span className="text-[10px] text-slate-500 uppercase font-bold text-[9px]">{tx.category}</span>
+                        <p className="font-mono text-on-surface">{new Date(tx.date).toLocaleDateString()}</p>
+                        <span className="text-[10px] text-on-surface-variant uppercase font-bold">{tx.category}</span>
                       </td>
-                      <td className="py-3 pr-2 text-slate-500">{tx.paymentMethod}</td>
+                      <td className="py-3 pr-2 text-on-surface-variant">{tx.paymentMethod}</td>
                       <td className={`py-3 text-right font-bold font-mono text-xs ${
                         tx.type === 'revenue' ? 'text-emerald-500' : 'text-rose-500'
                       }`}>
@@ -195,7 +195,7 @@ export default function FinancePanel({ tenantId, transactions, onRefresh, darkMo
         <div className="col-span-1">
           {showAdd ? (
             <form onSubmit={handleCreateTransaction} className={`p-5 rounded-2xl border space-y-4 ${
-              darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'
+              darkMode ? 'bg-inverse-surface border-outline/20 text-inverse-on-surface' : 'bg-surface-container-lowest border-outline-variant text-on-surface'
             }`}>
               <h4 className="font-bold text-xs uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
                 <CalendarPlus className="h-4.5 w-4.5 text-blue-500" />
@@ -203,44 +203,44 @@ export default function FinancePanel({ tenantId, transactions, onRefresh, darkMo
               </h4>
 
               <div>
-                <label className="block text-[10px] uppercase tracking-wider font-semibold text-slate-400 mb-1">Nome / Descrição</label>
+                <label className="block text-[10px] uppercase tracking-wider font-semibold text-on-surface-variant mb-1">Nome / Descrição</label>
                 <input
                   type="text"
                   required
                   placeholder="Ex: Compra de Luvas / Aluguel Sala 10"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  className={`w-full px-3 py-2 border rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 ${
-                    darkMode ? 'bg-slate-950 border-slate-850 text-white' : 'bg-slate-50 border-slate-250 text-black'
+                  className={`w-full px-3 py-2 border rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-primary ${
+                    darkMode ? 'bg-inverse-surface border-outline/20 text-inverse-on-surface' : 'bg-surface-container-lowest border-outline-variant text-on-surface'
                   }`}
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3.5">
                 <div>
-                  <label className="block text-[10px] uppercase tracking-wider font-semibold text-slate-400 mb-1">Valor Unitário</label>
+                  <label className="block text-[10px] uppercase tracking-wider font-semibold text-on-surface-variant mb-1">Valor Unitário</label>
                   <div className="relative">
-                    <span className="absolute left-2.5 top-2 text-[10px] text-slate-400">R$</span>
+                      <span className="absolute left-2.5 top-2 text-[10px] text-on-surface-variant">R$</span>
                     <input
                       type="number"
                       required
                       min={1}
                       value={amount}
                       onChange={(e) => setAmount(parseFloat(e.target.value) || 0)}
-                      className={`w-full pl-7 pr-2 py-1.5 border rounded-xl font-mono text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 ${
-                        darkMode ? 'bg-slate-950 border-slate-800 text-white' : 'bg-slate-50 border-slate-200'
+                      className={`w-full pl-7 pr-2 py-1.5 border rounded-xl font-mono text-xs focus:outline-none focus:ring-1 focus:ring-primary ${
+                        darkMode ? 'bg-inverse-surface border-outline/20 text-inverse-on-surface' : 'bg-surface-container-lowest border-outline-variant text-on-surface'
                       }`}
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-[10px] uppercase tracking-wider font-semibold text-slate-400 mb-1">Forma</label>
+                  <label className="block text-[10px] uppercase tracking-wider font-semibold text-on-surface-variant mb-1">Forma</label>
                   <select
                     value={paymentMethod}
                     onChange={(e) => setPaymentMethod(e.target.value)}
-                    className={`w-full px-2.5 py-1.8 border rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 ${
-                      darkMode ? 'bg-slate-950 border-slate-850 text-white' : 'bg-slate-50 border-slate-225 text-black'
+                    className={`w-full px-2.5 py-1.8 border rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-primary ${
+                      darkMode ? 'bg-inverse-surface border-outline/20 text-inverse-on-surface' : 'bg-surface-container-lowest border-outline-variant text-on-surface'
                     }`}
                   >
                     <option value="Pix">Pix Transf</option>
@@ -253,11 +253,11 @@ export default function FinancePanel({ tenantId, transactions, onRefresh, darkMo
 
               <div className="grid grid-cols-2 gap-3.5">
                 <div>
-                  <label className="block text-[10px] uppercase tracking-wider font-semibold text-slate-400 mb-1">Sentido de Caixa</label>
+                  <label className="block text-[10px] uppercase tracking-wider font-semibold text-on-surface-variant mb-1">Sentido de Caixa</label>
                   <select
                     value={type}
                     onChange={(e) => setType(e.target.value as TransactionType)}
-                    className="w-full px-2.5 py-2.5 border border-slate-200 dark:border-slate-800 rounded-xl text-xs bg-transparent text-slate-800 dark:text-white"
+                    className="w-full px-2.5 py-2.5 border border-outline-variant dark:border-outline/20 rounded-xl text-xs bg-transparent text-on-surface dark:text-inverse-on-surface"
                   >
                     <option value="revenue">Receita (Entrada)</option>
                     <option value="expense">Despesa (Gasto)</option>
@@ -265,11 +265,11 @@ export default function FinancePanel({ tenantId, transactions, onRefresh, darkMo
                 </div>
 
                 <div>
-                  <label className="block text-[10px] uppercase tracking-wider font-semibold text-slate-400 mb-1">Categoria</label>
+                  <label className="block text-[10px] uppercase tracking-wider font-semibold text-on-surface-variant mb-1">Categoria</label>
                   <select
                     value={category}
                     onChange={(e) => setCategory(e.target.value as TransactionCategory)}
-                    className="w-full px-2.5 py-2.5 border border-slate-200 dark:border-slate-800 rounded-xl text-xs bg-transparent text-slate-800 dark:text-white"
+                    className="w-full px-2.5 py-2.5 border border-outline-variant dark:border-outline/20 rounded-xl text-xs bg-transparent text-on-surface dark:text-inverse-on-surface"
                   >
                     <option value="consultation">Consulta</option>
                     <option value="procedure">Tratamento</option>
@@ -282,14 +282,14 @@ export default function FinancePanel({ tenantId, transactions, onRefresh, darkMo
               </div>
 
               <div>
-                <label className="block text-[10px] uppercase tracking-wider font-semibold text-slate-400 mb-1">Data Efetiva</label>
+                <label className="block text-[10px] uppercase tracking-wider font-semibold text-on-surface-variant mb-1">Data Efetiva</label>
                 <input
                   type="date"
                   required
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
                   className={`w-full px-3 py-1.8 border rounded-xl text-xs ${
-                    darkMode ? 'bg-slate-950 border-slate-800 text-white' : 'bg-slate-50 border-slate-200 text-black'
+                    darkMode ? 'bg-inverse-surface border-outline/20 text-inverse-on-surface' : 'bg-surface-container-lowest border-outline-variant text-on-surface'
                   }`}
                 />
               </div>
@@ -312,12 +312,12 @@ export default function FinancePanel({ tenantId, transactions, onRefresh, darkMo
 
             </form>
           ) : (
-            <div className={`p-5 rounded-2xl border border-dashed text-center flex flex-col items-center justify-center ${
+              <div className={`p-5 rounded-2xl border border-dashed text-center flex flex-col items-center justify-center ${
               darkMode ? 'bg-inverse-surface border-outline/20 text-on-surface-variant' : 'bg-surface-container-lowest border-outline-variant text-on-surface-variant'
             }`}>
-              <Landmark className="h-8 w-8 text-slate-300 mb-2" />
+              <Landmark className="h-8 w-8 text-on-surface-variant mb-2" />
               <p className="text-xs font-semibold">Conciliação de Balanço</p>
-              <p className="text-[11px] text-slate-400 mt-1">Lançamentos de orçamentos aprovados de pacientes são computados de forma <strong>automática</strong> de modo a alimentar estes balancetes corporativos!</p>
+              <p className="text-[11px] text-on-surface-variant mt-1">Lançamentos de orçamentos aprovados de pacientes são computados de forma <strong>automática</strong> de modo a alimentar estes balancetes corporativos!</p>
             </div>
           )}
         </div>
