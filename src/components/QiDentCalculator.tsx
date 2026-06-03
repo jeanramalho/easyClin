@@ -285,13 +285,13 @@ export default function QiDentCalculator({ tenantId, procedures, onRefreshProced
                     setProfessionalPercent(val);
                     setFinalPracticed(Math.round(calculateSugerido(costPrice, clinicCost, val, desiredMargin)));
                   }}
-                  className="w-full h-1.5 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                  className="w-full h-1.5 bg-surface-container/30 dark:bg-inverse-surface/40 rounded-lg appearance-none cursor-pointer accent-blue-600"
                 />
               </div>
 
               {/* Desired margin slider */}
               <div>
-                <div className="flex justify-between items-center text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1">
+                <div className="flex justify-between items-center text-[10px] font-semibold text-on-surface-variant uppercase tracking-wider mb-1">
                   <span>Margem de Lucro Clínica</span>
                   <span className="font-mono text-xs text-emerald-500 font-bold">{desiredMargin}%</span>
                 </div>
@@ -305,12 +305,12 @@ export default function QiDentCalculator({ tenantId, procedures, onRefreshProced
                     setDesiredMargin(val);
                     setFinalPracticed(Math.round(calculateSugerido(costPrice, clinicCost, professionalPercent, val)));
                   }}
-                  className="w-full h-1.5 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                  className="w-full h-1.5 bg-surface-container/30 dark:bg-inverse-surface/40 rounded-lg appearance-none cursor-pointer accent-blue-600"
                 />
               </div>
 
               {/* Smart feedback box */}
-              <div className="p-3 bg-blue-500/10 rounded-xl space-y-2 border border-blue-500/15">
+                <div className="p-3 bg-blue-500/10 rounded-xl space-y-2 border border-blue-500/15">
                 <div className="flex items-center gap-1 text-[11px] font-semibold text-blue-500">
                   <Sparkles className="h-3.5 w-3.5" />
                   <span>Sugerido Inteligente QiDent:</span>
@@ -318,40 +318,40 @@ export default function QiDentCalculator({ tenantId, procedures, onRefreshProced
                 <div className="text-xl font-extrabold tracking-tight font-mono text-blue-600 dark:text-blue-400">
                   R$ {calculatedPrice.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </div>
-                <p className="text-[10px] text-slate-400">Garante a cobertura total dos consumíveis, custos administrativos por hora do consultório e sua margem líquida líquida de {desiredMargin}%.</p>
+                <p className="text-[10px] text-on-surface-variant">Garante a cobertura total dos consumíveis, custos administrativos por hora do consultório e sua margem líquida líquida de {desiredMargin}%.</p>
               </div>
 
               {/* Practiced price input */}
               <div>
-                <label className="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Preço Praticado (Para o Paciente)</label>
+                <label className="block text-[10px] font-semibold text-on-surface-variant uppercase tracking-wider mb-1">Preço Praticado (Para o Paciente)</label>
                 <div className="relative">
-                  <span className="absolute left-3 top-2.5 text-xs text-slate-400">R$</span>
+                  <span className="absolute left-3 top-2.5 text-xs text-on-surface-variant">R$</span>
                   <input
                     type="number"
                     min={1}
                     value={finalPracticed}
                     onChange={(e) => setFinalPracticed(parseFloat(e.target.value) || 0)}
-                    className="w-full pl-8 pr-3 py-2.5 border rounded-xl font-mono text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 text-slate-900 dark:text-white dark:bg-slate-950 border-slate-300 dark:border-slate-800"
+                    className="w-full pl-8 pr-3 py-2.5 border rounded-xl font-mono text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 text-on-surface dark:text-inverse-on-surface dark:bg-inverse-surface border-outline-variant dark:border-outline/20 bg-surface-container-lowest"
                   />
                 </div>
               </div>
 
               {/* Actual live simulation breakdown */}
-              <div className="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-950 space-y-2 text-xs border border-slate-200 dark:border-slate-800">
-                <span className="font-bold text-[10px] text-slate-500 uppercase tracking-wider block">Análise de Custos e Lucro Real</span>
-                <div className="flex justify-between border-b border-dashed dark:border-slate-800 pb-1 text-slate-500">
+              <div className="p-3.5 rounded-xl bg-surface-container/30 dark:bg-inverse-surface space-y-2 text-xs border border-outline-variant dark:border-outline/20">
+                <span className="font-bold text-[10px] text-on-surface-variant uppercase tracking-wider block">Análise de Custos e Lucro Real</span>
+                <div className="flex justify-between border-b border-dashed dark:border-outline/20 pb-1 text-on-surface-variant">
                   <span>Preço Final:</span>
-                  <span className="font-mono text-slate-800 dark:text-slate-200">R$ {finalPracticed.toFixed(2)}</span>
+                  <span className="font-mono text-on-surface dark:text-inverse-on-surface">R$ {finalPracticed.toFixed(2)}</span>
                 </div>
-                <div className="flex justify-between border-b border-dashed dark:border-slate-800 pb-1 text-slate-500">
+                <div className="flex justify-between border-b border-dashed dark:border-outline/20 pb-1 text-on-surface-variant">
                   <span>(-) Insumos Físicos:</span>
                   <span className="font-mono text-rose-500">-R$ {totalInsumos.toFixed(2)}</span>
                 </div>
-                <div className="flex justify-between border-b border-dashed dark:border-slate-800 pb-1 text-slate-500">
+                <div className="flex justify-between border-b border-dashed dark:border-outline/20 pb-1 text-on-surface-variant">
                   <span>(-) Custo Operacional Sala:</span>
                   <span className="font-mono text-rose-500">-R$ {totalSala.toFixed(2)}</span>
                 </div>
-                <div className="flex justify-between border-b border-dashed dark:border-slate-800 pb-1 text-slate-500">
+                <div className="flex justify-between border-b border-dashed dark:border-outline/20 pb-1 text-on-surface-variant">
                   <span>(-) Comissão de Repasse ({professionalPercent}%):</span>
                   <span className="font-mono text-rose-500">-R$ {repasseVal.toFixed(2)}</span>
                 </div>
@@ -374,7 +374,7 @@ export default function QiDentCalculator({ tenantId, procedures, onRefreshProced
                 <button
                   type="button"
                   onClick={() => setEditingProc(null)}
-                  className="px-3.5 py-2.5 border rounded-xl text-xs hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+                  className="px-3.5 py-2.5 border rounded-xl text-xs hover:bg-surface-container/50 dark:hover:bg-inverse-surface/40 transition-colors border-outline-variant dark:border-outline/20"
                 >
                   Cancelar
                 </button>
@@ -384,11 +384,11 @@ export default function QiDentCalculator({ tenantId, procedures, onRefreshProced
           </form>
         ) : (
           <div className={`p-8 rounded-2xl border border-dashed text-center flex flex-col items-center justify-center h-full ${
-            darkMode ? 'bg-slate-900 border-slate-800 text-slate-500' : 'bg-white border-slate-200 text-slate-400'
+            darkMode ? 'bg-inverse-surface border-outline/20 text-on-surface-variant' : 'bg-surface-container-lowest border-outline-variant text-on-surface-variant'
           }`}>
-            <Calculator className="h-10 w-10 text-slate-300 mb-2.5" />
+            <Calculator className="h-10 w-10 text-on-surface-variant mb-2.5" />
             <p className="text-xs font-semibold">Simule margens reais de lucro</p>
-            <p className="text-[11px] text-slate-400 mt-1 max-w-[200px] mx-auto">
+            <p className="text-[11px] text-on-surface-variant mt-1 max-w-[200px] mx-auto">
               Clique em um procedimento na tabela para editá-lo ou em "Adicionar Novo" no topo para simular o preço inteligente.
             </p>
           </div>
