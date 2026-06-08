@@ -133,7 +133,7 @@ export default function PatientPanel({
   return (
     <Grid cols="grid-cols-1 lg:grid-cols-3" className="gap-6">
       {/* ── 1. Patient Directory (Left Panel) ── */}
-      <Card className="col-span-1">
+      <Card className="col-span-1 flex flex-col">
         {/* Header */}
         <div className={`px-5 py-4 border-b flex items-center justify-between border-outline-variant`}>
           <div>
@@ -201,7 +201,7 @@ export default function PatientPanel({
             ))
           )}
         </div>
-      </div>
+      </Card>
 
       {/* ── 2. Clinical Record Workspace (Right Panel – 2 cols) ── */}
       <div className="col-span-1 lg:col-span-2">
@@ -490,6 +490,6 @@ export default function PatientPanel({
           </form>
         </Modal>
       )}
-    </div>
+    </Grid>
   );
 }
