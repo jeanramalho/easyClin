@@ -66,7 +66,7 @@ export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch }:
 
     if (!activeTenant) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-6 bg-surface dark:bg-inverse-surface text-on-surface dark:text-inverse-on-surface">
+      <div className="min-h-screen flex items-center justify-center p-6 bg-surface text-on-surface">
         <div className="text-center space-y-4">
           <span className="material-symbols-outlined text-[48px] text-rose-500">gpp_maybe</span>
           <p className="text-xs text-rose-500 font-extrabold uppercase tracking-widest">Sessão Corrompida</p>
@@ -159,7 +159,7 @@ export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch }:
         </div>
 
         {/* Tenant Quick Info */}
-        <div className="bg-surface-container dark:bg-inverse-surface rounded-xl p-3 mb-6 border border-outline-variant/30">
+        <div className="bg-surface-container rounded-xl p-3 mb-6 border border-outline-variant/30">
           <div className="flex items-center gap-3 min-w-0">
             {activeTenant.logoUrl ? (
               <img 
@@ -177,10 +177,10 @@ export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch }:
               <h3 className="font-body-md text-body-md text-on-surface font-semibold truncate leading-none mb-1">{activeTenant.name}</h3>
               <span className={`px-1.5 py-0.5 rounded text-[8px] font-bold uppercase ${
                 activeTenant.status === 'active' 
-                  ? 'bg-emerald-500/10 text-emerald-500 dark:text-emerald-400' 
+                  ? 'bg-emerald-500/10 text-emerald-500' 
                   : activeTenant.status === 'trial' 
-                  ? 'bg-amber-500/10 text-amber-500 dark:text-amber-400' 
-                  : 'bg-rose-500/10 text-rose-500 dark:text-rose-400'
+                  ? 'bg-amber-500/10 text-amber-500' 
+                  : 'bg-rose-500/10 text-rose-500'
               }`}>
                 {activeTenant.status}
               </span>
@@ -198,7 +198,7 @@ export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch }:
             className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg font-title-sm text-title-sm text-left transition-colors cursor-pointer focus:outline-none ${
               activeTab === 'agenda'
                 ? 'bg-primary text-on-primary font-bold shadow-sm'
-                : 'text-on-surface-variant hover:bg-surface-container dark:hover:bg-inverse-surface'
+                : 'text-on-surface-variant hover:bg-surface-container'
             }`}
           >
             <span className="material-symbols-outlined text-[20px]">calendar_today</span>
@@ -213,7 +213,7 @@ export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch }:
             className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg font-title-sm text-title-sm text-left transition-colors cursor-pointer focus:outline-none ${
               activeTab === 'patients'
                 ? 'bg-primary text-on-primary font-bold shadow-sm'
-                : 'text-on-surface-variant hover:bg-surface-container dark:hover:bg-inverse-surface'
+                : 'text-on-surface-variant hover:bg-surface-container'
             }`}
           >
             <span className="material-symbols-outlined text-[20px]">group</span>
@@ -227,7 +227,7 @@ export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch }:
               setMobileSidebarOpen(false);
             }}
             className={`w-full flex items-center justify-between px-4 py-3 rounded-lg font-title-sm text-title-sm text-left transition-colors focus:outline-none ${
-              isReceptionist ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer hover:bg-surface-container dark:hover:bg-inverse-surface'
+              isReceptionist ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer hover:bg-surface-container'
             } ${
               activeTab === 'budgets'
                 ? 'bg-primary text-on-primary font-bold shadow-sm'
@@ -248,7 +248,7 @@ export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch }:
               setMobileSidebarOpen(false);
             }}
             className={`w-full flex items-center justify-between px-4 py-3 rounded-lg font-title-sm text-title-sm text-left transition-colors focus:outline-none ${
-              isReceptionist || isProfessional ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer hover:bg-surface-container dark:hover:bg-inverse-surface'
+              isReceptionist || isProfessional ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer hover:bg-surface-container'
             } ${
               activeTab === 'pricing'
                 ? 'bg-primary text-on-primary font-bold shadow-sm'
@@ -269,7 +269,7 @@ export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch }:
               setMobileSidebarOpen(false);
             }}
             className={`w-full flex items-center justify-between px-4 py-3 rounded-lg font-title-sm text-title-sm text-left transition-colors focus:outline-none ${
-              isReceptionist ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer hover:bg-surface-container dark:hover:bg-inverse-surface'
+              isReceptionist ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer hover:bg-surface-container'
             } ${
               activeTab === 'finance'
                 ? 'bg-primary text-on-primary font-bold shadow-sm'
@@ -290,7 +290,7 @@ export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch }:
               setMobileSidebarOpen(false);
             }}
             className={`w-full flex items-center justify-between px-4 py-3 rounded-lg font-title-sm text-title-sm text-left transition-colors focus:outline-none ${
-              !isAdmin ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer hover:bg-surface-container dark:hover:bg-inverse-surface'
+              !isAdmin ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer hover:bg-surface-container'
             } ${
               activeTab === 'admin'
                 ? 'bg-primary text-on-primary font-bold shadow-sm'
@@ -306,7 +306,7 @@ export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch }:
         </nav>
 
         {/* Sidebar Footer Developer Simulator */}
-        <div className="border-t border-outline-variant dark:border-outline/20 pt-4 mt-auto space-y-4">
+        <div className="border-t border-outline-variant pt-4 mt-auto space-y-4">
           <div className="space-y-1">
             <label className="font-label-sm text-[10px] text-outline uppercase tracking-wider block font-semibold">Simulador de Papel</label>
             <div className="relative">
@@ -319,7 +319,7 @@ export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch }:
                     setMobileSidebarOpen(false);
                   }
                 }}
-                className="w-full text-xs bg-surface-container-low dark:bg-inverse-surface border border-outline-variant/60 dark:border-outline/40 p-2 rounded-lg text-on-surface focus:outline-none focus:ring-1 focus:ring-primary"
+                className="w-full text-xs bg-surface-container-low border border-outline-variant/60 p-2 rounded-lg text-on-surface focus:outline-none focus:ring-1 focus:ring-primary"
               >
                 {simulatedStaffMembers.map(m => {
                   let labelRole = m.role === 'clinic_admin' ? 'Dono' : m.role === 'receptionist' ? 'Recepção' : 'Dentista/Médico';
@@ -347,12 +347,12 @@ export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch }:
       <div className="flex-1 flex flex-col min-w-0 min-h-screen overflow-y-auto">
         
         {/* Top Header bar */}
-        <header className="h-16 border-b border-outline-variant dark:border-outline/20 bg-surface-container-lowest dark:bg-inverse-surface px-6 flex items-center justify-between sticky top-0 z-20 shadow-sm">
+        <header className="h-16 border-b border-outline-variant bg-surface-container-lowest px-6 flex items-center justify-between sticky top-0 z-20 shadow-sm">
           
           {/* Mobile menu toggle */}
           <button 
             onClick={() => setMobileSidebarOpen(!mobileSidebarOpen)}
-            className="p-2 text-on-surface-variant hover:bg-surface-container dark:hover:bg-inverse-surface rounded-lg md:hidden mr-2 cursor-pointer focus:outline-none"
+            className="p-2 text-on-surface-variant hover:bg-surface-container rounded-lg md:hidden mr-2 cursor-pointer focus:outline-none"
           >
             <span className="material-symbols-outlined">menu</span>
           </button>
@@ -365,18 +365,18 @@ export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch }:
             <input 
               type="text" 
               placeholder="Buscar paciente..." 
-              className="w-full pl-9 pr-4 py-1.5 bg-surface-container-lowest dark:bg-inverse-surface border border-outline-variant dark:border-outline rounded-full font-body-sm text-body-sm focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none transition-all outline-none" 
+              className="w-full pl-9 pr-4 py-1.5 bg-surface-container-lowest border border-outline-variant rounded-full font-body-sm text-body-sm focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none transition-all outline-none" 
             />
           </div>
 
           {/* Right actions and active profile */}
           <div className="flex items-center gap-4 ml-auto">
-            <button className="p-2 text-on-surface-variant hover:bg-surface-container dark:hover:bg-inverse-surface rounded-full transition-colors relative cursor-pointer focus:outline-none">
+            <button className="p-2 text-on-surface-variant hover:bg-surface-container rounded-full transition-colors relative cursor-pointer focus:outline-none">
               <span className="material-symbols-outlined text-[22px]">notifications</span>
               <span className="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
             </button>
 
-            <div className="h-6 w-px bg-outline-variant dark:bg-outline/20"></div>
+            <div className="h-6 w-px bg-outline-variant"></div>
 
             {/* User profile */}
             <div className="flex items-center gap-3">
@@ -406,7 +406,7 @@ export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch }:
         {activeTenant.status === 'suspended' ? (
           /* Locked Suspended Screen */
           <div className="flex-1 flex items-center justify-center p-6">
-            <div className="max-w-md w-full p-8 rounded-2xl border border-outline-variant dark:border-outline/20 bg-surface-container-lowest dark:bg-inverse-surface text-center space-y-6 shadow-2xl">
+            <div className="max-w-md w-full p-8 rounded-2xl border border-outline-variant bg-surface-container-lowest text-center space-y-6 shadow-2xl">
               <div className="mx-auto w-16 h-16 bg-error/10 text-error rounded-full flex items-center justify-center">
                 <span className="material-symbols-outlined text-[40px]" style={{ fontVariationSettings: "'wght' 500" }}>gpp_maybe</span>
               </div>
@@ -422,7 +422,7 @@ export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch }:
               </div>
 
               {/* Developer simulator unlock button */}
-              <div className="p-4 rounded-xl bg-surface-container-low dark:bg-inverse-surface border border-outline-variant/60 dark:border-outline/20 space-y-3">
+              <div className="p-4 rounded-xl bg-surface-container-low border border-outline-variant/60 space-y-3">
                 <p className="text-[10px] text-on-surface-variant font-medium leading-tight">Como administrador de homologação, você pode liquidar este boleto fictício em 1 clique para testar as dependências instantâneas de liberação de login do SaaS:</p>
                 
                 <button
@@ -447,18 +447,18 @@ export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch }:
           <main className="flex-1 p-6 space-y-6 max-w-container-max w-full mx-auto">
             
             {/* Summary statistics subheader widgets */}
-            <div className="px-6 py-4 flex flex-wrap justify-between items-center gap-4 bg-surface-container-low dark:bg-slate-900/60 rounded-xl border border-outline-variant dark:border-outline/20">
+            <div className="px-6 py-4 flex flex-wrap justify-between items-center gap-4 bg-surface-container-low rounded-xl border border-outline-variant">
               <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-body-md text-on-surface-variant font-medium">
                 <span className="flex items-center gap-2">
-                  <span className="material-symbols-outlined text-primary dark:text-primary-fixed-dim text-base">group</span>
+                  <span className="material-symbols-outlined text-primary text-base">group</span>
                   <span>Pacientes Cadastrados: <strong className="text-on-surface font-bold">{patients.length}</strong></span>
                 </span>
                 <span className="flex items-center gap-2">
-                  <span className="material-symbols-outlined text-primary dark:text-primary-fixed-dim text-base">calendar_today</span>
+                  <span className="material-symbols-outlined text-primary text-base">calendar_today</span>
                   <span>Consultas Hoje: <strong className="text-on-surface font-bold">{appointments.length}</strong></span>
                 </span>
                 <span className="flex items-center gap-2">
-                  <span className="material-symbols-outlined text-primary dark:text-primary-fixed-dim text-base">calculate</span>
+                  <span className="material-symbols-outlined text-primary text-base">calculate</span>
                   <span>Tratamentos Disponíveis: <strong className="text-on-surface font-bold">{procedures.length}</strong></span>
                 </span>
               </div>
@@ -528,8 +528,8 @@ export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch }:
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                   
                   {/* Local collaborator list & creation (Left) */}
-                  <div className="col-span-1 p-6 rounded-xl border border-outline-variant dark:border-outline/20 bg-surface-container-lowest dark:bg-inverse-surface space-y-4">
-                    <h4 className="font-extrabold text-xs uppercase tracking-wider text-outline flex items-center gap-2 border-b dark:border-outline/20 pb-2.5">
+                  <div className="col-span-1 p-6 rounded-xl border border-outline-variant bg-surface-container-lowest space-y-4">
+                    <h4 className="font-extrabold text-xs uppercase tracking-wider text-outline flex items-center gap-2 border-b border-outline-variant pb-2.5">
                       <span className="material-symbols-outlined text-primary text-base">group</span>
                       <span>Gerenciar Colaboradores</span>
                     </h4>
@@ -539,12 +539,12 @@ export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch }:
                       {allUsers.map((u) => {
                         let shortRole = u.role === 'clinic_admin' ? 'Dono' : u.role === 'receptionist' ? 'Recepção' : 'Profissional';
                         return (
-                          <div key={u.id} className="p-3 rounded-lg border border-outline-variant/60 dark:border-outline/40 flex justify-between items-center text-xs">
+                          <div key={u.id} className="p-3 rounded-lg border border-outline-variant/60 flex justify-between items-center text-xs">
                             <div className="min-w-0">
                               <p className="font-bold text-on-surface truncate">{u.name}</p>
                               <span className="text-[10px] text-outline font-mono truncate block">{u.email}</span>
                             </div>
-                            <span className="text-[9px] bg-primary/10 text-primary dark:text-primary-fixed-dim px-2 py-0.5 rounded font-semibold shrink-0 uppercase">{shortRole}</span>
+                            <span className="text-[9px] bg-primary/10 text-primary px-2 py-0.5 rounded font-semibold shrink-0 uppercase">{shortRole}</span>
                           </div>
                         );
                       })}
@@ -562,7 +562,7 @@ export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch }:
                           placeholder="Ex: Dra. Juliana Reis"
                           value={newStaffName}
                           onChange={(e) => setNewStaffName(e.target.value)}
-                          className="w-full px-3 py-2 bg-surface-container-lowest dark:bg-inverse-surface border border-outline-variant rounded-lg font-body-sm text-body-sm focus:ring-1 focus:ring-primary focus:outline-none transition-all outline-none"
+                          className="w-full px-3 py-2 bg-surface-container-lowest border border-outline-variant rounded-lg font-body-sm text-body-sm focus:ring-1 focus:ring-primary focus:outline-none transition-all outline-none"
                         />
                       </div>
 
@@ -574,7 +574,7 @@ export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch }:
                           placeholder="juliana@clinica.com"
                           value={newStaffEmail}
                           onChange={(e) => setNewStaffEmail(e.target.value)}
-                          className="w-full px-3 py-2 bg-surface-container-lowest dark:bg-inverse-surface border border-outline-variant rounded-lg font-body-sm text-body-sm focus:ring-1 focus:ring-primary focus:outline-none transition-all outline-none"
+                          className="w-full px-3 py-2 bg-surface-container-lowest border border-outline-variant rounded-lg font-body-sm text-body-sm focus:ring-1 focus:ring-primary focus:outline-none transition-all outline-none"
                         />
                       </div>
 
@@ -584,7 +584,7 @@ export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch }:
                           <select
                             value={newStaffRole}
                             onChange={(e) => setNewStaffRole(e.target.value as any)}
-                            className="w-full px-2 py-2 bg-surface-container-lowest dark:bg-inverse-surface border border-outline-variant rounded-lg text-xs"
+                            className="w-full px-2 py-2 bg-surface-container-lowest border border-outline-variant rounded-lg text-xs"
                           >
                             <option value="health_professional">Profissional</option>
                             <option value="receptionist">Recepção</option>
@@ -599,7 +599,7 @@ export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch }:
                             disabled={newStaffRole !== 'health_professional'}
                             value={newStaffSpecialty}
                             onChange={(e) => setNewStaffSpecialty(e.target.value)}
-                            className="w-full px-3 py-2 bg-surface-container-lowest dark:bg-inverse-surface border border-outline-variant rounded-lg text-xs disabled:opacity-40 outline-none"
+                            className="w-full px-3 py-2 bg-surface-container-lowest border border-outline-variant rounded-lg text-xs disabled:opacity-40 outline-none"
                           />
                         </div>
                       </div>
@@ -614,8 +614,8 @@ export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch }:
                   </div>
 
                   {/* Clinical and administrative Audit Trail logs specific to this clinical clinic tenant (Right) */}
-                  <div className="col-span-1 lg:col-span-2 p-6 rounded-xl border border-outline-variant dark:border-outline/20 bg-surface-container-lowest dark:bg-inverse-surface space-y-4">
-                    <h4 className="font-extrabold text-xs uppercase tracking-wider text-outline flex items-center gap-2 border-b dark:border-outline/20 pb-2.5">
+                  <div className="col-span-1 lg:col-span-2 p-6 rounded-xl border border-outline-variant bg-surface-container-lowest space-y-4">
+                    <h4 className="font-extrabold text-xs uppercase tracking-wider text-outline flex items-center gap-2 border-b border-outline-variant pb-2.5">
                       <span className="material-symbols-outlined text-emerald-500 text-base" style={{ fontVariationSettings: "'FILL' 1" }}>shield_heart</span>
                       <span>Logs de Auditoria Interna (LGPD Certificado)</span>
                     </h4>
@@ -627,10 +627,10 @@ export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch }:
                         auditLogs.map((log) => (
                           <div 
                             key={log.id} 
-                            className="p-3.5 rounded-xl border border-outline-variant/65 dark:border-outline/35 text-[11px] leading-relaxed relative bg-surface-container-lowest dark:bg-inverse-surface"
+                            className="p-3.5 rounded-xl border border-outline-variant/65 text-[11px] leading-relaxed relative bg-surface-container-lowest"
                           >
-                            <div className="flex justify-between border-b border-dashed dark:border-outline/20 pb-1 mb-2 text-outline text-[10px] font-mono">
-                              <span className="font-bold text-primary dark:text-primary-fixed-dim uppercase">[{log.action}]</span>
+                            <div className="flex justify-between border-b border-dashed border-outline-variant pb-1 mb-2 text-outline text-[10px] font-mono">
+                              <span className="font-bold text-primary uppercase">[{log.action}]</span>
                               <span>{new Date(log.timestamp).toLocaleDateString()} {new Date(log.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                             </div>
                             <p className="text-on-surface font-sans font-medium">{log.details}</p>
