@@ -13,6 +13,7 @@ import PatientPanel from '../components/PatientPanel';
 import BudgetPanel from '../components/BudgetPanel';
 import QiDentCalculator from '../components/QiDentCalculator';
 import FinancePanel from '../components/FinancePanel';
+import { EasyClinMark } from '../components/ui';
 
 interface ClinicDashboardProps {
   currentUser: User;
@@ -151,9 +152,9 @@ export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch }:
       }`}>
         {/* Brand Header */}
         <div className="flex items-center gap-3 mb-8">
-          <span className="material-symbols-outlined text-primary dark:text-primary-fixed-dim text-[32px]" style={{ fontVariationSettings: "'FILL' 1" }}>
-            medical_services
-          </span>
+          <div className="w-10 h-10 rounded-lg overflow-hidden border border-outline-variant/30 bg-white shrink-0">
+            <EasyClinMark />
+          </div>
           <span className="font-headline-sm text-headline-sm text-on-surface tracking-tight">EasyClin</span>
         </div>
 

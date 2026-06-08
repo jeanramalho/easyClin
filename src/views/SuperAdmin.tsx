@@ -109,15 +109,13 @@ export default function SuperAdmin({ currentUser, onLogout }: SuperAdminProps) {
   });
 
   return (
-    <div className={`min-h-screen py-6 px-4 md:px-8 transition-colors duration-300 ${
-      darkMode ? 'bg-inverse-surface text-inverse-on-surface' : 'bg-surface text-on-surface'
-    }`}>
+    <div className="min-h-screen py-6 px-4 md:px-8 transition-colors duration-300 bg-surface text-on-surface">
       
       {/* Header Panel */}
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center border-b pb-5 mb-6 border-outline-variant dark:border-outline/20 gap-4">
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center border-b pb-5 mb-6 border-outline-variant gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30 text-[10px] uppercase tracking-wider font-extrabold px-2 py-0.5 rounded-full">
+            <span className="bg-amber-500/15 text-amber-600 border border-amber-500/30 text-[10px] uppercase tracking-wider font-extrabold px-2 py-0.5 rounded-full">
               SaaS Executivo (Super-Admin)
             </span>
           </div>
@@ -135,7 +133,7 @@ export default function SuperAdmin({ currentUser, onLogout }: SuperAdminProps) {
           </div>
           <button
             onClick={onLogout}
-            className="px-3.5 py-1.5 rounded-lg text-xs font-semibold border hover:bg-surface-container/50 dark:hover:bg-inverse-surface/80 transition-colors"
+            className="px-3.5 py-1.5 rounded-lg text-xs font-semibold border hover:bg-surface-container/50 transition-colors"
           >
             Sair do Painel
           </button>
@@ -146,9 +144,7 @@ export default function SuperAdmin({ currentUser, onLogout }: SuperAdminProps) {
       <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         
         {/* MRR Card */}
-        <div className={`p-6 rounded-2xl border transition-all ${
-          darkMode ? 'bg-inverse-surface border-outline/20' : 'bg-surface-container-lowest border-outline-variant'
-        }`}>
+        <div className="p-6 rounded-2xl border transition-all bg-surface-container-lowest border-outline-variant">
           <div className="flex justify-between items-start">
             <div>
               <p className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Faturamento Estimado (MRR)</p>
@@ -164,9 +160,7 @@ export default function SuperAdmin({ currentUser, onLogout }: SuperAdminProps) {
         </div>
 
         {/* Total Clínicas Ativas Card */}
-        <div className={`p-6 rounded-2xl border transition-all ${
-          darkMode ? 'bg-inverse-surface border-outline/20' : 'bg-surface-container-lowest border-outline-variant'
-        }`}>
+        <div className="p-6 rounded-2xl border transition-all bg-surface-container-lowest border-outline-variant">
           <div className="flex justify-between items-start">
             <div>
               <p className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Clínicas Licenciadas</p>
@@ -186,9 +180,7 @@ export default function SuperAdmin({ currentUser, onLogout }: SuperAdminProps) {
         </div>
 
         {/* Inadimplência Card */}
-        <div className={`p-6 rounded-2xl border transition-all ${
-          darkMode ? 'bg-inverse-surface border-outline/20' : 'bg-surface-container-lowest border-outline-variant'
-        }`}>
+        <div className="p-6 rounded-2xl border transition-all bg-surface-container-lowest border-outline-variant">
           <div className="flex justify-between items-start">
             <div>
               <p className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Atraso / Inadimplência</p>
@@ -206,9 +198,7 @@ export default function SuperAdmin({ currentUser, onLogout }: SuperAdminProps) {
         </div>
 
         {/* Segurança & LGP-D Auditoria Card */}
-        <div className={`p-6 rounded-2xl border transition-all ${
-          darkMode ? 'bg-inverse-surface border-outline/20' : 'bg-surface-container-lowest border-outline-variant'
-        }`}>
+        <div className="p-6 rounded-2xl border transition-all bg-surface-container-lowest border-outline-variant">
           <div className="flex justify-between items-start">
             <div>
               <p className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Trilha de Auditoria (LGPD)</p>
@@ -229,7 +219,7 @@ export default function SuperAdmin({ currentUser, onLogout }: SuperAdminProps) {
       </div>
 
       {/* Main Tab bar */}
-      <div className="max-w-7xl mx-auto flex gap-4 border-b border-outline-variant dark:border-outline/20 mb-6">
+      <div className="max-w-7xl mx-auto flex gap-4 border-b border-outline-variant mb-6">
         <button
           onClick={() => setActiveTab('clinics')}
           className={`pb-3 font-medium text-sm border-b-2 transition-all px-1 flex items-center gap-2 ${

@@ -6,6 +6,7 @@
 import React, { useState } from 'react';
 import { dbObj } from '../services/db';
 import { User, UserRole, SubscriptionStatus } from '../types';
+import { EasyClinMark } from '../components/ui';
 
 interface AuthProps {
   onLoginSuccess: (user: User) => void;
@@ -128,13 +129,11 @@ export default function Auth({ onLoginSuccess }: AuthProps) {
         
         {/* Logo Header */}
         <div className="flex flex-col items-center mb-6 space-y-3">
-          <div className="w-16 h-16 bg-surface-container-lowest dark:bg-inverse-surface rounded-2xl shadow-sm flex items-center justify-center p-2 overflow-hidden border border-outline-variant/30">
-            <span className="material-symbols-outlined text-primary dark:text-primary-fixed-dim text-[40px]" style={{ fontVariationSettings: "'FILL' 1" }}>
-              medical_services
-            </span>
+          <div className="w-20 h-20 bg-surface-container-lowest rounded-xl shadow-sm flex items-center justify-center p-2 overflow-hidden border border-outline-variant/30">
+            <EasyClinMark />
           </div>
           <div className="text-center">
-            <h1 className="font-headline-lg text-headline-lg text-primary dark:text-primary-fixed-dim tracking-tight">EasyClin</h1>
+            <h1 className="font-headline-lg text-headline-lg text-primary tracking-tight">EasyClin</h1>
             <p className="font-body-md text-body-md text-outline">Gestão inteligente para sua clínica</p>
           </div>
         </div>
@@ -147,11 +146,11 @@ export default function Auth({ onLoginSuccess }: AuthProps) {
 
           {/* Quick Preset Selector for Demo Users */}
           {!isRegistering && (
-            <div className="border border-primary/20 bg-primary/5 dark:bg-primary/10 rounded-xl p-3 mb-6">
+            <div className="border border-primary/20 bg-primary/5 rounded-xl p-3 mb-6">
               <button 
                 type="button" 
                 onClick={() => setShowPresets(!showPresets)} 
-                className="w-full flex items-center justify-between text-xs font-semibold text-primary dark:text-primary-fixed-dim cursor-pointer focus:outline-none"
+                className="w-full flex items-center justify-between text-xs font-semibold text-primary cursor-pointer focus:outline-none"
               >
                 <div className="flex items-center gap-1.5">
                   <span className="material-symbols-outlined text-base">bolt</span>
@@ -187,10 +186,10 @@ export default function Auth({ onLoginSuccess }: AuthProps) {
                         key={u.id}
                         onClick={() => handlePresetLogin(u)}
                         type="button"
-                        className="text-left p-2 rounded-lg border border-outline-variant/60 dark:border-outline/40 bg-surface-container-lowest dark:bg-inverse-surface text-xs transition-all hover:scale-[1.02] active:scale-98 cursor-pointer shadow-sm hover:shadow-md focus:outline-none"
+                        className="text-left p-2 rounded-lg border border-outline-variant/60 bg-surface-container-lowest text-xs transition-all hover:scale-[1.02] active:scale-98 cursor-pointer shadow-sm hover:shadow-md focus:outline-none"
                       >
                         <div className="flex items-center gap-1.5 font-semibold text-on-surface mb-0.5">
-                          <span className="material-symbols-outlined text-sm text-primary dark:text-primary-fixed-dim">{iconName}</span>
+                          <span className="material-symbols-outlined text-sm text-primary">{iconName}</span>
                           <span className="truncate">{u.name}</span>
                         </div>
                         <div className="flex justify-between text-[10px] text-on-surface-variant">
@@ -207,10 +206,10 @@ export default function Auth({ onLoginSuccess }: AuthProps) {
 
           {/* Alert Notification */}
           {message && (
-            <div className={`p-4 rounded-xl text-sm flex gap-2 border mb-6 ${
+                <div className={`p-4 rounded-xl text-sm flex gap-2 border mb-6 ${
               message.type === 'error' 
-                ? 'bg-red-500/10 border-red-500/20 text-red-600 dark:text-red-400' 
-                : 'bg-emerald-500/10 border-emerald-500/20 text-emerald-600 dark:text-emerald-400'
+                ? 'bg-red-500/10 border-red-500/20 text-red-600' 
+                : 'bg-emerald-500/10 border-emerald-500/20 text-emerald-600'
             }`}>
               <span className="material-symbols-outlined text-base">
                 {message.type === 'error' ? 'error' : 'check_circle'}
@@ -237,7 +236,7 @@ export default function Auth({ onLoginSuccess }: AuthProps) {
                       placeholder="Dr. Arthur Mendes"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      className="w-full pl-10 pr-4 py-3 bg-surface-container-lowest dark:bg-inverse-surface border border-outline-variant dark:border-outline rounded-lg font-body-md text-body-md focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none transition-all outline-none"
+                      className="w-full pl-10 pr-4 py-3 bg-surface-container-lowest border border-outline-variant rounded-lg font-body-md text-body-md focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none transition-all outline-none"
                     />
                   </div>
                 </div>
@@ -255,7 +254,7 @@ export default function Auth({ onLoginSuccess }: AuthProps) {
                       placeholder="Ex: Clínica OdontoPremium"
                       value={clinicName}
                       onChange={(e) => setClinicName(e.target.value)}
-                      className="w-full pl-10 pr-4 py-3 bg-surface-container-lowest dark:bg-inverse-surface border border-outline-variant dark:border-outline rounded-lg font-body-md text-body-md focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none transition-all outline-none"
+                      className="w-full pl-10 pr-4 py-3 bg-surface-container-lowest border border-outline-variant rounded-lg font-body-md text-body-md focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none transition-all outline-none"
                     />
                   </div>
                 </div>
@@ -300,7 +299,7 @@ export default function Auth({ onLoginSuccess }: AuthProps) {
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-10 pr-12 py-3 bg-surface-container-lowest dark:bg-inverse-surface border border-outline-variant dark:border-outline rounded-lg font-body-md text-body-md focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none transition-all outline-none"
+                    className="w-full pl-10 pr-12 py-3 bg-surface-container-lowest border border-outline-variant rounded-lg font-body-md text-body-md focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none transition-all outline-none"
                 />
                 <button
                   type="button"
@@ -327,7 +326,7 @@ export default function Auth({ onLoginSuccess }: AuthProps) {
           </form>
 
           {/* Bottom Action Form Switcher */}
-          <div className="mt-8 pt-6 border-t border-outline-variant dark:border-outline text-center">
+          <div className="mt-8 pt-6 border-t border-outline-variant text-center">
             {isRegistering ? (
               <p className="font-body-md text-body-md text-on-surface-variant">
                 Já possui uma conta EasyClin?{' '}
