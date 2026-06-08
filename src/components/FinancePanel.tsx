@@ -154,22 +154,22 @@ export default function FinancePanel({ tenantId, transactions, onRefresh, darkMo
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead>
-                <tr className="border-b border-outline-variant dark:border-outline/20 text-on-surface-variant font-semibold uppercase tracking-wider text-[10px]">
+                <tr className="border-b border-outline-variant text-on-surface-variant font-semibold uppercase tracking-wider text-[10px]">
                   <th className="pb-2.5">Descrição</th>
                   <th className="pb-2.5">Data / Categoria</th>
                   <th className="pb-2.5">Meio</th>
                   <th className="pb-2.5 text-right">Valor</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-outline-variant/30 dark:divide-outline/20">
+              <tbody className="divide-y divide-outline-variant/30">
                 {transactions.length === 0 ? (
                   <tr>
                     <td colSpan={4} className="py-6 text-center text-on-surface-variant">Nenhum lançamento registrado no fluxo de caixa.</td>
                   </tr>
                 ) : (
                   transactions.sort((a, b) => b.date.localeCompare(a.date)).map((tx) => (
-                    <tr key={tx.id} className="hover:bg-surface-container/30 dark:hover:bg-inverse-surface/20 transition-colors">
-                      <td className="py-3 pr-2 font-semibold text-on-surface dark:text-inverse-on-surface">
+                    <tr key={tx.id} className="hover:bg-surface-container/30 transition-colors">
+                      <td className="py-3 pr-2 font-semibold text-on-surface">
                         {tx.description}
                         <span className="block text-[8px] uppercase tracking-wider font-bold text-on-surface-variant font-mono mt-0.5">ID: {tx.id}</span>
                       </td>
@@ -257,7 +257,7 @@ export default function FinancePanel({ tenantId, transactions, onRefresh, darkMo
                   <select
                     value={type}
                     onChange={(e) => setType(e.target.value as TransactionType)}
-                    className="w-full px-2.5 py-2.5 border border-outline-variant dark:border-outline/20 rounded-xl text-xs bg-transparent text-on-surface dark:text-inverse-on-surface"
+                    className="w-full px-2.5 py-2.5 border border-outline-variant rounded-xl text-xs bg-transparent text-on-surface"
                   >
                     <option value="revenue">Receita (Entrada)</option>
                     <option value="expense">Despesa (Gasto)</option>
@@ -269,7 +269,7 @@ export default function FinancePanel({ tenantId, transactions, onRefresh, darkMo
                   <select
                     value={category}
                     onChange={(e) => setCategory(e.target.value as TransactionCategory)}
-                    className="w-full px-2.5 py-2.5 border border-outline-variant dark:border-outline/20 rounded-xl text-xs bg-transparent text-on-surface dark:text-inverse-on-surface"
+                    className="w-full px-2.5 py-2.5 border border-outline-variant rounded-xl text-xs bg-transparent text-on-surface"
                   >
                     <option value="consultation">Consulta</option>
                     <option value="procedure">Tratamento</option>
@@ -304,7 +304,7 @@ export default function FinancePanel({ tenantId, transactions, onRefresh, darkMo
                 <button
                   type="button"
                   onClick={() => setShowAdd(false)}
-                  className="px-3.5 py-2 border rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 text-xs text-slate-500"
+                  className="px-3.5 py-2 border rounded-xl hover:bg-slate-50 text-xs text-slate-500"
                 >
                   Cancelar
                 </button>

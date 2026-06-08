@@ -17,8 +17,8 @@ interface BudgetPanelProps {
 }
 
 const statusConfig = {
-  pending:  { label: 'Pendente',  bg: 'bg-amber-500/10',   text: 'text-amber-600 dark:text-amber-400',  border: 'border-amber-500/20',  icon: 'schedule' },
-  approved: { label: 'Aprovado',  bg: 'bg-emerald-500/10', text: 'text-emerald-600 dark:text-emerald-400', border: 'border-emerald-500/20', icon: 'check_circle' },
+  pending:  { label: 'Pendente',  bg: 'bg-amber-500/10',   text: 'text-amber-600',  border: 'border-amber-500/20',  icon: 'schedule' },
+  approved: { label: 'Aprovado',  bg: 'bg-emerald-500/10', text: 'text-emerald-600', border: 'border-emerald-500/20', icon: 'check_circle' },
   rejected: { label: 'Recusado', bg: 'bg-error/10',        text: 'text-error',                           border: 'border-error/20',      icon: 'cancel' },
 };
 
@@ -300,7 +300,7 @@ export default function BudgetPanel({ tenantId, budgets, patients, procedures, o
                   <div className={`text-2xl font-mono font-bold ${totalProfit > 0 ? 'text-emerald-500' : 'text-error'}`}>
                     R$ {totalProfit.toFixed(2)}
                   </div>
-                  <div className={`text-xs font-semibold mt-1 ${totalProfit > 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-error'}`}>
+                  <div className={`text-xs font-semibold mt-1 ${totalProfit > 0 ? 'text-emerald-600' : 'text-error'}`}>
                     Margem: {profitMarginPct.toFixed(1)}%
                   </div>
                   <p className="text-[10px] text-outline mt-1.5 leading-relaxed">

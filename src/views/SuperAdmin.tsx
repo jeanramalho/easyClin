@@ -249,9 +249,7 @@ export default function SuperAdmin({ currentUser, onLogout }: SuperAdminProps) {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             
             {/* Left Block: Tenant List */}
-            <div className={`col-span-1 lg:col-span-2 p-6 rounded-2xl border transition-all ${
-              darkMode ? 'bg-inverse-surface border-outline/20' : 'bg-surface-container-lowest border-outline-variant'
-            }`}>
+            <div className="col-span-1 lg:col-span-2 p-6 rounded-2xl border transition-all bg-surface-container-lowest border-outline-variant">
               <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-6">
                 <h2 className="text-lg font-bold">Base de Dados de Assinantes</h2>
                 
@@ -264,18 +262,14 @@ export default function SuperAdmin({ currentUser, onLogout }: SuperAdminProps) {
                       placeholder="Buscar clínica..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      className={`pl-9 pr-4 py-2 border rounded-xl text-xs w-45 focus:outline-none focus:ring-1 focus:ring-blue-500 ${
-                        darkMode ? 'bg-inverse-surface border-outline/20 text-inverse-on-surface' : 'bg-surface-container-lowest border-outline-variant text-on-surface'
-                      }`}
+                      className="pl-9 pr-4 py-2 border rounded-xl text-xs w-45 focus:outline-none focus:ring-1 focus:ring-blue-500 bg-surface-container-lowest border-outline-variant text-on-surface"
                     />
                   </div>
                   
                   <select
                     value={statusFilter}
                     onChange={(e) => setStatusFilter(e.target.value)}
-                    className={`px-3 py-2 border rounded-xl text-xs font-semibold focus:outline-none focus:ring-1 focus:ring-blue-500 ${
-                      darkMode ? 'bg-inverse-surface border-outline/20 text-inverse-on-surface' : 'bg-surface-container-lowest border-outline-variant text-on-surface'
-                    }`}
+                    className="px-3 py-2 border rounded-xl text-xs font-semibold focus:outline-none focus:ring-1 focus:ring-blue-500 bg-surface-container-lowest border-outline-variant text-on-surface"
                   >
                     <option value="all">Todos status</option>
                     <option value="active">Ativo</option>
@@ -290,14 +284,14 @@ export default function SuperAdmin({ currentUser, onLogout }: SuperAdminProps) {
               <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse">
                   <thead>
-                    <tr className="border-b border-outline-variant dark:border-outline/20 text-[11px] text-on-surface-variant uppercase tracking-wider font-semibold">
+                    <tr className="border-b border-outline-variant text-[11px] text-on-surface-variant uppercase tracking-wider font-semibold">
                       <th className="pb-3 text-left">Clínica / Responsável</th>
                       <th className="pb-3 text-left">Plano Contratado</th>
                       <th className="pb-3 text-left">Status Financeiro</th>
                       <th className="pb-3 text-left">Ações Rápidas</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-outline-variant dark:divide-outline/20 text-xs">
+                  <tbody className="divide-y divide-outline-variant text-xs">
                     {filteredTenants.length === 0 ? (
                       <tr>
                         <td colSpan={4} className="py-8 text-center text-on-surface-variant">Nenhuma clínica encontrada.</td>
@@ -310,8 +304,8 @@ export default function SuperAdmin({ currentUser, onLogout }: SuperAdminProps) {
                           <tr 
                             key={t.id} 
                             onClick={() => setSelectedTenant(t)}
-                            className={`group cursor-pointer hover:bg-surface-container/50 dark:hover:bg-inverse-surface/40 transition-colors ${
-                              selectedTenant?.id === t.id ? 'bg-blue-50/30 dark:bg-blue-900/10' : ''
+                            className={`group cursor-pointer hover:bg-surface-container/50 transition-colors ${
+                              selectedTenant?.id === t.id ? 'bg-blue-50/30' : ''
                             }`}
                           >
                             <td className="py-3.5 pr-3">
@@ -324,12 +318,12 @@ export default function SuperAdmin({ currentUser, onLogout }: SuperAdminProps) {
                                     referrerPolicy="no-referrer"
                                   />
                                 ) : (
-                                  <div className="w-10 h-10 rounded-xl bg-blue-100 dark:bg-blue-900/60 flex items-center justify-center text-blue-600 font-bold">
+                                  <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center text-blue-600 font-bold">
                                     {t.name.charAt(0)}
                                   </div>
                                 )}
                                 <div className="truncate max-w-42.5">
-                                  <p className="font-semibold text-on-surface dark:text-inverse-on-surface">{t.name}</p>
+                                  <p className="font-semibold text-on-surface">{t.name}</p>
                                   <p className="text-[10px] text-on-surface-variant truncate">{t.ownerName} • {t.ownerEmail}</p>
                                 </div>
                               </div>
@@ -341,12 +335,12 @@ export default function SuperAdmin({ currentUser, onLogout }: SuperAdminProps) {
                             <td className="py-3.5 pr-3">
                               <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
                                 t.status === 'active' 
-                                  ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400' 
+                                  ? 'bg-emerald-500/15 text-emerald-600' 
                                   : t.status === 'trial' 
-                                  ? 'bg-amber-500/15 text-amber-600 dark:text-amber-400' 
+                                  ? 'bg-amber-500/15 text-amber-600' 
                                   : t.status === 'suspended'
-                                  ? 'bg-rose-500/15 text-rose-600 dark:text-rose-400'
-                                  : 'bg-surface-container-low text-on-surface dark:text-on-surface-variant'
+                                  ? 'bg-rose-500/15 text-rose-600'
+                                  : 'bg-surface-container-low text-on-surface-variant'
                               }`}>
                                 <span className="h-1 w-1 rounded-full bg-current"></span>
                                 {t.status === 'active' ? 'Ativo / Pago' : t.status === 'trial' ? 'Período Trial' : t.status === 'suspended' ? 'Suspenso' : 'Cancelado'}
@@ -366,7 +360,7 @@ export default function SuperAdmin({ currentUser, onLogout }: SuperAdminProps) {
                                 ) : (
                                   <button
                                     onClick={() => handleUpdateStatus(t.id, 'suspended')}
-                                    className="px-2.5 py-1 rounded bg-surface-container-lowest dark:bg-inverse-surface hover:bg-rose-600 hover:text-white transition-colors text-[10px]"
+                                    className="px-2.5 py-1 rounded bg-surface-container-lowest hover:bg-rose-600 hover:text-white transition-colors text-[10px]"
                                     title="Suspender Acesso"
                                   >
                                     Bloquear
@@ -386,15 +380,13 @@ export default function SuperAdmin({ currentUser, onLogout }: SuperAdminProps) {
             {/* Right Block: Selected Tenant Actions / Plan management */}
             <div className="col-span-1">
               {selectedTenant ? (
-                <div className={`p-6 rounded-2xl border transition-all sticky top-6 ${
-                  darkMode ? 'bg-inverse-surface border-outline/20' : 'bg-surface-container-lowest border-outline-variant'
-                }`}>
+                <div className="p-6 rounded-2xl border transition-all sticky top-6 bg-surface-container-lowest border-outline-variant">
                   <h3 className="text-md font-bold mb-4 flex items-center gap-1.5">
                     <Landmark className="h-4.5 w-4.5 text-blue-500" />
                     <span>Detalhes do Tenant</span>
                   </h3>
 
-                  <div className="space-y-4 pb-4 border-b border-outline-variant dark:border-outline/20">
+                  <div className="space-y-4 pb-4 border-b border-outline-variant">
                     <div>
                       <p className="text-[10px] uppercase font-semibold text-on-surface-variant tracking-wider">Identificador Único</p>
                       <p className="text-xs font-mono">{selectedTenant.id}</p>
@@ -437,7 +429,7 @@ export default function SuperAdmin({ currentUser, onLogout }: SuperAdminProps) {
                           className={`py-1.5 px-2 rounded-lg text-[10px] border font-semibold flex items-center justify-center gap-1.5 transition-colors ${
                             selectedTenant.status === 'active' 
                               ? 'bg-emerald-500 text-white border-emerald-500' 
-                              : 'bg-transparent border-outline-variant dark:border-outline/20 hover:bg-surface-container/50 dark:hover:bg-inverse-surface'
+                              : 'bg-transparent border-outline-variant hover:bg-surface-container/50'
                           }`}
                         >
                           <CheckCircle className="h-3 w-3" />
@@ -448,7 +440,7 @@ export default function SuperAdmin({ currentUser, onLogout }: SuperAdminProps) {
                           className={`py-1.5 px-2 rounded-lg text-[10px] border font-semibold flex items-center justify-center gap-1.5 transition-colors ${
                             selectedTenant.status === 'trial' 
                               ? 'bg-amber-500 text-white border-amber-500' 
-                              : 'bg-transparent border-outline-variant dark:border-outline/20 hover:bg-surface-container/50 dark:hover:bg-inverse-surface'
+                              : 'bg-transparent border-outline-variant hover:bg-surface-container/50'
                           }`}
                         >
                           <Clock className="h-3 w-3" />
@@ -459,7 +451,7 @@ export default function SuperAdmin({ currentUser, onLogout }: SuperAdminProps) {
                           className={`py-1.5 px-2 rounded-lg text-[10px] border font-semibold flex items-center justify-center gap-1.5 transition-colors col-span-2 ${
                             selectedTenant.status === 'suspended' 
                               ? 'bg-rose-500 text-white border-rose-500' 
-                              : 'bg-transparent border-outline-variant dark:border-outline/20 hover:bg-surface-container/50 dark:hover:bg-inverse-surface'
+                              : 'bg-transparent border-outline-variant hover:bg-surface-container/50'
                           }`}
                         >
                           <Lock className="h-3 w-3" />
@@ -478,8 +470,8 @@ export default function SuperAdmin({ currentUser, onLogout }: SuperAdminProps) {
                             onClick={() => handleUpdatePlan(selectedTenant.id, plan.id)}
                             className={`w-full p-2.5 rounded-xl border text-left flex justify-between items-center transition-colors ${
                               selectedTenant.planId === plan.id
-                                ? 'bg-blue-500/10 border-blue-500/40 text-blue-600 dark:text-blue-400'
-                                : 'border-outline-variant dark:border-outline/20 hover:bg-surface-container/50 dark:hover:bg-inverse-surface'
+                                ? 'bg-blue-500/10 border-blue-500/40 text-blue-600'
+                                : 'border-outline-variant hover:bg-surface-container/50'
                             }`}
                           >
                             <div>
@@ -496,9 +488,7 @@ export default function SuperAdmin({ currentUser, onLogout }: SuperAdminProps) {
 
                 </div>
               ) : (
-                <div className={`p-8 rounded-2xl border border-dashed text-center flex flex-col items-center justify-center ${
-                  darkMode ? 'bg-inverse-surface border-outline/20 text-on-surface-variant' : 'bg-surface-container-lowest border-outline-variant text-on-surface-variant'
-                }`}>
+                <div className="p-8 rounded-2xl border border-dashed text-center flex flex-col items-center justify-center bg-surface-container-lowest border-outline-variant text-on-surface-variant">
                   <Landmark className="h-10 w-10 text-on-surface-variant mb-2.5" />
                   <p className="text-xs font-semibold">Nenhuma clínica selecionada</p>
                   <p className="text-[11px] text-on-surface-variant mt-1 max-w-50 mx-auto">
@@ -511,9 +501,7 @@ export default function SuperAdmin({ currentUser, onLogout }: SuperAdminProps) {
           </div>
         ) : (
           /* AUDIT TAB - Compliance and security ledger */
-          <div className={`p-6 rounded-2xl border transition-all ${
-            darkMode ? 'bg-inverse-surface border-outline/20' : 'bg-surface-container-lowest border-outline-variant'
-          }`}>
+          <div className="p-6 rounded-2xl border transition-all bg-surface-container-lowest border-outline-variant">
             <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-6">
               <div>
                 <h2 className="text-lg font-bold flex items-center gap-2">
@@ -530,7 +518,7 @@ export default function SuperAdmin({ currentUser, onLogout }: SuperAdminProps) {
                   onClick={() => {
                     setAuditLogs(dbObj.getAuditLogs());
                   }}
-                  className="px-3.5 py-1.5 rounded-lg text-xs font-semibold border flex items-center gap-1.5 hover:bg-surface-container/20 dark:hover:bg-inverse-surface/40"
+                  className="px-3.5 py-1.5 rounded-lg text-xs font-semibold border flex items-center gap-1.5 hover:bg-surface-container/20"
                 >
                   <RefreshCcw className="h-3 w-3" />
                   <span>Atualizar Logs</span>
@@ -556,19 +544,17 @@ export default function SuperAdmin({ currentUser, onLogout }: SuperAdminProps) {
                   return (
                     <div 
                       key={log.id} 
-                      className={`p-3.5 rounded-xl border text-xs leading-relaxed transition-all ${
-                        darkMode ? 'bg-inverse-surface border-outline/20' : 'bg-surface-container-lowest border-outline-variant'
-                      }`}
+                      className="p-3.5 rounded-xl border text-xs leading-relaxed transition-all bg-surface-container-lowest border-outline-variant"
                     >
-                      <div className="flex flex-col sm:flex-row justify-between gap-1 mb-2 border-b border-dashed border-outline-variant dark:border-outline/20 pb-1.5">
+                      <div className="flex flex-col sm:flex-row justify-between gap-1 mb-2 border-b border-dashed border-outline-variant pb-1.5">
                         <span className={`uppercase font-bold tracking-wider ${alertTheme}`}>
                           [{log.action}]
                         </span>
                         <span className="text-[10px] text-on-surface-variant">{log.timestamp}</span>
                       </div>
-                      <p className="text-on-surface dark:text-inverse-on-surface">{log.details}</p>
+                      <p className="text-on-surface">{log.details}</p>
                       
-                      <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2 text-[10px] text-on-surface-variant font-semibold pt-1 border-t border-dashed border-outline-variant dark:border-outline/20">
+                      <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2 text-[10px] text-on-surface-variant font-semibold pt-1 border-t border-dashed border-outline-variant">
                         <span>Usuário: {log.userName} ({log.userRole})</span>
                         <span>•</span>
                         <span>IP de Referência: {log.ip}</span>
