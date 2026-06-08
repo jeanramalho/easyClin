@@ -18,10 +18,9 @@ interface ClinicDashboardProps {
   currentUser: User;
   onLogout: () => void;
   onRoleSwitch: (newUser: User) => void;
-  darkMode: boolean;
 }
 
-export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch, darkMode }: ClinicDashboardProps) {
+export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch }: ClinicDashboardProps) {
   // Local state replicas of DB
   const [activeTenant, setActiveTenant] = useState<Tenant | null>(null);
   const [patients, setPatients] = useState<Patient[]>([]);

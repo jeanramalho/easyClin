@@ -9,10 +9,9 @@ import { User, UserRole, SubscriptionStatus } from '../types';
 
 interface AuthProps {
   onLoginSuccess: (user: User) => void;
-  darkMode: boolean;
 }
 
-export default function Auth({ onLoginSuccess, darkMode }: AuthProps) {
+export default function Auth({ onLoginSuccess }: AuthProps) {
   const [isRegistering, setIsRegistering] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

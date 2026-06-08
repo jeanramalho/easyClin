@@ -14,10 +14,9 @@ import {
 interface SuperAdminProps {
   currentUser: User;
   onLogout: () => void;
-  darkMode: boolean;
 }
 
-export default function SuperAdmin({ currentUser, onLogout, darkMode }: SuperAdminProps) {
+export default function SuperAdmin({ currentUser, onLogout }: SuperAdminProps) {
   const [tenants, setTenants] = useState<Tenant[]>([]);
   const [auditLogs, setAuditLogs] = useState<AuditLog[]>([]);
   const [searchTerm, setSearchTerm] = useState('');

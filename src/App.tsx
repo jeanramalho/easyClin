@@ -9,24 +9,15 @@ import { dbObj } from './services/db';
 import Auth from './views/Auth';
 import SuperAdmin from './views/SuperAdmin';
 import ClinicDashboard from './views/ClinicDashboard';
-import { Moon, Sun, RefreshCw, Activity, HeartCrack } from 'lucide-react';
+import { RefreshCw } from 'lucide-react';
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [darkMode, setDarkMode] = useState<boolean>(() => {
-    // Force light theme by default for initial work
-    // Ignore stored preference for now to keep UI consistently light
-    return false;
-  });
-
-  // Handle active class
   useEffect(() => {
     const root = window.document.documentElement;
-    // Ensure 'dark' class is removed so Tailwind dark: styles do not apply
     root.classList.remove('dark');
-    // Persist as false so reload stays in light theme
     localStorage.setItem('easyclin_dark_mode', 'false');
-  }, [darkMode]);
+  }, []);
 
   // Read active session on launch
   useEffect(() => {
@@ -87,19 +78,7 @@ export default function App() {
     <div className={`min-h-screen font-sans antialiased transition-colors duration-350`}>
       
       {/* Floating control capsule */}
-      <div className="fixed bottom-4 left-4 z-40 bg-surface-container-lowest/95 dark:bg-inverse-surface/95 border border-outline-variant dark:border-outline/40 p-2 rounded-2xl shadow-xl flex items-center gap-2 backdrop-blur">
-        {/* Toggle dark mode */}
-        <button
-          onClick={() => setDarkMode(!darkMode)}
-          className="p-2 rounded-xl hover:bg-surface-container/50 dark:hover:bg-inverse-surface/80 text-on-surface-variant dark:text-on-surface-variant transition-colors cursor-pointer"
-          title="Alternar Tema Visual"
-        >
-          {darkMode ? <Sun className="h-4 w-4 text-amber-500" /> : <Moon className="h-4 w-4 text-indigo-500" />}
-        </button>
-
-        <span className="w-px h-4 bg-outline dark:bg-outline-variant"></span>
-
-        {/* Reset Database */}
+      <div className="fixed bottom-4 left-4 z-40 bg-surface-container-lowest/95 border border-outline-variant p-2 rounded-2xl shadow-xl flex items-center gap-2 backdrop-blur">
         <button
           onClick={handleHardReset}
           className="p-2 rounded-xl hover:bg-rose-500/10 text-rose-500 transition-colors flex items-center gap-1.5 text-xs font-semibold cursor-pointer"
@@ -112,15 +91,14 @@ export default function App() {
 
       {/* Main View Router */}
       {!currentUser ? (
-        <Auth onLoginSuccess={handleLoginSuccess} darkMode={darkMode} />
+        <Auth onLoginSuccess={handleLoginSuccess} />
       ) : currentUser.role === 'super_admin' ? (
-        <SuperAdmin currentUser={currentUser} onLogout={handleLogout} darkMode={darkMode} />
+        <SuperAdmin currentUser={currentUser} onLogout={handleLogout} />
       ) : (
         <ClinicDashboard 
           currentUser={currentUser} 
           onLogout={handleLogout} 
           onRoleSwitch={handleRoleSwitch}
-          darkMode={darkMode}
         />
       )}
 
