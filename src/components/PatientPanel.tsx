@@ -139,7 +139,7 @@ export default function PatientPanel({
           <div>
             <h3 className="font-semibold text-on-surface text-sm">Diretório de Pacientes</h3>
             <p className="text-outline text-xs mt-0.5">{patients.length} cadastrados</p>
-          </Grid>
+          </div>
           <Button variant="primary" size="sm" onClick={() => setShowAddModal(true)}>
             <span className="material-symbols-outlined text-sm">person_add</span>
             <span className="ml-1">Novo</span>
@@ -401,7 +401,7 @@ export default function PatientPanel({
               </form>
             </Card>
 
-          </div>
+          </Grid>
         ) : (
           /* Empty state */
           <div className={`rounded-xl border border-dashed flex flex-col items-center justify-center h-full min-h-100 text-center p-8 bg-surface-container/30 border-outline-variant`}>
