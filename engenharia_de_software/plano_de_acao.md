@@ -1,225 +1,467 @@
-# Plano de Ação - EasyClin SaaS
+# Plano de Ação Técnico - EasyClin SaaS
 
-Este documento estabelece o planejamento estratégico e a arquitetura em etapas para o desenvolvimento do **EasyClin**, um SaaS de gestão de saúde premium e orientado a resultados, unindo a força de precificação e lucro real do **QiDent** com a excelência operacional do **Simples Dental**.
+Documento vivo de execução do projeto EasyClin. A cada etapa concluída, este arquivo deve ser atualizado com status, evidências de teste e observações técnicas.
 
-O desenvolvimento será norteado pelos princípios de **código limpo, desacoplamento (Clean Architecture), padrão MVVM, mobile-first, segurança (LGPD) e alta escalabilidade**.
+## 1. Objetivo Final
 
----
+Construir um SaaS de gestão clínica e odontológica premium, multi-tenant, responsivo e testável, combinando:
 
-## 🗺️ Visão Geral das Fases
+- Operação clínica: agenda, pacientes, prontuário, profissionais e permissões.
+- Gestão odontológica/saúde: evolução clínica, alertas médicos, prescrição, bloqueio LGPD e auditoria.
+- Gestão comercial: orçamentos, aprovação, conversão financeira e status de propostas.
+- Precificação QiDent: cálculo de preço por custo real, custo de sala, repasse profissional e margem desejada.
+- Gestão financeira: receitas, despesas, fluxo de caixa e relatórios.
+- Plataforma SaaS: tenants, planos, trial, inadimplência, suspensão e painel super admin.
+- Arquitetura limpa: domínio desacoplado de React, persistência plugável e caminho claro para Supabase.
 
-```mermaid
-graph TD
-    F1[Fase 1: Alinhamento Visual & Design System] --> F2[Fase 2: Desacoplamento & MVVM]
-    F2 --> F3[F3: Segurança & LGPD]
-    F3 --> F4[F4: Faturamento & Multi-Tenant]
-    F4 --> F5[F5: Performance & Resiliência]
-    F5 --> F6[F6: Testes & Qualidade]
-    F6 --> F7[F7: Prontidão para Nuvem & Supabase]
+## 2. Fontes Analisadas
+
+### 2.1 Engenharia de Software
+
+- `engenharia_de_software/design_system/kinetic_medical/DESIGN.md`
+- Referências visuais HTML/PNG em `engenharia_de_software/design_system/*`
+- `engenharia_de_software/levantamento_requisitos_plataforma_odontologica_qident_simples_dental (1).pdf`
+- Plano anterior em `engenharia_de_software/plano_de_acao.md`
+
+Observação sobre o PDF: o arquivo existe e foi inspecionado, mas o ambiente local não possui `pdftotext`, `qpdf`, `pdfinfo`, `mutool`, `gs`, `pypdf` ou `PyPDF2`. A tentativa com `textutil` retornou apenas conteúdo PDF bruto/streams comprimidos, sem texto extraível útil. Portanto, os requisitos foram consolidados a partir do nome do levantamento, do plano existente, do código atual e das telas do design system. Quando houver uma versão `.md`, `.docx` ou texto exportado do levantamento, esta seção deve ser revisada.
+
+### 2.2 Código Fonte
+
+- Aplicação Vite + React 19 + TypeScript + Tailwind CSS 4.
+- Entrada: `src/main.tsx`, `src/App.tsx`.
+- Tipos centrais: `src/types.ts`.
+- Persistência/mock: `src/services/db.ts`.
+- Views: `src/views/Auth.tsx`, `src/views/ClinicDashboard.tsx`, `src/views/SuperAdmin.tsx`.
+- Painéis: `DashboardPanel`, `AgendaPanel`, `PatientPanel`, `BudgetPanel`, `QiDentCalculator`, `FinancePanel`.
+- UI base: `src/components/ui/*`.
+
+## 3. Estado Atual do Projeto
+
+### 3.1 Já Funciona
+
+- Login simulado e criação inicial de clínica em trial.
+- Alternância de papel dentro da clínica.
+- Dashboard principal com KPIs clínicos e financeiros.
+- Agenda semanal com criação de consultas, status e simulação de CRM.
+- Cadastro de pacientes, alertas médicos e prontuário com bloqueio visual LGPD.
+- Orçamentos com itens de procedimento, desconto, margem e conversão para receita ao aprovar.
+- Calculadora QiDent funcional no componente.
+- Financeiro com lançamentos manuais e resumo de caixa.
+- Painel super admin com tenants, planos, MRR estimado, status e auditoria.
+- Design system parcialmente aplicado.
+- `npm run lint` executado com sucesso em 2026-06-17.
+
+### 3.2 Principais Riscos Técnicos
+
+- Regras de negócio estão dentro dos componentes React.
+- `dbObj` é acessado diretamente por views e painéis, dificultando teste e troca de infraestrutura.
+- Tipos de domínio, DTOs, persistência e dados mockados estão concentrados.
+- Cálculo QiDent existe em mais de um ponto e não possui testes unitários.
+- Auditoria e LGPD são visuais/simuladas, sem garantias reais de integridade.
+- Permissões estão parcialmente no menu, mas não protegidas como política central.
+- Multi-tenant depende de filtros manuais em métodos e chamadas.
+- Datas e métricas usam dados fixos/simulados em alguns pontos.
+- UI base existe, mas nem todos os módulos usam os mesmos componentes/tokens.
+- Não há ambiente de testes automatizados além do TypeScript.
+
+## 4. Princípios de Execução
+
+- Cada etapa deve terminar com `npm run lint` verde.
+- Regras puras devem nascer testáveis antes de integrar UI.
+- Componentes React devem ficar focados em renderização e intenção do usuário.
+- Persistência deve ser acessada por portas/repositórios, não por `dbObj` direto.
+- Nenhuma etapa deve misturar refatoração ampla com redesenho visual sem necessidade.
+- Toda regra crítica de dinheiro, agenda, tenant, permissão e prontuário deve ter teste.
+- Design deve seguir Kinetic Medical: Inter, grid responsivo, raio consistente, tabelas sem bordas verticais, badges low-contrast e foco visível.
+
+## 5. Roadmap Executivo
+
+Status:
+
+- `[x]` concluído
+- `[~]` em andamento
+- `[ ]` pendente
+
+### Etapa 0 - Diagnóstico e Planejamento
+
+Status: `[x]`
+
+Objetivo: entender projeto, requisitos, arquitetura atual e transformar o plano em backlog executável.
+
+Entregáveis:
+
+- `[x]` Inventário de arquivos e módulos.
+- `[x]` Leitura do design system e plano anterior.
+- `[x]` Inspeção dos componentes principais e persistência.
+- `[x]` Validação TypeScript com `npm run lint`.
+- `[x]` Plano técnico documentado neste arquivo.
+
+Critério de aceite:
+
+- Plano versionado com etapas, dependências, critérios e testes.
+
+Evidência:
+
+- `npm run lint` passou em 2026-06-17.
+
+### Etapa 1 - Finalizar Alinhamento Visual por Módulo
+
+Status: `[ ]`
+
+Objetivo: fechar a camada visual antes da arquitetura profunda, reduzindo retrabalho de UI.
+
+Tarefas:
+
+- `[ ]` Refatorar `PatientPanel.tsx` conforme `prontu_rio_easyclin` e `cadastro_de_pacientes_easyclin`.
+- `[ ]` Refatorar `BudgetPanel.tsx` e `QiDentCalculator.tsx` conforme orçamento/precificação.
+- `[ ]` Refatorar `FinancePanel.tsx` conforme financeiro.
+- `[ ]` Refatorar `SuperAdmin.tsx` conforme dashboard admin e assinatura/planos.
+- `[ ]` Revisar `DashboardPanel.tsx` e `AgendaPanel.tsx` para consistência final de tokens, responsividade e densidade.
+- `[ ]` Remover uso visual inconsistente de cores soltas quando houver token equivalente.
+- `[ ]` Garantir que botões, inputs, cards e modais usem componentes base sempre que fizer sentido.
+
+Critérios de aceite:
+
+- Todas as telas principais seguem o design system.
+- Layout responsivo sem sobreposição em mobile, tablet e desktop.
+- Tabelas com leitura clara e hover sutil.
+- Status críticos com badges consistentes.
+- `npm run lint` verde.
+
+Testes/validação:
+
+- `npm run lint`.
+- Teste manual dos fluxos principais em navegador: login, dashboard, agenda, pacientes, orçamento, precificação, financeiro e super admin.
+
+### Etapa 2 - Fundações de Domínio e Regras Puras
+
+Status: `[ ]`
+
+Objetivo: extrair regras de negócio críticas para código puro e testável, sem mudar comportamento visual.
+
+Estrutura proposta:
+
+```txt
+src/domain/
+  entities/
+  value-objects/
+  services/
+  policies/
+  repositories/
+src/application/
+  usecases/
+src/infrastructure/
+  local-storage/
+src/presentation/
+  viewmodels/
 ```
 
----
+Tarefas:
 
-## 🎨 FASE 1: Alinhamento com o Design System (Tarefa Prioritária)
-**Objetivo:** Elevar a qualidade visual do projeto ao padrão exato proposto pelas especificações e mockups contidos na pasta `engenharia_de_software/design_system`. 
+- `[ ]` Mover tipos centrais de negócio para `src/domain/entities` ou criar aliases progressivos.
+- `[ ]` Criar `PricingService` para a fórmula QiDent.
+- `[ ]` Criar `BudgetTotalsService` para totais, comissão, desconto, lucro e margem.
+- `[ ]` Criar `SubscriptionPolicy` para trial, active, pending, overdue, suspended e cancelled.
+- `[ ]` Criar `MedicalRecordPolicy` para bloqueio, retificação futura e leitura sensível.
+- `[ ]` Criar `PermissionPolicy` para clinic admin, professional, receptionist, patient e super admin.
+- `[ ]` Criar testes unitários para todas as regras puras.
 
-### [x] Tarefa 1.1: Consolidação do Core Temático no Tailwind CSS v4
-- **O que fazer:** Ajustar o arquivo `src/index.css` na diretiva `@theme` para refletir as variáveis exatas de cores, tipografia, bordas e espaçamentos do arquivo `kinetic_medical/DESIGN.md`.
-- **Tokens a mapear:**
-  - Cores: `primary (#003ec7)`, `primary-container (#0052ff)`, `surface (#faf8ff)`, `on-surface (#131b2e)`, `error (#ba1a1a)`, `success (#10b981)`, etc.
-  - Border Radius: `lg: 0.5rem (8px)`, `xl: 0.75rem (12px)`, `full: 9999px`.
-  - Fontes: `Inter` como fonte padrão e `JetBrains Mono` para dados tabulares.
+Critérios de aceite:
 
-### [x] Tarefa 1.2: Redesenho Completo da Tela de Autenticação (`Auth.tsx`)
-- **O que fazer:** Refatorar a visualização de login seguindo os moldes exatos de `login_easyclin/code.html`.
-- **Elementos críticos:** Efeito de vidro (`glass-card`), gradiente suave de fundo (`soft-gradient`), cabeçalho da logo centralizado, inputs com ícones e estados de foco contornados em anel azul de 2px, suporte a modo escuro e transições animadas.
+- Nenhuma regra financeira crítica fica duplicada em componente.
+- Fórmulas são determinísticas e cobertas por testes.
+- Componentes continuam funcionando com o mesmo comportamento.
 
-### [x] Tarefa 1.3: Redesenho do Dashboard Principal (`ClinicDashboard.tsx`)
-- **O que fazer:** Reconstruir o layout estrutural do dashboard, menu lateral fixo (aside) e topo (header) em total conformidade com `dashboard_principal_easyclin/code.html`.
-- **Elementos críticos:** Menu de navegação lateral com ícones da Google Material Symbols, cabeçalho de topo contendo busca em pílula, botões de ação expressiva (`+ Novo Paciente`, `+ Novo Agendamento`) e avatar premium.
+Testes/validação:
 
-### [x] Tarefa 1.4: Refatoração da Agenda Central (`AgendaPanel.tsx`)
-- **O que fazer:** Ajustar a interface da agenda utilizando as referências e elementos visuais de `agenda_easyclin/code.html`.
-- **Elementos críticos:** Visualização de cartões de agendamento com bordas arredondadas e cores baseadas no status, badges de status estilizados em preenchimento de baixo contraste (fundo 10% opacidade, texto 100%), e cabeçalho de controle de períodos.
+- Instalar/configurar Vitest.
+- Testes de preço QiDent, margem, orçamento, status de tenant e permissões.
+- `npm run lint`.
 
-### [ ] Tarefa 1.5: Refatoração da Gestão de Fichas e Prontuários (`PatientPanel.tsx`)
-- **O que fazer:** Redesenhar a listagem de pacientes, evolução clínica e a timeline de prontuário baseando-se em `prontu_rio_easyclin/code.html` e `cadastro_de_pacientes_easyclin/code.html`.
-- **Elementos críticos:** Alertas médicos destacados (Ex: Alérgicos, Cardiopatas), fichas clínicas organizadas em abas e timeline de evolução com assinaturas e chaves de travamento visual (LGPD).
+### Etapa 3 - Portas de Repositório e Adaptador LocalStorage
 
-### [ ] Tarefa 1.6: Refatoração de Orçamentos e Precificação (`BudgetPanel.tsx` & `QiDentCalculator.tsx`)
-- **O que fazer:** Unificar a tela de propostas e a calculadora de margem QiDent para herdar os elementos de `or_amento_e_precifica_o_easyclin/code.html`.
-- **Elementos críticos:** Exibição clara e premium de tabelas de custos, detalhamento analítico da margem bruta de contribuição e simulação visual dos lucros de cada procedimento proposto.
+Status: `[ ]`
 
-### [ ] Tarefa 1.7: Redesenho do Fluxo Financeiro (`FinancePanel.tsx`)
-- **O que fazer:** Elevar a qualidade visual dos gráficos de receitas/despesas e do fluxo de caixa conforme `financeiro_easyclin/code.html`.
-- **Elementos críticos:** Gráficos de barras premium em HSL/RGB dinâmicos, tabelas sem bordas verticais, com hover sutil nas linhas e badges coloridos para categorias.
+Objetivo: isolar persistência e preparar troca para Supabase sem reescrever UI.
 
-### [ ] Tarefa 1.8: Redesenho do Módulo Super Admin (`SuperAdmin.tsx`)
-- **O que fazer:** Ajustar as telas administrativas da plataforma SaaS com base nos arquivos `dashboard_admin_plataforma_easyclin/code.html` e `assinatura_e_planos_easyclin/code.html`.
-- **Elementos críticos:** KPIs de negócios do SaaS (MRR, Churn, ARPU), listagem de clínicas assinantes, e controle de suspensão/pausa das assinaturas de forma elegante.
+Tarefas:
 
----
+- `[ ]` Criar contratos em `src/domain/repositories`.
+- `[ ]` Criar repositórios para tenants, users, patients, appointments, procedures, budgets, transactions, records e audit logs.
+- `[ ]` Implementar `LocalStorage*Repository` usando a lógica atual de `db.ts`.
+- `[ ]` Criar `RepositoryFactory` ou composição única da infraestrutura.
+- `[ ]` Manter `dbObj` temporariamente como fachada de compatibilidade, se necessário.
+- `[ ]` Garantir filtro obrigatório por `tenantId` em todos os repositórios tenant-scoped.
 
-## 🏗️ FASE 2: Arquitetura Limpa & Desacoplamento MVVM
-**Objetivo:** Isolar a lógica de apresentação da lógica de negócios, criando uma arquitetura modular por domínio com injeção de dependências e desacoplamento total da persistência.
+Critérios de aceite:
 
-```
-┌─────────────────────────────────────────────────────────┐
-│                   Presentation Layer                    │
-│        (React Components & Clean Design System UI)       │
-└────────────────────────────┬────────────────────────────┘
-                             ▼
-┌─────────────────────────────────────────────────────────┐
-│                    ViewModel Layer                      │
-│        (Component State, User Intents, Reactive)        │
-└────────────────────────────┬────────────────────────────┘
-                             ▼
-┌─────────────────────────────────────────────────────────┐
-│               Use Cases & Domain Models                 │
-│         (Pure Business Rules, QiDent Formulas)          │
-└────────────────────────────┬────────────────────────────┘
-                             ▼
-┌─────────────────────────────────────────────────────────┐
-│               Repository Interfaces (Ports)             │
-│          (Abstract Database Definitions & Contracts)     │
-└────────────────────────────┬────────────────────────────┘
-                             ▼
-┌─────────────────────────────────────────────────────────┐
-│             Infrastructure Adapters (Adapters)          │
-│       (Supabase / LocalStorage / External APIs)         │
-└─────────────────────────────────────────────────────────┘
-```
+- Componentes não precisam conhecer `localStorage`.
+- Acesso cross-tenant é prevenido no adaptador.
+- Dados seedados continuam funcionando.
 
-### [ ] Tarefa 2.1: Modelos de Domínio Puros (Domain Models)
-- Criar a pasta `src/domain` e isolar regras puras e entidades (ex: regras de precificação QiDent em uma classe ou função pura `QiDentCalculatorService.ts`).
-- Garantir que as entidades no domínio não contenham menções a bibliotecas externas, frameworks ou bancos de dados.
+Testes/validação:
 
-### [ ] Tarefa 2.2: Contratos de Persistência (Abstract Repositories)
-- Criar a pasta `src/domain/repositories` e definir as interfaces estruturadas de persistência:
-  - `UserRepository.ts`
-  - `TenantRepository.ts`
-  - `PatientRepository.ts`
-  - `AppointmentRepository.ts`
-  - `BudgetRepository.ts`
-  - `TransactionRepository.ts`
-  - `AuditLogRepository.ts`
+- Testes unitários de repositório local com storage fake.
+- Teste de segregação por tenant.
+- `npm run lint`.
 
-### [ ] Tarefa 2.3: Adaptador LocalStorage (Infrastructure Adapter)
-- Criar a pasta `src/infrastructure/repositories` e implementar adaptadores que satisfazem as interfaces do domínio utilizando o `localStorage` (Ex: `LocalStoragePatientRepository.ts`).
-- Isso isola o atual mock `db.ts` e permite que o front-end mude de banco com um único arquivo de configuração.
+### Etapa 4 - Casos de Uso da Aplicação
 
-### [ ] Tarefa 2.4: Casos de Uso (Application Services / Use Cases)
-- Criar a pasta `src/application/usecases` e centralizar operações com múltiplas etapas ou regras críticas:
-  - `CalculaLucroRealUseCase.ts`
-  - `RegistraConsultaAgendadaUseCase.ts`
-  - `GeraAuditoriaEvolucaoUseCase.ts`
-  - `RegularizaPagamentoSaaSUseCase.ts`
+Status: `[ ]`
 
-### [ ] Tarefa 2.5: Implementação do Padrão MVVM (ViewModels)
-- Criar a pasta `src/presentation/viewmodels`.
-- Desenvolver ViewModels reativos que expõem o estado para a UI e lidam com as intenções do usuário (Ex: `AgendaViewModel.ts`, `PatientViewModel.ts`), chamando os Casos de Uso.
-- O componente React passará a conter apenas UI e chamará `viewModel.handleAction()`.
+Objetivo: concentrar fluxos com múltiplas regras em use cases testáveis.
 
----
+Tarefas:
 
-## 🔒 FASE 3: Segurança Avançada, Auditoria & Conformidade LGPD
-**Objetivo:** Garantir integridade de dados clínicos, segregação rígida entre clínicas (multi-tenant) e logs de auditoria à prova de adulteração.
+- `[ ]` `LoginUserUseCase`.
+- `[ ]` `RegisterClinicTrialUseCase`.
+- `[ ]` `CreatePatientUseCase`.
+- `[ ]` `CreateAppointmentUseCase`.
+- `[ ]` `ChangeAppointmentStatusUseCase`.
+- `[ ]` `CreateMedicalRecordUseCase`.
+- `[ ]` `LockMedicalRecordUseCase`.
+- `[ ]` `CreateBudgetUseCase`.
+- `[ ]` `ApproveBudgetUseCase`.
+- `[ ]` `SaveProcedurePricingUseCase`.
+- `[ ]` `CreateFinancialTransactionUseCase`.
+- `[ ]` `UpdateTenantSubscriptionUseCase`.
+- `[ ]` `RegisterAuditLogUseCase`.
 
-### [ ] Tarefa 3.1: Filtro Rígido de Tenant (Tenant Segregation)
-- Garantir que toda operação de leitura, gravação ou busca nos Repositórios passe obrigatoriamente e implicitamente o `tenantId` do usuário autenticado no contexto.
-- Prevenir vazamento de dados (*cross-tenant data leaks*) validando a identidade no repositório.
+Critérios de aceite:
 
-### [ ] Tarefa 3.2: Prontuário Clínico em Conformidade com LGPD
-- Implementar controle de travamento de prontuário: após o fechamento, o registro médico (`evolutionNotes`) torna-se somente-leitura.
-- Se houver necessidade de retificação, o profissional deve criar um termo aditivo associado ao prontuário, registrando o motivo, sem alterar o histórico original.
-- Implementar hash de integridade dos registros de saúde para auditorias da LGPD.
+- Fluxos críticos não chamam repositório diretamente da UI.
+- Auditoria é disparada pelos use cases, não espalhada em componentes.
+- Use cases possuem testes de sucesso e falha.
 
-### [ ] Tarefa 3.3: Auditoria Completa e Inviolável
-- Todo evento de leitura de dados sensíveis (prontuários, dados financeiros, CPFs dos pacientes) deve disparar um log na tabela `AuditLog`.
-- Registros críticos como exclusões, alterações financeiras ou alterações de permissão devem conter metadados como endereço IP fictício e identificação inequívoca do operador.
+Testes/validação:
 
-### [ ] Tarefa 3.4: Blindagem Sanitária no Frontend
-- Adicionar sanitização robusta nos formulários contra injeção de HTML/XSS.
-- Garantir que erros internos do banco ou chaves secretas nunca sejam printados em tela ou vazados no console de desenvolvimento.
+- Testes unitários com repositórios em memória.
+- Teste de aprovação de orçamento gerando receita.
+- Teste de bloqueio de prontuário impedindo alteração direta.
 
----
+### Etapa 5 - ViewModels e UI Desacoplada
 
-## 💳 FASE 4: Faturamento SaaS Multi-Tenant & Ciclo de Cobrança
-**Objetivo:** Estruturar as regras e fluxos de faturamento SaaS, desde o período de testes (Trial) até bloqueios automáticos por inadimplência.
+Status: `[ ]`
 
-### [ ] Tarefa 4.1: Gerenciamento Visual de Planos e Cobrança
-- Criar uma aba ou tela de Assinatura para a Clínica Administradora, onde ela pode ver o plano contratado, data do próximo vencimento, e histórico de faturas simuladas.
-- Permitir simulações de cenários de pagamento com cartões ou Pix fictícios.
+Objetivo: aplicar MVVM progressivamente nos módulos, mantendo a UI componentizada.
 
-### [ ] Tarefa 4.2: Automação de Acesso por Status Financeiro
-- Implementar a verificação de status do inquilino (`Tenant.status`):
-  - `active` ou `trial`: Acesso total concedido.
-  - `pending` (atraso de 1 a 14 dias): Exibe alerta sutil de cobrança em atraso, mas libera o uso.
-  - `suspended` (atraso > 15 dias): Trava totalmente as telas do operador (Agenda, Prontuário, Financeiro) com a tela de bloqueio e link rápido para regularização financeira.
-- Realizar liberação e bloqueio automáticos baseados nas datas e status simulados.
+Tarefas:
 
-### [ ] Tarefa 4.3: Interface Pluggable de Pagamentos
-- Criar um adaptador abstrato `PaymentProviderPort.ts` e criar adaptadores iniciais (Mock) para simular pagamentos reais de PIX/Cartão, estruturando o projeto para APIs como Stripe, Asaas ou Efí.
+- `[ ]` Criar ViewModels/hooks por módulo: auth, dashboard, agenda, pacientes, orçamentos, precificação, financeiro, super admin.
+- `[ ]` Migrar estado e handlers dos componentes para ViewModels.
+- `[ ]` Componentes passam a receber estado, comandos e callbacks.
+- `[ ]` Centralizar loading, erro, empty state e mensagens de sucesso.
+- `[ ]` Padronizar form state e validações.
 
----
+Ordem recomendada:
 
-## ⚡ FASE 5: Performance, Jobs Assíncronos & Extensibilidade
-**Objetivo:** Preparar o SaaS para rodar com eficiência sob grandes cargas de dados e permitir integrações com sistemas externos (WhatsApp, Notificações).
+1. Precificação e orçamento, por terem regra financeira crítica.
+2. Pacientes e prontuário, por LGPD/auditoria.
+3. Agenda, por status e CRM.
+4. Financeiro.
+5. Auth e super admin.
+6. Dashboard.
 
-### [ ] Tarefa 5.1: Paginação e Filtros Avançados
-- Refatorar tabelas de Pacientes, Financeiro e Auditoria para suportar paginação sob demanda em nível de repositório, mitigando consumo excessivo de memória em bases muito grandes.
+Critérios de aceite:
 
-### [ ] Tarefa 5.2: Fila de Jobs e Eventos Internos
-- Criar um Event Bus interno simplificado para processar tarefas assíncronas (Ex: quando uma consulta é marcada, dispara um evento interno `AppointmentCreatedEvent`).
-- Escutar esse evento para simular o envio de mensagens de confirmação automáticas via WhatsApp (CRM) e adicionar aos logs.
+- Componentes ficam majoritariamente declarativos.
+- ViewModels são testáveis sem DOM.
+- Fluxos manuais continuam equivalentes.
 
-### [ ] Tarefa 5.3: Otimizações de Renderização no React
-- Utilizar técnicas de memorização (`useMemo`, `useCallback`) nos painéis complexos para evitar re-renderizações desnecessárias ao digitar em inputs ou interagir com o calendário da agenda.
+Testes/validação:
 
----
+- Testes de ViewModel.
+- `npm run lint`.
+- Teste manual por tela migrada.
 
-## 🧪 FASE 6: Testes & Garantia de Qualidade
-**Objetivo:** Assegurar robustez, ausência de regressões e a consistência das operações financeiras e de saúde críticas.
+### Etapa 6 - Segurança, LGPD e Auditoria Realista
 
-### [ ] Tarefa 6.1: Configuração do Ambiente de Testes
-- Instalar e configurar o Vitest (ou Jest) no ecossistema Vite + TypeScript.
+Status: `[ ]`
 
-### [ ] Tarefa 6.2: Testes Unitários de Regras de Negócio
-- Implementar testes unitários para a calculadora QiDent (garantindo que margem desejada, custo e comissões fechem exatamente os lucros e preços ideais).
-- Testar regras de bloqueio/desbloqueio automático baseados na data de vencimento.
+Objetivo: transformar controles simulados em políticas consistentes.
 
-### [ ] Tarefa 6.3: Testes de ViewModel e Fluxo de Caso de Uso
-- Testar o comportamento das ViewModels isoladamente das views (garantindo que ações como `login`, `criarPaciente` e `travarProntuario` chamem os respectivos use cases e salvem nos repositórios).
+Tarefas:
 
----
+- `[ ]` Criar modelo de auditoria para leitura, criação, atualização, bloqueio e exclusão lógica.
+- `[ ]` Registrar leitura de dados sensíveis: prontuário, CPF/documento, financeiro.
+- `[ ]` Adicionar hash de integridade no prontuário bloqueado.
+- `[ ]` Impedir edição de registro bloqueado no domínio/repositório.
+- `[ ]` Criar termo aditivo/retificação em vez de editar prontuário bloqueado.
+- `[ ]` Sanitizar inputs textuais antes de persistir ou renderizar conteúdo livre.
+- `[ ]` Padronizar mensagens de erro sem vazar detalhes internos.
+- `[ ]` Aplicar política de permissão em use cases, não só no menu.
 
-## ☁️ FASE 7: Integração com Nuvem (Supabase Adapter)
-**Objetivo:** Conectar a aplicação a um banco de dados real em nuvem de forma imediata, bastando habilitar uma chave ou variável de ambiente.
+Critérios de aceite:
 
-### [ ] Tarefa 7.1: Implementação dos Supabase Repositories
-- Criar uma pasta `src/infrastructure/supabase` e escrever os adaptadores de repositório utilizando a SDK do Supabase.
-- Ex: `SupabasePatientRepository.ts` implementa as consultas reais em tabelas relacionais do Supabase.
+- Usuário sem permissão não executa ação por chamada direta.
+- Registro bloqueado não é alterável.
+- Eventos sensíveis aparecem no audit log.
+- Testes cobrem permissão, bloqueio e tenant.
 
-### [ ] Tarefa 7.2: Chave de Feature Flag de Infraestrutura
-- Criar uma variável no `.env` ou arquivo de configuração central do sistema (Ex: `INFRASTRUCTURE_MODE = 'local' | 'supabase'`).
-- Utilizar uma Fábrica de Repositórios (`RepositoryFactory.ts`) que injeta a classe correta com base nessa flag. Dessa forma, com 1 clique o SaaS passa do localStorage para nuvem real.
+Testes/validação:
 
-### [ ] Tarefa 7.3: Script de Schema SQL do Banco de Dados
-- Criar os arquivos de migração SQL (`schema.sql`) contendo toda a estrutura de tabelas, chaves estrangeiras, regras de RLS (Row Level Security) para Supabase e triggers de auditoria em nuvem.
+- Testes unitários de políticas.
+- Testes de use case com papel não autorizado.
+- Teste de tentativa de alteração de prontuário bloqueado.
 
----
+### Etapa 7 - SaaS Multi-Tenant, Planos e Cobrança
 
-## 📆 Cronograma Estimado de Execução
+Status: `[ ]`
 
-| Fase | Título | Estimativa de Esforço | Prioridade |
-|---|---|---|---|
-| **Fase 1** | Alinhamento Visual & Design System | 4-5 dias | ⭐ CRÍTICA / ALTA |
-| **Fase 2** | Arquitetura Clean, Repositórios & MVVM | 3-4 dias | ALTA |
-| **Fase 3** | Segurança Rígida, LGPD & Auditorias | 2 dias | MÉDIA-ALTA |
-| **Fase 4** | Faturamento SaaS & Cobranças | 2 dias | MÉDIA |
-| **Fase 5** | Performance & Integrações Assíncronas | 2 dias | MÉDIA |
-| **Fase 6** | Testes Unitários e Integração | 3 dias | ALTA |
-| **Fase 7** | Conexão Real Supabase e Script SQL | 3 dias | MÉDIA |
+Objetivo: consolidar comportamento comercial da plataforma.
 
----
-**Nota de Evolução:** Este plano de ação é um documento dinâmico. À medida que cada etapa for executada, este documento deve ser atualizado com marcas de check `[x]` e observações de implantação relevantes.
+Tarefas:
+
+- `[ ]` Criar tela/aba de assinatura para clínica.
+- `[ ]` Implementar status calculado por vencimento: trial, active, pending, overdue, suspended.
+- `[ ]` Criar bloqueios por status de assinatura com regra central.
+- `[ ]` Criar `PaymentProviderPort`.
+- `[ ]` Criar `MockPaymentProvider`.
+- `[ ]` Simular Pix/cartão e regularização.
+- `[ ]` Melhorar super admin para plano, fatura, MRR, churn e inadimplência.
+
+Critérios de aceite:
+
+- Tenant suspenso não acessa módulos operacionais.
+- Regularização simulada reativa o tenant com auditoria.
+- Regras comerciais são testadas por data absoluta/fake clock.
+
+Testes/validação:
+
+- Testes de status por vencimento.
+- Testes de pagamento mock.
+- Teste manual de tenant ativo, trial e suspenso.
+
+### Etapa 8 - Performance, Paginação e Eventos Internos
+
+Status: `[ ]`
+
+Objetivo: preparar crescimento de dados sem travar UI ou acoplar automações.
+
+Tarefas:
+
+- `[ ]` Adicionar paginação/filtros em repositórios.
+- `[ ]` Refatorar listas de pacientes, financeiro, auditoria e orçamentos para paginação.
+- `[ ]` Criar event bus interno simples.
+- `[ ]` Emitir eventos como `AppointmentCreated`, `BudgetApproved`, `MedicalRecordLocked`, `TenantSuspended`.
+- `[ ]` Simular CRM/WhatsApp como subscriber de evento, não lógica direta do componente.
+- `[ ]` Usar `useMemo`/`useCallback` onde houver listas grandes e cálculos derivados.
+
+Critérios de aceite:
+
+- UI suporta base grande simulada.
+- Automações não ficam presas ao componente.
+- Filtros e paginação preservam tenant.
+
+Testes/validação:
+
+- Testes do event bus.
+- Teste de paginação por repositório.
+- Teste manual com seed ampliado.
+
+### Etapa 9 - Supabase e Infraestrutura Plugável
+
+Status: `[ ]`
+
+Objetivo: permitir troca controlada de localStorage para banco real.
+
+Tarefas:
+
+- `[ ]` Criar `src/infrastructure/supabase`.
+- `[ ]` Criar schema SQL inicial.
+- `[ ]` Definir tabelas, índices, FKs e RLS.
+- `[ ]` Implementar repositórios Supabase para entidades principais.
+- `[ ]` Criar variável de ambiente para modo de infraestrutura.
+- `[ ]` Criar factory de repositórios por modo.
+- `[ ]` Documentar migração e seeds.
+
+Critérios de aceite:
+
+- Aplicação seleciona infraestrutura por configuração.
+- RLS garante segregação por tenant no banco.
+- Repositórios Supabase passam nos mesmos contratos de teste.
+
+Testes/validação:
+
+- Testes de contrato compartilhados entre local e Supabase mockado.
+- Validação manual contra projeto Supabase quando credenciais existirem.
+
+### Etapa 10 - Qualidade, Acessibilidade e Prontidão de Produto
+
+Status: `[ ]`
+
+Objetivo: estabilizar para uso real/demo avançada.
+
+Tarefas:
+
+- `[ ]` Adicionar Playwright para smoke tests dos fluxos principais.
+- `[ ]` Validar acessibilidade básica: labels, foco, aria em modais e botões icônicos.
+- `[ ]` Remover dependência de dados mágicos nos componentes.
+- `[ ]` Criar estados de loading/error/empty padronizados.
+- `[ ]` Revisar responsividade em 375px, 768px, 1280px e 1440px.
+- `[ ]` Criar documentação técnica de arquitetura.
+- `[ ]` Criar roteiro de demo funcional.
+
+Critérios de aceite:
+
+- Smoke tests cobrem login, agenda, paciente, orçamento, financeiro e super admin.
+- Build e lint verdes.
+- UX sem sobreposição ou quebras visuais nos breakpoints-alvo.
+
+Testes/validação:
+
+- `npm run lint`.
+- `npm run build`.
+- Playwright smoke.
+- QA visual manual.
+
+## 6. Backlog de Módulos por Prioridade
+
+### Prioridade Alta
+
+- Precificação QiDent como domínio puro.
+- Orçamentos e conversão financeira.
+- Pacientes/prontuário/LGPD.
+- Multi-tenant e permissões.
+- Testes unitários.
+
+### Prioridade Média
+
+- Agenda com eventos internos e CRM simulado.
+- Financeiro com filtros e paginação.
+- Super admin e cobrança SaaS.
+- ViewModels completos.
+
+### Prioridade Baixa Inicial
+
+- Supabase real antes das regras estarem isoladas.
+- Relatórios avançados.
+- Integrações reais de pagamento/WhatsApp.
+- Dark mode completo, caso não seja objetivo imediato.
+
+## 7. Ordem Recomendada de Trabalho a Partir de Agora
+
+1. Concluir Etapa 1, começando por `PatientPanel.tsx`, porque ainda está marcada como pendente no plano anterior e envolve prontuário/LGPD.
+2. Criar Vitest e extrair serviços de domínio da Etapa 2, começando por QiDent e orçamentos.
+3. Migrar orçamento/precificação para use cases e ViewModels.
+4. Migrar pacientes/prontuário para use cases e ViewModels.
+5. Introduzir repositórios e remover chamadas diretas ao `dbObj`.
+6. Consolidar segurança, tenant e auditoria.
+7. Evoluir cobrança SaaS e super admin.
+8. Preparar Supabase.
+
+## 8. Registro de Progresso
+
+| Data | Etapa | Status | Evidência |
+|---|---:|---|---|
+| 2026-06-17 | 0 | Concluída | Análise do projeto, design system, plano anterior, código fonte e `npm run lint` verde. |
+
+## 9. Próxima Etapa Ativa
+
+Próxima etapa sugerida: **Etapa 1.1 - Refatorar `PatientPanel.tsx` conforme design system e preparar a tela para posterior extração de domínio LGPD**.
+
+Critério para iniciar:
+
+- Alterar somente UI/estrutura do painel de pacientes, sem introduzir ainda repositórios ou use cases.
+- Manter comportamento atual funcionando.
+- Rodar `npm run lint` ao final.
