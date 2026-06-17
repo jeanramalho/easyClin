@@ -106,13 +106,13 @@ Evidência:
 
 ### Etapa 1 - Finalizar Alinhamento Visual por Módulo
 
-Status: `[ ]`
+Status: `[~]`
 
 Objetivo: fechar a camada visual antes da arquitetura profunda, reduzindo retrabalho de UI.
 
 Tarefas:
 
-- `[ ]` Refatorar `PatientPanel.tsx` conforme `prontu_rio_easyclin` e `cadastro_de_pacientes_easyclin`.
+- `[x]` Refatorar `PatientPanel.tsx` conforme `prontu_rio_easyclin` e `cadastro_de_pacientes_easyclin`.
 - `[ ]` Refatorar `BudgetPanel.tsx` e `QiDentCalculator.tsx` conforme orçamento/precificação.
 - `[ ]` Refatorar `FinancePanel.tsx` conforme financeiro.
 - `[ ]` Refatorar `SuperAdmin.tsx` conforme dashboard admin e assinatura/planos.
@@ -455,13 +455,14 @@ Testes/validação:
 | Data | Etapa | Status | Evidência |
 |---|---:|---|---|
 | 2026-06-17 | 0 | Concluída | Análise do projeto, design system, plano anterior, código fonte e `npm run lint` verde. |
+| 2026-06-17 | 1.1 | Concluída | `PatientPanel.tsx` alinhado ao design system com listagem, métricas, resumo do paciente, abas e timeline clínica. `npm run lint` e `npm run build` verdes. |
 
 ## 9. Próxima Etapa Ativa
 
-Próxima etapa sugerida: **Etapa 1.1 - Refatorar `PatientPanel.tsx` conforme design system e preparar a tela para posterior extração de domínio LGPD**.
+Próxima etapa sugerida: **Etapa 1.2 - Refatorar `BudgetPanel.tsx` e `QiDentCalculator.tsx` conforme orçamento/precificação do design system**.
 
 Critério para iniciar:
 
-- Alterar somente UI/estrutura do painel de pacientes, sem introduzir ainda repositórios ou use cases.
+- Alterar somente UI/estrutura de orçamento e precificação, sem introduzir ainda repositórios ou use cases.
 - Manter comportamento atual funcionando.
 - Rodar `npm run lint` ao final.
