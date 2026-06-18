@@ -6,6 +6,7 @@
 import React, { useState } from 'react';
 import { Budget, Patient, Procedure, BudgetItem, BudgetStatus, FinancialTransaction } from '../types';
 import { dbObj } from '../services/db';
+import { Button, Card, Input } from './ui';
 
 interface BudgetPanelProps {
   tenantId: string;
@@ -16,13 +17,18 @@ interface BudgetPanelProps {
   darkMode: boolean;
 }
 
-const statusConfig = {
-  pending:  { label: 'Pendente',  bg: 'bg-amber-500/10',   text: 'text-amber-600',  border: 'border-amber-500/20',  icon: 'schedule' },
-  approved: { label: 'Aprovado',  bg: 'bg-emerald-500/10', text: 'text-emerald-600', border: 'border-emerald-500/20', icon: 'check_circle' },
-  rejected: { label: 'Recusado', bg: 'bg-error/10',        text: 'text-error',                           border: 'border-error/20',      icon: 'cancel' },
+const statusConfig: Record<BudgetStatus, { label: string; bg: string; text: string; border: string; icon: string }> = {
+  draft: { label: 'Rascunho', bg: 'bg-surface-container', text: 'text-on-surface-variant', border: 'border-outline-variant', icon: 'edit_note' },
+  pending: { label: 'Pendente', bg: 'bg-amber-500/10', text: 'text-amber-700', border: 'border-amber-500/20', icon: 'schedule' },
+  approved: { label: 'Aprovado', bg: 'bg-emerald-500/10', text: 'text-emerald-700', border: 'border-emerald-500/20', icon: 'check_circle' },
+  rejected: { label: 'Recusado', bg: 'bg-error/10', text: 'text-error', border: 'border-error/20', icon: 'cancel' },
+  converted: { label: 'Convertido', bg: 'bg-primary/10', text: 'text-primary', border: 'border-primary/20', icon: 'sync_alt' },
 };
 
-export default function BudgetPanel({ tenantId, budgets, patients, procedures, onRefresh, darkMode }: BudgetPanelProps) {
+const currency = (value: number) =>
+  value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+export default function BudgetPanel({ tenantId, budgets, patients, procedures, onRefresh }: BudgetPanelProps) {
   const [showCreate, setShowCreate] = useState(false);
   const [patientId, setPatientId] = useState('');
   const [paymentPlan, setPaymentPlan] = useState('À vista s/ juros');
@@ -80,7 +86,11 @@ export default function BudgetPanel({ tenantId, budgets, patients, procedures, o
     const patName = patients.find(p => p.id === patientId)?.name || 'N/A';
     dbObj.logAction(dbObj.currentUser.id, dbObj.currentUser.name, dbObj.currentUser.role,
       'Orçamento Criado', `Criou orçamento no valor total R$ ${total.toFixed(2)} para o paciente ${patName}.`, tenantId);
-    setPatientId(''); setSelectedProcedures([]); setDiscountVal(0); setShowCreate(false);
+    setPatientId('');
+    setSelectedProcedures([]);
+    setDiscountVal(0);
+    setPaymentPlan('À vista s/ juros');
+    setShowCreate(false);
     onRefresh();
   };
 
@@ -103,194 +113,206 @@ export default function BudgetPanel({ tenantId, budgets, patients, procedures, o
     onRefresh();
   };
 
-  const selectClass = `w-full px-3 py-2.5 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all ${
-    darkMode ? 'bg-inverse-surface border-outline/30 text-white' : 'bg-surface-container-lowest border-outline-variant text-on-surface'
-  }`;
-  const inputClass = selectClass;
+  const approvedBudgets = budgets.filter(budget => budget.status === 'approved' || budget.status === 'converted').length;
+  const pendingBudgets = budgets.filter(budget => budget.status === 'pending' || budget.status === 'draft').length;
+  const totalPipeline = budgets.reduce((sum, budget) => sum + budget.total, 0);
+  const projectedProfit = budgets.reduce((sum, budget) => sum + budget.totalProfit, 0);
+  const profitMarginPct = total > 0 ? (totalProfit / total) * 100 : 0;
+  const maxDiscount = Math.round(subtotal * 0.4);
+
+  const selectClass =
+    'w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20';
 
   return (
     <div className="space-y-6">
-
-      {/* ── Header Bar ── */}
-      <div className={`rounded-xl border px-6 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm ${
-        darkMode ? 'bg-inverse-surface border-outline/20' : 'bg-surface-container-lowest border-outline-variant'
-      }`}>
+      <section className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
         <div>
-          <h3 className="font-bold text-on-surface text-base flex items-center gap-2">
-            <span className="material-symbols-outlined text-primary text-xl" style={{ fontVariationSettings: "'FILL' 1" }}>description</span>
-            Orçamentos e Margens do Consultório
-          </h3>
-          <p className="text-xs text-outline mt-0.5">Precificação inteligente com projeção de lucro real via QiDent.</p>
+          <h2 className="text-2xl font-bold tracking-tight text-on-surface">Orçamentos e Precificação</h2>
+          <p className="mt-1 text-sm text-on-surface-variant">
+            Propostas comerciais com projeção de custos, repasse profissional e lucro real QiDent.
+          </p>
         </div>
         {!showCreate && (
-          <button
+          <Button
+            type="button"
             onClick={() => setShowCreate(true)}
-            className="flex items-center gap-2 bg-primary hover:bg-primary-container text-on-primary font-semibold text-sm py-2 px-4 rounded-xl transition-colors cursor-pointer shadow-sm"
+            className="h-10 gap-2 rounded-lg"
           >
-            <span className="material-symbols-outlined text-base">add</span>
+            <span className="material-symbols-outlined text-[18px]">add</span>
             Novo Orçamento
-          </button>
+          </Button>
         )}
-      </div>
+      </section>
+
+      <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <MetricCard icon="request_quote" label="Pipeline Total" value={currency(totalPipeline)} helper={`${budgets.length} orçamento${budgets.length !== 1 ? 's' : ''}`} tone="primary" />
+        <MetricCard icon="pending_actions" label="Em Negociação" value={pendingBudgets} helper="Aguardando decisão" tone="warning" />
+        <MetricCard icon="task_alt" label="Aprovados" value={approvedBudgets} helper="Convertidos em receita" tone="success" />
+        <MetricCard icon="insights" label="Lucro Projetado" value={currency(projectedProfit)} helper="Pós-custos e repasses" tone={projectedProfit >= 0 ? 'success' : 'error'} />
+      </section>
 
       {showCreate ? (
-        /* ── Create Budget Form ── */
-        <div className={`rounded-xl border shadow-sm overflow-hidden ${
-          darkMode ? 'bg-inverse-surface border-outline/20' : 'bg-surface-container-lowest border-outline-variant'
-        }`}>
-          {/* Form Header */}
-          <div className={`px-6 py-4 border-b flex items-center justify-between ${darkMode ? 'border-outline/20' : 'border-outline-variant'}`}>
-            <h4 className="font-bold text-sm text-on-surface flex items-center gap-2">
-              <span className="material-symbols-outlined text-primary text-base">edit_document</span>
-              Criando Orçamento Inteligente
-            </h4>
-            <button onClick={() => setShowCreate(false)}
-              className={`px-3 py-1.5 text-xs border rounded-lg cursor-pointer transition-colors font-medium ${
-                darkMode ? 'border-outline/30 hover:bg-inverse-surface text-outline' : 'border-outline-variant hover:bg-surface-container text-on-surface-variant'
-              }`}>
-              ← Voltar à lista
-            </button>
+        <Card>
+          <div className="flex flex-col gap-3 border-b border-outline-variant bg-surface-container-lowest px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h3 className="text-base font-bold text-on-surface">Novo orçamento inteligente</h3>
+              <p className="mt-0.5 text-xs text-outline">Monte os itens e valide a rentabilidade antes de enviar a proposta.</p>
+            </div>
+            <Button type="button" variant="secondary" size="sm" className="w-fit gap-2 rounded-lg" onClick={() => setShowCreate(false)}>
+              <span className="material-symbols-outlined text-[16px]">arrow_back</span>
+              Voltar à lista
+            </Button>
           </div>
 
-          <form onSubmit={handleSaveBudget} className="p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
-            
-            {/* ── Left/Center: Form Fields ── */}
-            <div className="lg:col-span-2 space-y-5">
+          <form onSubmit={handleSaveBudget} className="grid grid-cols-1 gap-6 p-5 lg:grid-cols-[minmax(0,8fr)_minmax(320px,4fr)]">
+            <div className="min-w-0 space-y-5">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="block text-[10px] font-semibold text-outline uppercase tracking-wider">Paciente *</label>
+                  <label className="block text-[10px] font-bold uppercase tracking-wider text-outline">Paciente *</label>
                   <select required value={patientId} onChange={e => setPatientId(e.target.value)} className={selectClass}>
                     <option value="">Selecione o paciente...</option>
                     {patients.map(p => <option key={p.id} value={p.id}>{p.name} ({p.document})</option>)}
                   </select>
                 </div>
-                <div className="space-y-1">
-                  <label className="block text-[10px] font-semibold text-outline uppercase tracking-wider">Forma de Pagamento *</label>
-                  <input type="text" required value={paymentPlan} onChange={e => setPaymentPlan(e.target.value)}
-                    placeholder="Ex: Entrada de R$500 + 3x Cartão" className={inputClass} />
-                </div>
+                <Input
+                  required
+                  label="Forma de Pagamento *"
+                  value={paymentPlan}
+                  onChange={e => setPaymentPlan(e.target.value)}
+                  placeholder="Ex: Entrada de R$ 500 + 3x Cartão"
+                  className="rounded-lg bg-surface-container-lowest"
+                />
               </div>
 
-              {/* Add Procedure */}
-              <div className={`p-4 rounded-xl border border-dashed ${darkMode ? 'border-outline/30 bg-primary/5' : 'border-primary/30 bg-primary/5'}`}>
-                <label className="block text-[10px] font-semibold text-primary uppercase tracking-wider mb-2">Adicionar Procedimento ao Orçamento</label>
-                <div className="flex gap-2">
+              <div className="rounded-xl border border-dashed border-primary/30 bg-primary/5 p-4">
+                <label className="mb-2 block text-[10px] font-bold uppercase tracking-wider text-primary">Adicionar Procedimento</label>
+                <div className="flex flex-col gap-2 sm:flex-row">
                   <select value={currentProcId} onChange={e => setCurrentProcId(e.target.value)}
-                    className={`flex-1 px-3 py-2.5 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all ${
-                      darkMode ? 'bg-inverse-surface border-outline/30 text-white' : 'bg-surface-container-lowest border-outline-variant text-on-surface'
-                    }`}>
+                    className={`${selectClass} flex-1`}>
                     <option value="">Selecione do catálogo QiDent...</option>
                     {procedures.map(proc => (
-                      <option key={proc.id} value={proc.id}>{proc.name} — R$ {proc.finalPrice.toFixed(2)}</option>
+                      <option key={proc.id} value={proc.id}>{proc.name} - {currency(proc.finalPrice)}</option>
                     ))}
                   </select>
-                  <button type="button" onClick={handleAddProcedureEntry} disabled={!currentProcId}
-                    className="bg-primary hover:bg-primary-container disabled:opacity-40 text-on-primary px-4 py-2 rounded-xl font-bold text-sm transition-colors cursor-pointer">
-                    <span className="material-symbols-outlined text-base">add</span>
-                  </button>
+                  <Button type="button" onClick={handleAddProcedureEntry} disabled={!currentProcId} className="h-10 rounded-lg px-4">
+                    <span className="material-symbols-outlined text-[18px]">add</span>
+                  </Button>
                 </div>
               </div>
 
-              {/* Procedures Table */}
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-bold text-outline uppercase tracking-wider">Tratamentos Selecionados ({selectedProcedures.length})</span>
+              <div className="overflow-hidden rounded-xl border border-outline-variant">
+                <div className="flex items-center justify-between border-b border-outline-variant bg-surface-container-low px-4 py-3">
+                  <h4 className="text-sm font-bold text-on-surface">Serviços e Procedimentos</h4>
+                  <span className="rounded-full bg-surface-container-lowest px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-outline">
+                    {selectedProcedures.length} item{selectedProcedures.length !== 1 ? 's' : ''}
+                  </span>
                 </div>
                 {selectedProcedures.length === 0 ? (
-                  <div className="flex flex-col items-center justify-center py-8 text-center">
+                  <div className="flex flex-col items-center justify-center px-6 py-12 text-center">
                     <span className="material-symbols-outlined text-4xl text-outline mb-2">playlist_add</span>
-                    <p className="text-xs text-outline">Adicione procedimentos ao orçamento acima.</p>
+                    <p className="text-sm font-semibold text-on-surface-variant">Nenhum procedimento selecionado</p>
+                    <p className="mt-1 max-w-sm text-xs text-outline">Adicione itens do catálogo QiDent para liberar a simulação de lucro real.</p>
                   </div>
                 ) : (
-                  <div className="space-y-2">
+                  <div className="overflow-x-auto">
+                    <table className="w-full min-w-[720px] text-left text-xs">
+                      <thead className="bg-surface-container-low/60 text-[10px] font-bold uppercase tracking-wider text-outline">
+                        <tr>
+                          <th className="px-4 py-3">Serviço</th>
+                          <th className="px-4 py-3">Custos</th>
+                          <th className="px-4 py-3">Repasse</th>
+                          <th className="px-4 py-3 text-right">Preço / Lucro</th>
+                          <th className="px-4 py-3 text-right">Ação</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-outline-variant">
                     {selectedProcedures.map((item, index) => {
                       const commission = item.finalPrice * (item.professionalPercent / 100);
                       const netProfit = item.finalPrice - item.costPrice - item.clinicCost - commission;
                       return (
-                        <div key={index} className={`p-3 rounded-xl border flex justify-between items-center ${
-                          darkMode ? 'bg-inverse-surface/40 border-outline/20' : 'bg-surface-container border-outline-variant'
-                        }`}>
-                          <div className="min-w-0">
-                            <p className="font-semibold text-sm text-on-surface">{item.procedureName}</p>
-                            <div className="flex gap-3 text-[10px] text-outline font-mono mt-1 flex-wrap">
-                              <span>Insumo: R$ {item.costPrice.toFixed(2)}</span>
-                              <span>Sala: R$ {item.clinicCost.toFixed(2)}</span>
-                              <span>Repasse: R$ {commission.toFixed(2)} ({item.professionalPercent}%)</span>
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-3 shrink-0 ml-3">
-                            <div className="text-right">
-                              <span className="font-mono text-sm font-bold text-on-surface">R$ {item.finalPrice.toFixed(2)}</span>
-                              <span className={`block text-[10px] font-bold ${netProfit > 0 ? 'text-emerald-500' : 'text-error'}`}>
-                                Real: {netProfit > 0 ? '+' : ''}R$ {netProfit.toFixed(2)}
-                              </span>
-                            </div>
+                        <tr key={`${item.procedureId}-${index}`} className="transition-colors hover:bg-surface-container-low/50">
+                          <td className="px-4 py-4">
+                            <p className="font-semibold text-on-surface">{item.procedureName}</p>
+                            <span className="text-[10px] text-outline">Margem desejada: {item.desiredMargin}%</span>
+                          </td>
+                          <td className="px-4 py-4 text-on-surface-variant">
+                            <p className="font-mono">{currency(item.costPrice + item.clinicCost)}</p>
+                            <span className="text-[10px] text-outline">Insumos + sala</span>
+                          </td>
+                          <td className="px-4 py-4 text-on-surface-variant">
+                            <p className="font-mono">{currency(commission)}</p>
+                            <span className="text-[10px] text-outline">{item.professionalPercent}% profissional</span>
+                          </td>
+                          <td className="px-4 py-4 text-right">
+                            <p className="font-mono font-bold text-on-surface">{currency(item.finalPrice)}</p>
+                            <span className={`text-[10px] font-bold ${netProfit >= 0 ? 'text-emerald-600' : 'text-error'}`}>
+                              Lucro {currency(netProfit)}
+                            </span>
+                          </td>
+                          <td className="px-4 py-4 text-right">
                             <button type="button" onClick={() => handleRemoveProcedureEntry(index)}
-                              className="p-1.5 hover:bg-error/10 hover:text-error rounded-lg text-outline transition-colors cursor-pointer">
-                              <span className="material-symbols-outlined text-base">delete</span>
+                              className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-outline transition-colors hover:bg-error/10 hover:text-error"
+                              title="Remover procedimento">
+                              <span className="material-symbols-outlined text-[18px]">delete</span>
                             </button>
-                          </div>
-                        </div>
+                          </td>
+                        </tr>
                       );
                     })}
+                      </tbody>
+                    </table>
                   </div>
                 )}
               </div>
             </div>
 
-            {/* ── Right: QiDent Profit Simulation ── */}
-            <div className={`p-5 rounded-xl border space-y-4 ${
-              darkMode ? 'bg-primary/5 border-primary/20' : 'bg-surface-container border-outline-variant'
-            }`}>
-              <h5 className="font-bold text-sm text-on-surface flex items-center gap-2">
-                <span className="material-symbols-outlined text-primary text-base" style={{ fontVariationSettings: "'FILL' 1" }}>auto_awesome</span>
-                Simulação QiDent — Lucro Real
-              </h5>
+            <aside className="space-y-4 rounded-xl border-2 border-primary/20 bg-surface-container-lowest p-5 shadow-sm lg:sticky lg:top-4 lg:self-start">
+              <div className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-primary" style={{ fontVariationSettings: "'FILL' 1" }}>insights</span>
+                <h3 className="text-base font-bold text-primary">Inteligência de Precificação</h3>
+              </div>
 
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between text-on-surface-variant">
                   <span>Subtotal bruto:</span>
-                  <span className="font-mono font-semibold text-on-surface">R$ {subtotal.toFixed(2)}</span>
+                  <span className="font-mono font-semibold text-on-surface">{currency(subtotal)}</span>
                 </div>
 
-                {/* Discount Slider */}
-                <div className={`p-3 rounded-lg border ${darkMode ? 'border-outline/20 bg-inverse-surface/20' : 'border-outline-variant bg-surface-container-low'}`}>
+                <div className="rounded-lg border border-outline-variant bg-surface-container-low p-3">
                   <div className="flex justify-between text-xs mb-2">
                     <span className="text-on-surface-variant font-medium">Desconto comercial:</span>
-                    <span className="font-mono font-bold text-error">- R$ {discountVal.toFixed(2)}</span>
+                    <span className="font-mono font-bold text-error">- {currency(discountVal)}</span>
                   </div>
-                  <input type="range" min="0" max={Math.round(subtotal * 0.4)} value={discountVal}
+                  <input type="range" min="0" max={maxDiscount} value={Math.min(discountVal, maxDiscount)}
                     onChange={e => setDiscountVal(parseInt(e.target.value) || 0)}
-                    className="w-full h-1.5 accent-primary rounded-full cursor-pointer" />
+                    className="w-full h-1.5 cursor-pointer rounded-full accent-primary" />
                   <div className="flex justify-between text-[10px] text-outline mt-1">
-                    <span>R$ 0</span>
+                    <span>{currency(0)}</span>
                     <span>Máx. 40%</span>
                   </div>
                 </div>
 
-                <div className={`flex justify-between font-bold text-base pt-1 pb-3 border-b ${darkMode ? 'border-outline/20' : 'border-outline-variant'}`}>
+                <div className="flex justify-between border-b border-outline-variant pb-3 pt-1 text-base font-bold">
                   <span>TOTAL:</span>
-                  <span className="font-mono text-on-surface">R$ {total.toFixed(2)}</span>
+                  <span className="font-mono text-primary">{currency(total)}</span>
                 </div>
 
-                {/* Cost breakdown */}
                 <div className="space-y-1.5 pt-1">
                   <span className="text-[10px] font-bold text-outline uppercase tracking-wider block">Deduções de Lucratividade:</span>
                   <div className="flex justify-between text-xs text-on-surface-variant">
                     <span>Insumos clínicos</span>
-                    <span className="font-mono">- R$ {totalCostPrice.toFixed(2)}</span>
+                    <span className="font-mono">- {currency(totalCostPrice)}</span>
                   </div>
                   <div className="flex justify-between text-xs text-on-surface-variant">
                     <span>Custos operacionais</span>
-                    <span className="font-mono">- R$ {totalClinCost.toFixed(2)}</span>
+                    <span className="font-mono">- {currency(totalClinCost)}</span>
                   </div>
                   <div className="flex justify-between text-xs text-on-surface-variant">
                     <span>Comissão profissional</span>
-                    <span className="font-mono">- R$ {totalCommission.toFixed(2)}</span>
+                    <span className="font-mono">- {currency(totalCommission)}</span>
                   </div>
                 </div>
 
-                {/* Profit highlight */}
                 <div className={`p-4 rounded-xl border mt-2 ${
                   totalProfit > 0
                     ? 'bg-emerald-500/10 border-emerald-500/20'
@@ -298,7 +320,7 @@ export default function BudgetPanel({ tenantId, budgets, patients, procedures, o
                 }`}>
                   <span className="text-[10px] font-bold uppercase tracking-wider block mb-1 text-outline">Projeção Lucro Real</span>
                   <div className={`text-2xl font-mono font-bold ${totalProfit > 0 ? 'text-emerald-500' : 'text-error'}`}>
-                    R$ {totalProfit.toFixed(2)}
+                    {currency(totalProfit)}
                   </div>
                   <div className={`text-xs font-semibold mt-1 ${totalProfit > 0 ? 'text-emerald-600' : 'text-error'}`}>
                     Margem: {profitMarginPct.toFixed(1)}%
@@ -309,24 +331,19 @@ export default function BudgetPanel({ tenantId, budgets, patients, procedures, o
                 </div>
               </div>
 
-              <button type="submit" disabled={selectedProcedures.length === 0 || !patientId}
-                className="w-full bg-emerald-600 hover:bg-emerald-700 disabled:opacity-40 text-white font-bold py-3 px-4 rounded-xl transition-colors cursor-pointer text-sm flex items-center justify-center gap-2">
-                <span className="material-symbols-outlined text-base">task_alt</span>
+              <Button type="submit" disabled={selectedProcedures.length === 0 || !patientId}
+                className="w-full gap-2 rounded-xl bg-emerald-600 py-3 hover:bg-emerald-700">
+                <span className="material-symbols-outlined text-[18px]">task_alt</span>
                 Registrar Proposta Comercial
-              </button>
-            </div>
+              </Button>
+            </aside>
           </form>
-        </div>
+        </Card>
       ) : (
-        /* ── Budget List Table ── */
-        <div className={`rounded-xl border overflow-hidden shadow-sm ${
-          darkMode ? 'bg-inverse-surface border-outline/20' : 'bg-surface-container-lowest border-outline-variant'
-        }`}>
-          <div className={`px-6 py-4 border-b ${darkMode ? 'border-outline/20' : 'border-outline-variant'}`}>
-            <h4 className="font-semibold text-sm text-on-surface">
-              Orçamentos Cadastrados
-              <span className="ml-2 text-xs font-normal text-outline">({budgets.length} total)</span>
-            </h4>
+        <Card>
+          <div className="flex flex-col gap-1 border-b border-outline-variant px-5 py-4">
+            <h3 className="text-base font-bold text-on-surface">Orçamentos cadastrados</h3>
+            <p className="text-xs text-outline">{budgets.length} proposta{budgets.length !== 1 ? 's' : ''} comercial{budgets.length !== 1 ? 'is' : ''} no histórico da clínica.</p>
           </div>
 
           {budgets.length === 0 ? (
@@ -337,11 +354,9 @@ export default function BudgetPanel({ tenantId, budgets, patients, procedures, o
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
-                <thead>
-                  <tr className={`border-b text-[10px] font-bold uppercase tracking-wider ${
-                    darkMode ? 'border-outline/20 text-outline' : 'border-outline-variant text-outline'
-                  }`}>
+              <table className="w-full min-w-[840px] text-left text-xs">
+                <thead className="bg-surface-container-low text-[10px] font-bold uppercase tracking-wider text-outline">
+                  <tr>
                     <th className="px-6 py-3">Paciente</th>
                     <th className="px-4 py-3">Condições</th>
                     <th className="px-4 py-3">Procedimentos</th>
@@ -349,20 +364,18 @@ export default function BudgetPanel({ tenantId, budgets, patients, procedures, o
                     <th className="px-4 py-3 text-right">Status / Ação</th>
                   </tr>
                 </thead>
-                <tbody className={`divide-y ${darkMode ? 'divide-outline/10' : 'divide-outline-variant/50'}`}>
+                <tbody className="divide-y divide-outline-variant">
                   {budgets.map(bud => {
                     const patient = patients.find(p => p.id === bud.patientId);
                     const cfg = statusConfig[bud.status];
                     return (
-                      <tr key={bud.id} className={`transition-colors ${
-                        darkMode ? 'hover:bg-inverse-surface/20' : 'hover:bg-surface-container/50'
-                      }`}>
+                      <tr key={bud.id} className="transition-colors hover:bg-surface-container-low/50">
                         <td className="px-6 py-4">
                           <p className="font-semibold text-on-surface">{patient?.name || 'N/A'}</p>
                           <span className="text-[10px] text-outline font-mono">{new Date(bud.createdAt).toLocaleDateString('pt-BR')}</span>
                         </td>
                         <td className="px-4 py-4">
-                          <p className="font-bold text-on-surface font-mono">R$ {bud.total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
+                          <p className="font-bold text-on-surface font-mono">{currency(bud.total)}</p>
                           <span className="text-[10px] text-outline truncate max-w-30 block">{bud.paymentPlan}</span>
                         </td>
                         <td className="px-4 py-4 text-on-surface-variant max-w-40">
@@ -371,7 +384,7 @@ export default function BudgetPanel({ tenantId, budgets, patients, procedures, o
                         </td>
                         <td className="px-4 py-4">
                           <p className={`font-bold font-mono text-sm ${bud.totalProfit >= 0 ? 'text-emerald-500' : 'text-error'}`}>
-                            R$ {bud.totalProfit.toLocaleString('pt-BR', { maximumFractionDigits: 2 })}
+                            {currency(bud.totalProfit)}
                           </p>
                           <span className="text-[9px] text-outline uppercase font-bold tracking-widest">Lucro Real</span>
                         </td>
@@ -404,8 +417,38 @@ export default function BudgetPanel({ tenantId, budgets, patients, procedures, o
               </table>
             </div>
           )}
-        </div>
+        </Card>
       )}
     </div>
+  );
+}
+
+interface MetricCardProps {
+  icon: string;
+  label: string;
+  value: string | number;
+  helper: string;
+  tone: 'primary' | 'success' | 'warning' | 'error';
+}
+
+function MetricCard({ icon, label, value, helper, tone }: MetricCardProps) {
+  const toneClass = {
+    primary: 'bg-primary/10 text-primary',
+    success: 'bg-emerald-500/10 text-emerald-700',
+    warning: 'bg-amber-500/10 text-amber-700',
+    error: 'bg-error/10 text-error',
+  }[tone];
+
+  return (
+    <Card className="p-4">
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <p className="text-[10px] font-bold uppercase tracking-wider text-outline">{label}</p>
+          <p className="mt-2 text-xl font-bold text-on-surface">{value}</p>
+          <p className="mt-1 text-xs text-on-surface-variant">{helper}</p>
+        </div>
+        <span className={`material-symbols-outlined rounded-lg p-2 text-[20px] ${toneClass}`}>{icon}</span>
+      </div>
+    </Card>
   );
 }
