@@ -113,7 +113,7 @@ Objetivo: fechar a camada visual antes da arquitetura profunda, reduzindo retrab
 Tarefas:
 
 - `[x]` Refatorar `PatientPanel.tsx` conforme `prontu_rio_easyclin` e `cadastro_de_pacientes_easyclin`.
-- `[ ]` Refatorar `BudgetPanel.tsx` e `QiDentCalculator.tsx` conforme orçamento/precificação.
+- `[x]` Refatorar `BudgetPanel.tsx` e `QiDentCalculator.tsx` conforme orçamento/precificação.
 - `[ ]` Refatorar `FinancePanel.tsx` conforme financeiro.
 - `[ ]` Refatorar `SuperAdmin.tsx` conforme dashboard admin e assinatura/planos.
 - `[ ]` Revisar `DashboardPanel.tsx` e `AgendaPanel.tsx` para consistência final de tokens, responsividade e densidade.
@@ -456,10 +456,11 @@ Testes/validação:
 |---|---:|---|---|
 | 2026-06-17 | 0 | Concluída | Análise do projeto, design system, plano anterior, código fonte e `npm run lint` verde. |
 | 2026-06-17 | 1.1 | Concluída | `PatientPanel.tsx` alinhado ao design system com listagem, métricas, resumo do paciente, abas e timeline clínica. `npm run lint` e `npm run build` verdes. |
+| 2026-06-18 | 1.2 | Concluída | `BudgetPanel.tsx` e `QiDentCalculator.tsx` alinhados ao design system de orçamento/precificação com métricas, tabelas responsivas, painel de inteligência e componentes UI base. `npm run lint` e `npm run build` verdes. |
 
 ## 9. Próxima Etapa Ativa
 
-Próxima etapa sugerida: **Etapa 1.2 - Refatorar `BudgetPanel.tsx` e `QiDentCalculator.tsx` conforme orçamento/precificação do design system**.
+Próxima etapa sugerida: **Etapa 1.3 - Refatorar `FinancePanel.tsx` conforme financeiro do design system**.
 
 Critério para iniciar:
 

@@ -69,7 +69,6 @@ export default function BudgetPanel({ tenantId, budgets, patients, procedures, o
   };
 
   const { totalCostPrice, totalClinCost, totalCommission, totalProfit, subtotal, total } = calculateFullTotals();
-  const profitMarginPct = subtotal > 0 ? ((totalProfit / total) * 100) : 0;
 
   const handleSaveBudget = (e: React.FormEvent) => {
     e.preventDefault();
