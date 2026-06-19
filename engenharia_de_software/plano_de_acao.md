@@ -116,7 +116,7 @@ Tarefas:
 - `[x]` Refatorar `BudgetPanel.tsx` e `QiDentCalculator.tsx` conforme orçamento/precificação.
 - `[x]` Refatorar `FinancePanel.tsx` conforme financeiro.
 - `[x]` Refatorar `SuperAdmin.tsx` conforme dashboard admin e assinatura/planos.
-- `[ ]` Revisar `DashboardPanel.tsx` e `AgendaPanel.tsx` para consistência final de tokens, responsividade e densidade.
+- `[x]` Revisar `DashboardPanel.tsx` e `AgendaPanel.tsx` para consistência final de tokens, responsividade e densidade.
 - `[ ]` Remover uso visual inconsistente de cores soltas quando houver token equivalente.
 - `[ ]` Garantir que botões, inputs, cards e modais usem componentes base sempre que fizer sentido.
 
@@ -459,10 +459,11 @@ Testes/validação:
 | 2026-06-18 | 1.2 | Concluída | `BudgetPanel.tsx` e `QiDentCalculator.tsx` alinhados ao design system de orçamento/precificação com métricas, tabelas responsivas, painel de inteligência e componentes UI base. `npm run lint` e `npm run build` verdes. |
 | 2026-06-18 | 1.3 | Concluída | `FinancePanel.tsx` alinhado ao design system financeiro com KPIs, previsão de caixa, conciliação, filtros, busca, formulário de lançamento e tabela responsiva. `npm run lint` e `npm run build` verdes. |
 | 2026-06-19 | 1.4 | Concluída | `SuperAdmin.tsx` alinhado ao dashboard admin e assinatura/planos com KPIs SaaS, listagem de tenants, gestão de status/plano, método de pagamento, logs técnicos e auditoria. `npm run lint` e `npm run build` verdes. |
+| 2026-06-19 | 1.5 | Concluída | `DashboardPanel.tsx` e `AgendaPanel.tsx` revisados para consistência de tokens, labels, responsividade, densidade e uso de componentes base em blocos principais. `npm run lint` e `npm run build` verdes. |
 
 ## 9. Próxima Etapa Ativa
 
-Próxima etapa sugerida: **Etapa 1.5 - Revisar `DashboardPanel.tsx` e `AgendaPanel.tsx` para consistência final de tokens, responsividade e densidade**.
+Próxima etapa sugerida: **Etapa 1.6 - Remover uso visual inconsistente de cores soltas quando houver token equivalente**.
 
 Critério para iniciar:
 
