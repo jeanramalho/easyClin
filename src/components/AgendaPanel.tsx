@@ -5,7 +5,7 @@
 
 import React, { useMemo, useState } from 'react';
 import { Appointment, AppointmentStatus, Patient, Procedure, User } from '../types';
-import { Button, Input, Modal } from './ui';
+import { Button, Card, Input, Modal } from './ui';
 import { dbObj } from '../services/db';
 
 interface AgendaPanelProps {
@@ -30,7 +30,7 @@ const START_HOUR = 8;
 const END_HOUR = 18;
 const HOUR_HEIGHT = 80;
 const HOURS = Array.from({ length: END_HOUR - START_HOUR + 1 }, (_, index) => START_HOUR + index);
-const WEEKDAY_LABELS = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
+const WEEKDAY_LABELS = ['SEG', 'TER', 'QUA', 'QUI', 'SEX', 'SAB', 'DOM'];
 
 const statusStyles: Record<AppointmentStatus, StatusStyle> = {
   completed: {
@@ -41,23 +41,23 @@ const statusStyles: Record<AppointmentStatus, StatusStyle> = {
     label: 'Finalizado',
   },
   confirmed: {
-    accent: 'border-l-blue-500',
-    block: 'bg-blue-100',
-    text: 'text-blue-700',
+    accent: 'border-l-primary',
+    block: 'bg-primary/10',
+    text: 'text-primary',
     badge: 'bg-primary/10 text-primary',
     label: 'Confirmado',
   },
   in_progress: {
-    accent: 'border-l-violet-500',
-    block: 'bg-violet-100',
-    text: 'text-violet-700',
-    badge: 'bg-violet-500/10 text-violet-700',
+    accent: 'border-l-secondary',
+    block: 'bg-secondary-container/40',
+    text: 'text-secondary',
+    badge: 'bg-secondary-container/40 text-secondary',
     label: 'Em atendimento',
   },
   pending: {
-    accent: 'border-l-orange-500',
-    block: 'bg-orange-100',
-    text: 'text-orange-700',
+    accent: 'border-l-tertiary',
+    block: 'bg-tertiary-fixed/40',
+    text: 'text-tertiary',
     badge: 'bg-amber-500/10 text-amber-700',
     label: 'Pendente',
   },
@@ -101,11 +101,11 @@ const formatRange = (weekDays: Date[]) => {
   const first = weekDays[0];
   const last = weekDays[6];
   const sameMonth = first.getMonth() === last.getMonth();
-  const firstLabel = first.toLocaleDateString('en-US', {
+  const firstLabel = first.toLocaleDateString('pt-BR', {
     month: 'short',
     day: 'numeric',
   });
-  const lastLabel = last.toLocaleDateString('en-US', {
+  const lastLabel = last.toLocaleDateString('pt-BR', {
     month: sameMonth ? undefined : 'short',
     day: 'numeric',
     year: 'numeric',
@@ -323,24 +323,28 @@ export default function AgendaPanel({
         <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-6">
             <div>
-              <h2 className="text-xl font-semibold leading-7 text-on-surface">Medical Agenda</h2>
+              <h2 className="text-2xl font-bold tracking-tight text-on-surface">Agenda Clínica</h2>
               <p className="mt-1 text-xs font-medium text-outline">
                 {weekMetrics.total} consultas na semana · {weekMetrics.hours.toFixed(1)}h clínicas ativas
               </p>
             </div>
 
             <div className="inline-flex w-fit items-center rounded-xl bg-surface-container p-1">
-              {['Day', 'Week', 'Month'].map(view => (
+              {[
+                { id: 'day', label: 'Dia' },
+                { id: 'week', label: 'Semana' },
+                { id: 'month', label: 'Mês' },
+              ].map(view => (
                 <button
-                  key={view}
+                  key={view.id}
                   type="button"
                   className={`rounded-lg px-4 py-2 text-sm font-semibold transition-all ${
-                    view === 'Week'
+                    view.id === 'week'
                       ? 'bg-surface-container-lowest text-primary shadow-sm'
                       : 'text-secondary hover:text-on-surface'
                   }`}
                 >
-                  {view}
+                  {view.label}
                 </button>
               ))}
             </div>
@@ -377,9 +381,9 @@ export default function AgendaPanel({
                 onChange={event => setRoomFilter(event.target.value)}
                 className="h-11 w-full min-w-0 appearance-none rounded-lg border border-outline-variant bg-surface-container-lowest py-2 pl-10 pr-9 text-sm font-medium text-on-surface outline-none transition-all hover:border-primary focus:border-primary focus:ring-2 focus:ring-primary/20 sm:w-44"
               >
-                <option value="room_102">Room 102</option>
-                <option value="room_101">Room 101</option>
-                <option value="room_201">Room 201</option>
+                <option value="room_102">Sala 102</option>
+                <option value="room_101">Sala 101</option>
+                <option value="room_201">Sala 201</option>
               </select>
               <span className="material-symbols-outlined pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-[20px] text-outline">
                 expand_more
@@ -427,7 +431,7 @@ export default function AgendaPanel({
         </div>
       )}
 
-      <section className="overflow-hidden rounded-xl border border-outline-variant bg-surface-container-lowest shadow-sm">
+      <Card as="section">
         <div className="overflow-x-auto">
           <div className="min-w-[980px]">
             <div className="grid grid-cols-[80px_repeat(7,minmax(120px,1fr))] border-b border-outline-variant bg-surface-container-low/50">
@@ -556,7 +560,7 @@ export default function AgendaPanel({
             </div>
           </div>
         </div>
-      </section>
+      </Card>
 
       {selectedAppointment && (
         <AppointmentDetails

@@ -5,6 +5,7 @@
 
 import React from 'react';
 import { Patient, Appointment, Budget, FinancialTransaction, Procedure, User } from '../types';
+import { Button, Card } from './ui';
 
 interface DashboardPanelProps {
   patients: Patient[];
@@ -99,9 +100,9 @@ export default function DashboardPanel({
   const statusBadge: Record<string, { bg: string; text: string; label: string }> = {
     confirmed:    { bg: 'bg-primary/10', text: 'text-primary', label: 'Confirmado' },
     pending:      { bg: 'bg-amber-100',  text: 'text-amber-700', label: 'Em Espera' },
-    in_progress:  { bg: 'bg-blue-100',   text: 'text-blue-700', label: 'Em Andamento' },
-    completed:    { bg: 'bg-green-100',  text: 'text-green-700', label: 'Concluído' },
-    cancelled:    { bg: 'bg-red-100',    text: 'text-red-700', label: 'Cancelado' },
+    in_progress:  { bg: 'bg-secondary-container/30', text: 'text-secondary', label: 'Em Andamento' },
+    completed:    { bg: 'bg-emerald-500/10', text: 'text-emerald-700', label: 'Concluído' },
+    cancelled:    { bg: 'bg-error/10', text: 'text-error', label: 'Cancelado' },
   };
 
   // Simple month labels for chart
@@ -114,7 +115,7 @@ export default function DashboardPanel({
 
       {/* Page Title */}
       <div>
-        <h2 className="text-2xl font-bold text-on-surface tracking-tight">Executive Dashboard</h2>
+        <h2 className="text-2xl font-bold text-on-surface tracking-tight">Dashboard Executivo</h2>
         <p className="text-sm text-on-surface-variant mt-0.5">
           Visão geral do desempenho clínico em tempo real
         </p>
@@ -124,7 +125,7 @@ export default function DashboardPanel({
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
 
         {/* Total Patients */}
-        <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow">
+        <Card className="p-5 hover:shadow-md transition-shadow">
           <div className="flex justify-between items-start mb-3">
             <div className="p-2 bg-secondary-container rounded-lg">
               <span className="material-symbols-outlined text-secondary text-[20px]">group</span>
@@ -139,10 +140,10 @@ export default function DashboardPanel({
           <div className="overflow-hidden">
             <Sparkline color="#003ec7" />
           </div>
-        </div>
+        </Card>
 
         {/* Revenue */}
-        <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow">
+        <Card className="p-5 hover:shadow-md transition-shadow">
           <div className="flex justify-between items-start mb-3">
             <div className="p-2 bg-surface-container-highest rounded-lg">
               <span className="material-symbols-outlined text-primary text-[20px]">payments</span>
@@ -159,10 +160,10 @@ export default function DashboardPanel({
           <div className="overflow-hidden">
             <Sparkline color="#003ec7" />
           </div>
-        </div>
+        </Card>
 
         {/* Appointments Today */}
-        <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow">
+        <Card className="p-5 hover:shadow-md transition-shadow">
           <div className="flex justify-between items-start mb-3">
             <div className="p-2 bg-secondary-container rounded-lg">
               <span className="material-symbols-outlined text-secondary text-[20px]">event_available</span>
@@ -177,10 +178,10 @@ export default function DashboardPanel({
           <div className="overflow-hidden">
             <Sparkline color="#952200" down />
           </div>
-        </div>
+        </Card>
 
         {/* Pending Quotes */}
-        <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow">
+        <Card className="p-5 hover:shadow-md transition-shadow">
           <div className="flex justify-between items-start mb-3">
             <div className="p-2 bg-tertiary-fixed rounded-lg">
               <span className="material-symbols-outlined text-tertiary text-[20px]">pending_actions</span>
@@ -195,7 +196,7 @@ export default function DashboardPanel({
           <div className="overflow-hidden">
             <Sparkline color="#003ec7" />
           </div>
-        </div>
+        </Card>
       </div>
 
       {/* Central Content Grid */}
@@ -205,7 +206,7 @@ export default function DashboardPanel({
         <div className="lg:col-span-2 space-y-5">
 
           {/* Financial Flow Chart */}
-          <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 shadow-sm">
+          <Card className="p-6">
             <div className="flex justify-between items-center mb-6">
               <div>
                 <h3 className="font-semibold text-base text-on-surface">Fluxo Financeiro</h3>
@@ -268,33 +269,36 @@ export default function DashboardPanel({
                   R$ {balance.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                 </span>
               </div>
-              <button
+              <Button
+                type="button"
+                variant="ghost"
                 onClick={() => onNavigate('finance')}
-                className="text-xs text-primary font-bold hover:underline"
+                className="h-8 gap-1 rounded-lg px-2 text-xs"
               >
-                Ver Financeiro →
-              </button>
+                Ver Financeiro
+                <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+              </Button>
             </div>
-          </div>
+          </Card>
 
           {/* Productivity Metrics Row */}
           <div className="grid grid-cols-2 gap-4">
-            <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-5 flex items-center gap-4 shadow-sm">
+            <Card className="p-5 flex items-center gap-4">
               <ProgressRing pct={84} color="#003ec7" />
               <div>
                 <p className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">Ocupação Média</p>
                 <h4 className="text-xl font-bold text-on-surface">84%</h4>
-                <p className="text-[10px] text-emerald-600 font-semibold">↑ Acima da meta</p>
+                <p className="text-[10px] text-emerald-600 font-semibold">Acima da meta</p>
               </div>
-            </div>
-            <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-5 flex items-center gap-4 shadow-sm">
+            </Card>
+            <Card className="p-5 flex items-center gap-4">
               <ProgressRing pct={98} color="#003ec7" />
               <div>
                 <p className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">Satisfação (NPS)</p>
                 <h4 className="text-xl font-bold text-on-surface">4.9/5.0</h4>
-                <p className="text-[10px] text-emerald-600 font-semibold">↑ Excelente</p>
+                <p className="text-[10px] text-emerald-600 font-semibold">Excelente</p>
               </div>
-            </div>
+            </Card>
           </div>
         </div>
 
@@ -302,7 +306,7 @@ export default function DashboardPanel({
         <div className="space-y-5">
 
           {/* Próximos atendimentos */}
-          <div className="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm">
+          <Card>
             <div className="px-5 py-4 border-b border-outline-variant flex justify-between items-center">
               <h3 className="font-semibold text-sm text-on-surface">Próximos Atendimentos</h3>
               <button
@@ -346,10 +350,10 @@ export default function DashboardPanel({
                 })
               )}
             </div>
-          </div>
+          </Card>
 
           {/* Alertas da Operação */}
-          <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-5 shadow-sm">
+          <Card className="p-5">
             <h3 className="font-semibold text-sm text-on-surface mb-4">Alertas da Operação</h3>
             <div className="space-y-3">
               <div className="flex items-start gap-3 p-3 rounded-lg bg-emerald-50 border border-emerald-100">
@@ -361,29 +365,29 @@ export default function DashboardPanel({
               </div>
 
               {pendingBudgets.length > 0 && (
-                <div className="flex items-start gap-3 p-3 rounded-lg bg-red-50 border border-red-100">
-                  <span className="material-symbols-outlined text-red-600 text-[18px] mt-0.5">warning</span>
+                <div className="flex items-start gap-3 p-3 rounded-lg bg-error/10 border border-error/20">
+                  <span className="material-symbols-outlined text-error text-[18px] mt-0.5">warning</span>
                   <div>
-                    <h4 className="text-xs font-bold text-red-800">Orçamentos Pendentes</h4>
-                    <p className="text-[10px] text-red-700 mt-0.5">
+                    <h4 className="text-xs font-bold text-error">Orçamentos Pendentes</h4>
+                    <p className="text-[10px] text-error mt-0.5">
                       {pendingBudgets.length} orçamento{pendingBudgets.length > 1 ? 's aguardam' : ' aguarda'} aprovação do paciente.
                     </p>
                   </div>
                 </div>
               )}
 
-              <div className="flex items-start gap-3 p-3 rounded-lg bg-blue-50 border border-blue-100">
-                <span className="material-symbols-outlined text-blue-600 text-[18px] mt-0.5">info</span>
+              <div className="flex items-start gap-3 p-3 rounded-lg bg-primary/10 border border-primary/20">
+                <span className="material-symbols-outlined text-primary text-[18px] mt-0.5">info</span>
                 <div>
-                  <h4 className="text-xs font-bold text-blue-800">Atualização do Sistema</h4>
-                  <p className="text-[10px] text-blue-700 mt-0.5">Nova versão (v2.4) disponível para instalação noturna.</p>
+                  <h4 className="text-xs font-bold text-primary">Atualização do Sistema</h4>
+                  <p className="text-[10px] text-primary mt-0.5">Nova versão (v2.4) disponível para instalação noturna.</p>
                 </div>
               </div>
             </div>
-          </div>
+          </Card>
 
           {/* Quick Actions */}
-          <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-5 shadow-sm">
+          <Card className="p-5">
             <h3 className="font-semibold text-sm text-on-surface mb-3">Ações Rápidas</h3>
             <div className="grid grid-cols-2 gap-2">
               <button
@@ -415,7 +419,7 @@ export default function DashboardPanel({
                 <span className="text-[10px] font-semibold">Financeiro</span>
               </button>
             </div>
-          </div>
+          </Card>
         </div>
       </div>
     </div>
