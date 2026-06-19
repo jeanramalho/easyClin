@@ -161,7 +161,9 @@ export default function SuperAdmin({ currentUser, onLogout }: SuperAdminProps) {
         <header className="flex flex-col gap-4 border-b border-outline-variant pb-5 xl:flex-row xl:items-center xl:justify-between">
           <div className="flex items-start gap-4">
             <div className="hidden rounded-xl border border-outline-variant bg-surface-container-lowest p-2 sm:block">
-              <EasyClinMark className="h-9 w-9" />
+              <div className="h-9 w-9">
+                <EasyClinMark />
+              </div>
             </div>
             <div>
               <span className="inline-flex rounded-full border border-primary/20 bg-primary/10 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider text-primary">
