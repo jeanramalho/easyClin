@@ -106,7 +106,7 @@ Evidência:
 
 ### Etapa 1 - Finalizar Alinhamento Visual por Módulo
 
-Status: `[~]`
+Status: `[x]`
 
 Objetivo: fechar a camada visual antes da arquitetura profunda, reduzindo retrabalho de UI.
 
@@ -118,7 +118,7 @@ Tarefas:
 - `[x]` Refatorar `SuperAdmin.tsx` conforme dashboard admin e assinatura/planos.
 - `[x]` Revisar `DashboardPanel.tsx` e `AgendaPanel.tsx` para consistência final de tokens, responsividade e densidade.
 - `[x]` Remover uso visual inconsistente de cores soltas quando houver token equivalente.
-- `[ ]` Garantir que botões, inputs, cards e modais usem componentes base sempre que fizer sentido.
+- `[x]` Garantir que botões, inputs, cards e modais usem componentes base sempre que fizer sentido.
 
 Critérios de aceite:
 
@@ -461,10 +461,11 @@ Testes/validação:
 | 2026-06-19 | 1.4 | Concluída | `SuperAdmin.tsx` alinhado ao dashboard admin e assinatura/planos com KPIs SaaS, listagem de tenants, gestão de status/plano, método de pagamento, logs técnicos e auditoria. `npm run lint` e `npm run build` verdes. |
 | 2026-06-19 | 1.5 | Concluída | `DashboardPanel.tsx` e `AgendaPanel.tsx` revisados para consistência de tokens, labels, responsividade, densidade e uso de componentes base em blocos principais. `npm run lint` e `npm run build` verdes. |
 | 2026-06-22 | 1.6 | Concluída | Cores soltas substituídas por tokens do design system em estados de erro, trial/login, controles, marca, scroll/gradiente e gráficos do dashboard. `npm run lint` e `npm run build` verdes. |
+| 2026-06-22 | 1.7 | Concluída | Componentes base aplicados em login, controle global, modal, detalhes da agenda, busca do super admin e input monetário financeiro, preservando botões especiais de ícone, calendário e filtros. `npm run lint` e `npm run build` verdes. |
 
 ## 9. Próxima Etapa Ativa
 
-Próxima etapa sugerida: **Etapa 1.7 - Garantir que botões, inputs, cards e modais usem componentes base sempre que fizer sentido**.
+Próxima etapa sugerida: **Etapa 2.1 - Criar estrutura de testes com Vitest e extrair regras puras de QiDent**.
 
 Critério para iniciar:
 
