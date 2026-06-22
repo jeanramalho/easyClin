@@ -84,13 +84,13 @@ html, body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: var(--color-outline-variant);
   border-radius: 99px;
 }
 
 /* Custom design system animations & gradient classes */
 .soft-gradient {
-  background: radial-gradient(circle at top left, #f2f3ff 0%, #faf8ff 100%);
+  background: radial-gradient(circle at top left, var(--color-surface-container-low) 0%, var(--color-surface) 100%);
 }
 
 /* soft-gradient has a single light-theme definition above */
@@ -102,4 +102,3 @@ html, body {
 }
 
 /* glass-card has a single light-theme definition above */
-

@@ -153,7 +153,7 @@ export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch }:
   const statusColors: Record<string, string> = {
     active:    'bg-emerald-500/10 text-emerald-600',
     trial:     'bg-amber-500/10 text-amber-600',
-    suspended: 'bg-rose-500/10 text-rose-600',
+    suspended: 'bg-error/10 text-error',
     default:   'bg-outline/10 text-outline',
   };
   const statusLabels: Record<string, string> = {
@@ -393,7 +393,7 @@ export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch }:
                 </p>
                 <button
                   onClick={handleClearAtraso}
-                  className="w-full bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold py-2.5 flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full bg-primary hover:bg-primary-container text-on-primary rounded-xl text-xs font-bold py-2.5 flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <span className="material-symbols-outlined text-sm">check_circle</span>
                   Registrar Pagamento Simulado

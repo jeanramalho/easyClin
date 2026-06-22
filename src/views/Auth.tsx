@@ -208,7 +208,7 @@ export default function Auth({ onLoginSuccess }: AuthProps) {
           {message && (
                 <div className={`p-4 rounded-xl text-sm flex gap-2 border mb-6 ${
               message.type === 'error' 
-                ? 'bg-red-500/10 border-red-500/20 text-red-600' 
+                ? 'bg-error/10 border-error/20 text-error' 
                 : 'bg-emerald-500/10 border-emerald-500/20 text-emerald-600'
             }`}>
               <span className="material-symbols-outlined text-base">

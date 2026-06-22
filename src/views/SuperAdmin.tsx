@@ -26,7 +26,7 @@ const statusLabels: Record<SubscriptionStatus, string> = {
 };
 
 const statusStyles: Record<SubscriptionStatus, string> = {
-  trial: 'bg-blue-500/10 text-blue-700 border-blue-500/20',
+  trial: 'bg-primary/10 text-primary border-primary/20',
   active: 'bg-emerald-500/10 text-emerald-700 border-emerald-500/20',
   pending: 'bg-amber-500/10 text-amber-700 border-amber-500/20',
   overdue: 'bg-error/10 text-error border-error/20',
@@ -359,7 +359,7 @@ export default function SuperAdmin({ currentUser, onLogout }: SuperAdminProps) {
                   <button type="button" className="flex h-8 w-8 items-center justify-center rounded text-outline opacity-40" disabled>
                     <span className="material-symbols-outlined">chevron_left</span>
                   </button>
-                  <button type="button" className="flex h-8 w-8 items-center justify-center rounded bg-primary font-bold text-white">1</button>
+                  <button type="button" className="flex h-8 w-8 items-center justify-center rounded bg-primary font-bold text-on-primary">1</button>
                   <button type="button" className="flex h-8 w-8 items-center justify-center rounded text-on-surface-variant hover:bg-surface-container">2</button>
                   <button type="button" className="flex h-8 w-8 items-center justify-center rounded text-on-surface-variant hover:bg-surface-container">3</button>
                   <button type="button" className="flex h-8 w-8 items-center justify-center rounded text-on-surface-variant hover:bg-surface-container">
@@ -435,7 +435,7 @@ export default function SuperAdmin({ currentUser, onLogout }: SuperAdminProps) {
                       <button type="button" className="text-sm font-bold text-primary hover:underline">Editar</button>
                     </div>
                     <div className="flex items-center gap-4 rounded-xl bg-surface-container-low p-4">
-                      <span className="material-symbols-outlined rounded bg-inverse-surface p-2 text-white">credit_card</span>
+                      <span className="material-symbols-outlined rounded bg-inverse-surface p-2 text-inverse-on-surface">credit_card</span>
                       <div>
                         <p className="text-sm font-bold">•••• •••• •••• 4242</p>
                         <p className="text-xs text-on-surface-variant">Faturas enviadas para {selectedTenant.ownerEmail}</p>
@@ -710,7 +710,7 @@ function getAuditTone(log: AuditLog) {
   }
 
   if (log.action.includes('Login')) {
-    return { border: 'border-blue-500', badge: 'bg-blue-500/10 text-blue-700' };
+    return { border: 'border-primary', badge: 'bg-primary/10 text-primary' };
   }
 
   return { border: 'border-emerald-500', badge: 'bg-emerald-500/10 text-emerald-700' };
@@ -718,7 +718,7 @@ function getAuditTone(log: AuditLog) {
 
 function DistributionBar({ label, value }: { label: string; value: number }) {
   return (
-    <div className="mt-4 rounded-lg border border-outline-variant bg-white/50 p-3 text-left">
+    <div className="mt-4 rounded-lg border border-outline-variant bg-surface-container-lowest/50 p-3 text-left">
       <div className="mb-1 flex items-center justify-between text-xs font-bold">
         <span>{label}</span>
         <span className="text-primary">{value}%</span>

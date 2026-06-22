@@ -401,7 +401,7 @@ export default function BudgetPanel({ tenantId, budgets, patients, procedures, o
                                   <span className="material-symbols-outlined text-[14px]">check</span>
                                 </button>
                                 <button onClick={() => handleUpdateStatus(bud, 'rejected')}
-                                  className="p-1.5 bg-error hover:bg-red-700 text-white rounded-lg transition-colors cursor-pointer"
+                                  className="p-1.5 bg-error hover:bg-error/90 text-on-error rounded-lg transition-colors cursor-pointer"
                                   title="Recusar Proposta">
                                   <span className="material-symbols-outlined text-[14px]">close</span>
                                 </button>

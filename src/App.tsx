@@ -81,7 +81,7 @@ export default function App() {
       <div className="fixed bottom-4 left-4 z-40 bg-surface-container-lowest/95 border border-outline-variant p-2 rounded-2xl shadow-xl flex items-center gap-2 backdrop-blur">
         <button
           onClick={handleHardReset}
-          className="p-2 rounded-xl hover:bg-rose-500/10 text-rose-500 transition-colors flex items-center gap-1.5 text-xs font-semibold cursor-pointer"
+          className="p-2 rounded-xl hover:bg-error/10 text-error transition-colors flex items-center gap-1.5 text-xs font-semibold cursor-pointer"
           title="Resetar Banco de Dados Local"
         >
           <RefreshCw className="h-3.5 w-3.5" />
