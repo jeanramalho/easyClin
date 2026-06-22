@@ -376,7 +376,7 @@ export default function SuperAdmin({ currentUser, onLogout }: SuperAdminProps) {
                     <div className="bg-primary-container p-6 text-on-primary-container">
                       <div className="flex items-start justify-between gap-4">
                         <div>
-                          <span className="rounded-md bg-white/20 px-2 py-1 text-[10px] font-bold uppercase tracking-widest text-white">Plano Atual</span>
+                          <span className="rounded-md bg-on-primary/20 px-2 py-1 text-[10px] font-bold uppercase tracking-widest text-on-primary">Plano Atual</span>
                           <h3 className="mt-2 text-2xl font-bold">{selectedPlan?.name || 'Plano Custom'}</h3>
                           <p className="mt-1 text-sm text-on-primary-container/80">
                             Renovação em {formatDate(selectedTenant.nextBillingAt)}
@@ -387,7 +387,7 @@ export default function SuperAdmin({ currentUser, onLogout }: SuperAdminProps) {
                           <p className="font-mono text-xl font-bold">{currency(selectedPlan?.priceMonthly || 0)}</p>
                         </div>
                       </div>
-                      <div className="mt-6 grid grid-cols-3 gap-3 border-t border-white/20 pt-5">
+                      <div className="mt-6 grid grid-cols-3 gap-3 border-t border-on-primary/20 pt-5">
                         <PlanFact label="Usuários" value={`Até ${selectedPlan?.maxProfessionals || 0}`} />
                         <PlanFact label="Status" value={statusLabels[selectedTenant.status]} />
                         <PlanFact label="Saldo" value={currency(selectedTenant.balance)} />

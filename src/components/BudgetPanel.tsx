@@ -396,7 +396,7 @@ export default function BudgetPanel({ tenantId, budgets, patients, procedures, o
                             {bud.status === 'pending' && (
                               <div className="flex gap-1">
                                 <button onClick={() => handleUpdateStatus(bud, 'approved')}
-                                  className="p-1.5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg transition-colors cursor-pointer"
+                                  className="p-1.5 bg-emerald-500 hover:bg-emerald-600 text-on-primary rounded-lg transition-colors cursor-pointer"
                                   title="Aprovar Proposta">
                                   <span className="material-symbols-outlined text-[14px]">check</span>
                                 </button>
