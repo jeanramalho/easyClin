@@ -18,7 +18,7 @@ interface DashboardPanelProps {
 }
 
 // --- Micro Sparkline Component ---
-const Sparkline = ({ color = '#003ec7', down = false }: { color?: string; down?: boolean }) => {
+const Sparkline = ({ color = 'var(--color-primary)', down = false }: { color?: string; down?: boolean }) => {
   const paths = down
     ? 'M0 10 Q 20 30, 40 20 T 70 25 T 100 18'
     : 'M0 25 Q 10 20, 20 22 T 40 15 T 60 18 T 80 10 T 100 12';
@@ -46,7 +46,7 @@ const ProgressRing = ({ pct, color }: { pct: number; color: string }) => {
   const offset = circ * (1 - pct / 100);
   return (
     <svg width="56" height="56" viewBox="0 0 56 56">
-      <circle cx="28" cy="28" r={r} fill="none" stroke="#e2e7ff" strokeWidth="6" />
+      <circle cx="28" cy="28" r={r} fill="none" stroke="var(--color-surface-container-high)" strokeWidth="6" />
       <circle
         cx="28" cy="28" r={r}
         fill="none"
@@ -138,7 +138,7 @@ export default function DashboardPanel({
           <p className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-1">Total Pacientes</p>
           <h3 className="text-2xl font-bold text-on-surface mb-3">{patients.length.toLocaleString('pt-BR')}</h3>
           <div className="overflow-hidden">
-            <Sparkline color="#003ec7" />
+            <Sparkline />
           </div>
         </Card>
 
@@ -158,7 +158,7 @@ export default function DashboardPanel({
             R$ {totalRevenue.toLocaleString('pt-BR', { minimumFractionDigits: 0 })}
           </h3>
           <div className="overflow-hidden">
-            <Sparkline color="#003ec7" />
+            <Sparkline />
           </div>
         </Card>
 
@@ -176,7 +176,7 @@ export default function DashboardPanel({
           <p className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-1">Consultas Hoje</p>
           <h3 className="text-2xl font-bold text-on-surface mb-3">{todayAppointments.length}</h3>
           <div className="overflow-hidden">
-            <Sparkline color="#952200" down />
+            <Sparkline color="var(--color-tertiary)" down />
           </div>
         </Card>
 
@@ -194,7 +194,7 @@ export default function DashboardPanel({
           <p className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-1">Orçamentos Pendentes</p>
           <h3 className="text-2xl font-bold text-on-surface mb-3">{pendingBudgets.length}</h3>
           <div className="overflow-hidden">
-            <Sparkline color="#003ec7" />
+            <Sparkline />
           </div>
         </Card>
       </div>
@@ -265,7 +265,7 @@ export default function DashboardPanel({
             <div className="mt-4 pt-4 border-t border-outline-variant flex justify-between items-center">
               <div className="text-sm">
                 <span className="text-on-surface-variant">Saldo Consolidado: </span>
-                <span className={`font-bold ${balance >= 0 ? 'text-emerald-600' : 'text-rose-600'}`}>
+                <span className={`font-bold ${balance >= 0 ? 'text-emerald-600' : 'text-error'}`}>
                   R$ {balance.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                 </span>
               </div>
@@ -284,7 +284,7 @@ export default function DashboardPanel({
           {/* Productivity Metrics Row */}
           <div className="grid grid-cols-2 gap-4">
             <Card className="p-5 flex items-center gap-4">
-              <ProgressRing pct={84} color="#003ec7" />
+              <ProgressRing pct={84} color="var(--color-primary)" />
               <div>
                 <p className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">Ocupação Média</p>
                 <h4 className="text-xl font-bold text-on-surface">84%</h4>
@@ -292,7 +292,7 @@ export default function DashboardPanel({
               </div>
             </Card>
             <Card className="p-5 flex items-center gap-4">
-              <ProgressRing pct={98} color="#003ec7" />
+              <ProgressRing pct={98} color="var(--color-primary)" />
               <div>
                 <p className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">Satisfação (NPS)</p>
                 <h4 className="text-xl font-bold text-on-surface">4.9/5.0</h4>
