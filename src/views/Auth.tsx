@@ -6,7 +6,7 @@
 import React, { useState } from 'react';
 import { dbObj } from '../services/db';
 import { User, UserRole, SubscriptionStatus } from '../types';
-import { EasyClinMark } from '../components/ui';
+import { Button, Card, EasyClinMark, Input } from '../components/ui';
 
 interface AuthProps {
   onLoginSuccess: (user: User) => void;
@@ -129,9 +129,9 @@ export default function Auth({ onLoginSuccess }: AuthProps) {
         
         {/* Logo Header */}
         <div className="flex flex-col items-center mb-6 space-y-3">
-          <div className="w-20 h-20 bg-surface-container-lowest rounded-xl shadow-sm flex items-center justify-center p-2 overflow-hidden border border-outline-variant/30">
+          <Card className="w-20 h-20 flex items-center justify-center p-2 border-outline-variant/30">
             <EasyClinMark />
-          </div>
+          </Card>
           <div className="text-center">
             <h1 className="font-headline-lg text-headline-lg text-primary tracking-tight">EasyClin</h1>
             <p className="font-body-md text-body-md text-outline">Gestão inteligente para sua clínica</p>
@@ -139,7 +139,7 @@ export default function Auth({ onLoginSuccess }: AuthProps) {
         </div>
 
         {/* Login Card */}
-        <div className="glass-card rounded-xl p-8 shadow-lg">
+        <Card className="glass-card p-8 shadow-lg">
           <h2 className="font-title-md text-title-md text-on-surface mb-6">
             {isRegistering ? 'Crie sua conta clínica' : 'Acesse sua conta'}
           </h2>
@@ -229,14 +229,14 @@ export default function Auth({ onLoginSuccess }: AuthProps) {
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                       <span className="material-symbols-outlined text-outline group-focus-within:text-primary transition-colors">person</span>
                     </div>
-                    <input
+                    <Input
                       id="name"
                       type="text"
                       required
                       placeholder="Dr. Arthur Mendes"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      className="w-full pl-10 pr-4 py-3 bg-surface-container-lowest border border-outline-variant rounded-lg font-body-md text-body-md focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none transition-all outline-none"
+                      className="pl-10 pr-4 py-3 bg-surface-container-lowest rounded-lg font-body-md text-body-md focus:ring-primary focus:border-primary"
                     />
                   </div>
                 </div>
@@ -247,14 +247,14 @@ export default function Auth({ onLoginSuccess }: AuthProps) {
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                       <span className="material-symbols-outlined text-outline group-focus-within:text-primary transition-colors">home_clinic</span>
                     </div>
-                    <input
+                    <Input
                       id="clinicName"
                       type="text"
                       required
                       placeholder="Ex: Clínica OdontoPremium"
                       value={clinicName}
                       onChange={(e) => setClinicName(e.target.value)}
-                      className="w-full pl-10 pr-4 py-3 bg-surface-container-lowest border border-outline-variant rounded-lg font-body-md text-body-md focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none transition-all outline-none"
+                      className="pl-10 pr-4 py-3 bg-surface-container-lowest rounded-lg font-body-md text-body-md focus:ring-primary focus:border-primary"
                     />
                   </div>
                 </div>
@@ -267,14 +267,14 @@ export default function Auth({ onLoginSuccess }: AuthProps) {
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                   <span className="material-symbols-outlined text-outline group-focus-within:text-primary transition-colors">mail</span>
                 </div>
-                <input
+                <Input
                   id="email"
                   type="email"
                   required
                   placeholder="exemplo@clinica.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 bg-surface-container-lowest dark:bg-inverse-surface border border-outline-variant dark:border-outline rounded-lg font-body-md text-body-md focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none transition-all outline-none"
+                  className="pl-10 pr-4 py-3 bg-surface-container-lowest rounded-lg font-body-md text-body-md focus:ring-primary focus:border-primary"
                 />
               </div>
             </div>
@@ -292,14 +292,14 @@ export default function Auth({ onLoginSuccess }: AuthProps) {
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                   <span className="material-symbols-outlined text-outline group-focus-within:text-primary transition-colors">lock</span>
                 </div>
-                <input
+                <Input
                   id="password"
                   type={showPassword ? 'text' : 'password'}
                   required
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                    className="w-full pl-10 pr-12 py-3 bg-surface-container-lowest border border-outline-variant rounded-lg font-body-md text-body-md focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none transition-all outline-none"
+                  className="pl-10 pr-12 py-3 bg-surface-container-lowest rounded-lg font-body-md text-body-md focus:ring-primary focus:border-primary"
                 />
                 <button
                   type="button"
@@ -314,15 +314,16 @@ export default function Auth({ onLoginSuccess }: AuthProps) {
             </div>
 
             {/* CTA Button */}
-            <button 
+            <Button 
               type="submit"
-              className="w-full py-3.5 bg-primary text-on-primary font-title-md text-title-md rounded-lg hover:bg-primary-container active:scale-95 transition-all shadow-md flex items-center justify-center group cursor-pointer focus:outline-none"
+              size="lg"
+              className="w-full py-3.5 font-title-md text-title-md rounded-lg active:scale-95 shadow-md group"
             >
               <span>{isRegistering ? 'Criar minha conta' : 'Entrar'}</span>
               <span className="material-symbols-outlined ml-2 group-hover:translate-x-1 transition-transform">
                 arrow_forward
               </span>
-            </button>
+            </Button>
           </form>
 
           {/* Bottom Action Form Switcher */}
@@ -351,7 +352,7 @@ export default function Auth({ onLoginSuccess }: AuthProps) {
               </p>
             )}
           </div>
-        </div>
+        </Card>
 
         {/* Footer / Legal */}
         <footer className="mt-8 text-center space-y-4">
