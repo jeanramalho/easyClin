@@ -1,4 +1,5 @@
 import React from 'react';
+import Button from './Button';
 
 export interface ModalProps {
   open: boolean;
@@ -16,9 +17,9 @@ export const Modal: React.FC<ModalProps> = ({ open, onClose, title, children }) 
           <div className="flex items-center gap-2">
             {title && <h3 className="font-bold text-base">{title}</h3>}
           </div>
-          <button onClick={onClose} className="p-1 rounded-lg hover:bg-surface-container transition-colors">
+          <Button type="button" variant="ghost" size="sm" onClick={onClose} className="rounded-lg p-1 text-outline hover:bg-surface-container">
             <span className="material-symbols-outlined text-outline">close</span>
-          </button>
+          </Button>
         </div>
         <div className="p-6">{children}</div>
       </div>

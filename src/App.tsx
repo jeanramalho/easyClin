@@ -10,6 +10,7 @@ import Auth from './views/Auth';
 import SuperAdmin from './views/SuperAdmin';
 import ClinicDashboard from './views/ClinicDashboard';
 import { RefreshCw } from 'lucide-react';
+import { Button, Card } from './components/ui';
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -78,16 +79,18 @@ export default function App() {
     <div className={`min-h-screen font-sans antialiased transition-colors duration-350`}>
       
       {/* Floating control capsule */}
-      <div className="fixed bottom-4 left-4 z-40 bg-surface-container-lowest/95 border border-outline-variant p-2 rounded-2xl shadow-xl flex items-center gap-2 backdrop-blur">
-        <button
+      <Card className="fixed bottom-4 left-4 z-40 flex items-center gap-2 rounded-2xl bg-surface-container-lowest/95 p-2 shadow-xl backdrop-blur">
+        <Button
+          type="button"
+          variant="ghost"
           onClick={handleHardReset}
-          className="p-2 rounded-xl hover:bg-error/10 text-error transition-colors flex items-center gap-1.5 text-xs font-semibold cursor-pointer"
+          className="gap-1.5 rounded-xl p-2 text-xs text-error hover:bg-error/10"
           title="Resetar Banco de Dados Local"
         >
           <RefreshCw className="h-3.5 w-3.5" />
           <span className="hidden sm:inline">Limpar Dados</span>
-        </button>
-      </div>
+        </Button>
+      </Card>
 
       {/* Main View Router */}
       {!currentUser ? (

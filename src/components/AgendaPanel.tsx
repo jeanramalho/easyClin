@@ -689,7 +689,7 @@ function AppointmentDetails({
   const style = statusStyles[appointment.status];
 
   return (
-    <aside className="fixed bottom-6 right-6 z-40 w-[calc(100vw-3rem)] max-w-sm rounded-xl border border-outline-variant bg-surface-container-lowest/95 p-5 text-on-surface shadow-2xl backdrop-blur">
+    <Card as="aside" className="fixed bottom-6 right-6 z-40 w-[calc(100vw-3rem)] max-w-sm bg-surface-container-lowest/95 p-5 text-on-surface shadow-2xl backdrop-blur">
       <div className="mb-4 flex items-start justify-between gap-3">
         <div className="flex min-w-0 items-center gap-3">
           <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 border-primary-container bg-primary/10 text-base font-bold text-primary">
@@ -733,22 +733,23 @@ function AppointmentDetails({
       </div>
 
       <div className="flex gap-2">
-        <button
+        <Button
           type="button"
           onClick={onNotify}
-          className="flex-1 rounded-lg bg-primary py-2 text-sm font-bold text-on-primary transition-all hover:brightness-110 active:scale-95"
+          className="flex-1 rounded-lg py-2 text-sm active:scale-95"
         >
           Lembrete CRM
-        </button>
-        <button
+        </Button>
+        <Button
           type="button"
+          variant="secondary"
           onClick={() => onStatusChange('in_progress')}
-          className="flex-1 rounded-lg border border-outline-variant py-2 text-sm font-bold text-secondary transition-colors hover:bg-surface-container"
+          className="flex-1 rounded-lg py-2 text-sm text-secondary"
         >
           Check-in
-        </button>
+        </Button>
       </div>
-    </aside>
+    </Card>
   );
 }
 

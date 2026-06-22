@@ -6,7 +6,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { dbObj, PLANS } from '../services/db';
 import { AuditLog, Plan, SubscriptionStatus, Tenant, User } from '../types';
-import { Button, Card, EasyClinMark } from '../components/ui';
+import { Button, Card, EasyClinMark, Input } from '../components/ui';
 
 interface SuperAdminProps {
   currentUser: User;
@@ -241,11 +241,11 @@ export default function SuperAdmin({ currentUser, onLogout }: SuperAdminProps) {
                 <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
                   <div className="relative sm:w-72">
                     <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[18px] text-outline">search</span>
-                    <input
+                    <Input
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                       placeholder="Buscar clínica, gestor ou ID..."
-                      className="w-full rounded-lg border border-outline-variant bg-surface px-3 py-2 pl-10 text-sm text-on-surface placeholder-outline focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                      className="rounded-lg bg-surface px-3 py-2 pl-10 text-sm focus:border-primary focus:ring-primary/20"
                     />
                   </div>
                   <select

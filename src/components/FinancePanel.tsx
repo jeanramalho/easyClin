@@ -538,13 +538,13 @@ function MoneyInput({ label, value, onChange }: MoneyInputProps) {
       <label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-outline">{label}</label>
       <div className="relative">
         <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-on-surface-variant">R$</span>
-        <input
+        <Input
           type="number"
           required
           min={1}
           value={value}
           onChange={(e) => onChange(parseFloat(e.target.value) || 0)}
-          className="w-full rounded-lg border border-outline-variant bg-surface-container-lowest py-2.5 pl-9 pr-3 font-mono text-sm text-on-surface transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+          className="rounded-lg bg-surface-container-lowest py-2.5 pl-9 pr-3 font-mono text-sm focus:border-primary focus:ring-primary/20"
         />
       </div>
     </div>
