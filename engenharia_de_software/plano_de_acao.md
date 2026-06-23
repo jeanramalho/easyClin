@@ -159,7 +159,7 @@ src/presentation/
 Tarefas:
 
 - `[x]` Mover tipos centrais de negócio para `src/domain/entities` ou criar aliases progressivos.
-- `[ ]` Criar `PricingService` para a fórmula QiDent.
+- `[x]` Criar `PricingService` para a fórmula QiDent.
 - `[ ]` Criar `BudgetTotalsService` para totais, comissão, desconto, lucro e margem.
 - `[ ]` Criar `SubscriptionPolicy` para trial, active, pending, overdue, suspended e cancelled.
 - `[ ]` Criar `MedicalRecordPolicy` para bloqueio, retificação futura e leitura sensível.
@@ -171,6 +171,8 @@ Evidência parcial:
 - Tipos centrais movidos para `src/domain/entities/*` em 2026-06-23, mantendo `src/types.ts` como fachada de compatibilidade progressiva.
 - `src/services/db.ts` passou a importar entidades do domínio diretamente.
 - `npm run lint` passou em 2026-06-23.
+- `PricingService` criado em `src/domain/services/PricingService.ts` em 2026-06-23 e integrado ao `QiDentCalculator`.
+- `npm run lint` passou após a extração do `PricingService` em 2026-06-23.
 
 Critérios de aceite:
 

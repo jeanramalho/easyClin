@@ -5,6 +5,7 @@
 
 import React, { useState } from 'react';
 import { Procedure } from '../types';
+import { PricingService } from '../domain/services';
 import { dbObj } from '../services/db';
 import { Button, Card, Input } from './ui';
 
@@ -27,12 +28,6 @@ const categories = [
 const currency = (value: number) =>
   value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
-const calculateSuggestedPrice = (cost: number, clinic: number, commission: number, margin: number) => {
-  const divisor = 1 - commission / 100 - margin / 100;
-  if (divisor <= 0.05) return (cost + clinic) * 5;
-  return (cost + clinic) / divisor;
-};
-
 export default function QiDentCalculator({ tenantId, procedures, onRefreshProcedures }: QiDentCalculatorProps) {
   const [editingProc, setEditingProc] = useState<Partial<Procedure> | null>(null);
   const [name, setName] = useState('');
@@ -43,18 +38,22 @@ export default function QiDentCalculator({ tenantId, procedures, onRefreshProced
   const [desiredMargin, setDesiredMargin] = useState(35);
   const [finalPracticed, setFinalPracticed] = useState(150);
 
-  const calculatedPrice = calculateSuggestedPrice(costPrice, clinicCost, professionalPercent, desiredMargin);
-  const repasseVal = finalPracticed * (professionalPercent / 100);
-  const lucroRealLiquido = finalPracticed - costPrice - clinicCost - repasseVal;
-  const margemRealLiquida = finalPracticed > 0 ? (lucroRealLiquido / finalPracticed) * 100 : 0;
-  const operatingCost = costPrice + clinicCost + repasseVal;
-  const operatingCostPct = finalPracticed > 0 ? Math.min(100, (operatingCost / finalPracticed) * 100) : 0;
+  const pricingAnalysis = PricingService.analyze({
+    costPrice,
+    clinicCost,
+    professionalPercent,
+    desiredMargin,
+    finalPrice: finalPracticed,
+  });
+  const calculatedPrice = pricingAnalysis.suggestedPrice;
+  const repasseVal = pricingAnalysis.professionalCommission;
+  const lucroRealLiquido = pricingAnalysis.netProfit;
+  const margemRealLiquida = pricingAnalysis.netMarginPercent;
+  const operatingCostPct = pricingAnalysis.operatingCostPercent;
   const catalogValue = procedures.reduce((sum, procedure) => sum + procedure.finalPrice, 0);
   const averageMargin = procedures.length
     ? procedures.reduce((sum, procedure) => {
-        const commission = procedure.finalPrice * (procedure.professionalPercent / 100);
-        const profit = procedure.finalPrice - procedure.costPrice - procedure.clinicCost - commission;
-        return sum + (procedure.finalPrice > 0 ? (profit / procedure.finalPrice) * 100 : 0);
+        return sum + PricingService.analyzeProcedure(procedure).netMarginPercent;
       }, 0) / procedures.length
     : 0;
 
@@ -86,12 +85,12 @@ export default function QiDentCalculator({ tenantId, procedures, onRefreshProced
     commission?: number;
     margin?: number;
   }) => {
-    const suggested = calculateSuggestedPrice(
-      next.cost ?? costPrice,
-      next.clinic ?? clinicCost,
-      next.commission ?? professionalPercent,
-      next.margin ?? desiredMargin
-    );
+    const suggested = PricingService.calculateSuggestedPrice({
+      costPrice: next.cost ?? costPrice,
+      clinicCost: next.clinic ?? clinicCost,
+      professionalPercent: next.commission ?? professionalPercent,
+      desiredMargin: next.margin ?? desiredMargin,
+    });
     setFinalPracticed(Math.round(suggested));
   };
 
@@ -185,9 +184,10 @@ export default function QiDentCalculator({ tenantId, procedures, onRefreshProced
                 </thead>
                 <tbody className="divide-y divide-outline-variant">
                   {procedures.map((proc) => {
-                    const commission = proc.finalPrice * (proc.professionalPercent / 100);
-                    const profit = proc.finalPrice - proc.costPrice - proc.clinicCost - commission;
-                    const profitMargin = proc.finalPrice > 0 ? (profit / proc.finalPrice) * 100 : 0;
+                    const procAnalysis = PricingService.analyzeProcedure(proc);
+                    const commission = procAnalysis.professionalCommission;
+                    const profit = procAnalysis.netProfit;
+                    const profitMargin = procAnalysis.netMarginPercent;
                     const isActive = editingProc?.id === proc.id;
 
                     return (
