@@ -7,7 +7,7 @@ import {
   Tenant, User, Patient, Appointment, MedicalRecordEntry, 
   Procedure, Budget, FinancialTransaction, AuditLog, 
   SubscriptionStatus, Plan, UserRole, UserStatus
-} from '../types';
+} from '../domain/entities';
 
 // Catalog of SaaS plans
 export const PLANS: Plan[] = [
@@ -93,7 +93,7 @@ const DEFAULT_USERS: User[] = [
     role: 'super_admin',
     status: 'active',
     avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=100&h=100'
-  } as any,
+  },
   // Tenant OdontoPremium
   {
     id: 'user_arthur_owner',

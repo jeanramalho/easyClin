@@ -135,7 +135,7 @@ Testes/validação:
 
 ### Etapa 2 - Fundações de Domínio e Regras Puras
 
-Status: `[ ]`
+Status: `[~]`
 
 Objetivo: extrair regras de negócio críticas para código puro e testável, sem mudar comportamento visual.
 
@@ -158,13 +158,19 @@ src/presentation/
 
 Tarefas:
 
-- `[ ]` Mover tipos centrais de negócio para `src/domain/entities` ou criar aliases progressivos.
+- `[x]` Mover tipos centrais de negócio para `src/domain/entities` ou criar aliases progressivos.
 - `[ ]` Criar `PricingService` para a fórmula QiDent.
 - `[ ]` Criar `BudgetTotalsService` para totais, comissão, desconto, lucro e margem.
 - `[ ]` Criar `SubscriptionPolicy` para trial, active, pending, overdue, suspended e cancelled.
 - `[ ]` Criar `MedicalRecordPolicy` para bloqueio, retificação futura e leitura sensível.
 - `[ ]` Criar `PermissionPolicy` para clinic admin, professional, receptionist, patient e super admin.
 - `[ ]` Criar testes unitários para todas as regras puras.
+
+Evidência parcial:
+
+- Tipos centrais movidos para `src/domain/entities/*` em 2026-06-23, mantendo `src/types.ts` como fachada de compatibilidade progressiva.
+- `src/services/db.ts` passou a importar entidades do domínio diretamente.
+- `npm run lint` passou em 2026-06-23.
 
 Critérios de aceite:
 
