@@ -5,6 +5,7 @@
 
 import React, { useState } from 'react';
 import { Budget, Patient, Procedure, BudgetItem, BudgetStatus, FinancialTransaction } from '../types';
+import { BudgetTotalsService } from '../domain/services';
 import { dbObj } from '../services/db';
 import { Button, Card, Input } from './ui';
 
@@ -58,33 +59,39 @@ export default function BudgetPanel({ tenantId, budgets, patients, procedures, o
     setSelectedProcedures(selectedProcedures.filter((_, i) => i !== idx));
   };
 
-  const calculateFullTotals = () => {
-    const totalCostPrice = selectedProcedures.reduce((sum, p) => sum + p.costPrice, 0);
-    const totalClinCost = selectedProcedures.reduce((sum, p) => sum + p.clinicCost, 0);
-    const totalCommission = selectedProcedures.reduce((sum, p) => sum + (p.finalPrice * (p.professionalPercent / 100)), 0);
-    const subtotal = selectedProcedures.reduce((sum, p) => sum + p.finalPrice, 0);
-    const total = Math.max(0, subtotal - discountVal);
-    const totalProfit = total - totalCostPrice - totalClinCost - totalCommission;
-    return { totalCostPrice, totalClinCost, totalCommission, totalProfit, subtotal, total };
-  };
-
-  const { totalCostPrice, totalClinCost, totalCommission, totalProfit, subtotal, total } = calculateFullTotals();
+  const budgetTotals = BudgetTotalsService.calculate(selectedProcedures, discountVal);
+  const {
+    totalCostPrice,
+    totalClinCost,
+    totalCommission,
+    totalProfit,
+    subtotal,
+    total,
+    profitMarginPercent,
+  } = budgetTotals;
 
   const handleSaveBudget = (e: React.FormEvent) => {
     e.preventDefault();
     if (!patientId || selectedProcedures.length === 0) return;
-    const { totalCostPrice, totalClinCost, totalCommission, totalProfit, subtotal, total } = calculateFullTotals();
+    const totals = BudgetTotalsService.calculate(selectedProcedures, discountVal);
     const newBudget: Budget = {
       id: `bud_${Math.random().toString(36).substring(2, 9)}`,
       tenantId, patientId, items: selectedProcedures,
-      totalCostPrice, totalClinCost, totalCommission, totalProfit, subtotal,
-      discount: discountVal, total, status: 'pending', paymentPlan,
+      totalCostPrice: totals.totalCostPrice,
+      totalClinCost: totals.totalClinCost,
+      totalCommission: totals.totalCommission,
+      totalProfit: totals.totalProfit,
+      subtotal: totals.subtotal,
+      discount: totals.discount,
+      total: totals.total,
+      status: 'pending',
+      paymentPlan,
       createdAt: new Date().toISOString()
     };
     dbObj.saveBudget(newBudget);
     const patName = patients.find(p => p.id === patientId)?.name || 'N/A';
     dbObj.logAction(dbObj.currentUser.id, dbObj.currentUser.name, dbObj.currentUser.role,
-      'Orçamento Criado', `Criou orçamento no valor total R$ ${total.toFixed(2)} para o paciente ${patName}.`, tenantId);
+      'Orçamento Criado', `Criou orçamento no valor total R$ ${totals.total.toFixed(2)} para o paciente ${patName}.`, tenantId);
     setPatientId('');
     setSelectedProcedures([]);
     setDiscountVal(0);
@@ -116,8 +123,7 @@ export default function BudgetPanel({ tenantId, budgets, patients, procedures, o
   const pendingBudgets = budgets.filter(budget => budget.status === 'pending' || budget.status === 'draft').length;
   const totalPipeline = budgets.reduce((sum, budget) => sum + budget.total, 0);
   const projectedProfit = budgets.reduce((sum, budget) => sum + budget.totalProfit, 0);
-  const profitMarginPct = total > 0 ? (totalProfit / total) * 100 : 0;
-  const maxDiscount = Math.round(subtotal * 0.4);
+  const maxDiscount = BudgetTotalsService.calculateMaxDiscount(subtotal);
 
   const selectClass =
     'w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20';
@@ -226,8 +232,8 @@ export default function BudgetPanel({ tenantId, budgets, patients, procedures, o
                       </thead>
                       <tbody className="divide-y divide-outline-variant">
                     {selectedProcedures.map((item, index) => {
-                      const commission = item.finalPrice * (item.professionalPercent / 100);
-                      const netProfit = item.finalPrice - item.costPrice - item.clinicCost - commission;
+                      const commission = BudgetTotalsService.calculateItemCommission(item);
+                      const netProfit = BudgetTotalsService.calculateItemProfit(item);
                       return (
                         <tr key={`${item.procedureId}-${index}`} className="transition-colors hover:bg-surface-container-low/50">
                           <td className="px-4 py-4">
@@ -322,7 +328,7 @@ export default function BudgetPanel({ tenantId, budgets, patients, procedures, o
                     {currency(totalProfit)}
                   </div>
                   <div className={`text-xs font-semibold mt-1 ${totalProfit > 0 ? 'text-emerald-600' : 'text-error'}`}>
-                    Margem: {profitMarginPct.toFixed(1)}%
+                    Margem: {profitMarginPercent.toFixed(1)}%
                   </div>
                   <p className="text-[10px] text-outline mt-1.5 leading-relaxed">
                     Rentabilidade clínica real pós-custos e comissões.

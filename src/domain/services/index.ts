@@ -4,6 +4,10 @@
  */
 
 export {
+  BudgetTotalsService,
+  type BudgetTotals,
+} from './BudgetTotalsService';
+export {
   PricingService,
   type PracticedPricingInput,
   type PricingAnalysis,
