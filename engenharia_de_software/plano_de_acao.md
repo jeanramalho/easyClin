@@ -161,7 +161,7 @@ Tarefas:
 - `[x]` Mover tipos centrais de negócio para `src/domain/entities` ou criar aliases progressivos.
 - `[x]` Criar `PricingService` para a fórmula QiDent.
 - `[x]` Criar `BudgetTotalsService` para totais, comissão, desconto, lucro e margem.
-- `[ ]` Criar `SubscriptionPolicy` para trial, active, pending, overdue, suspended e cancelled.
+- `[x]` Criar `SubscriptionPolicy` para trial, active, pending, overdue, suspended e cancelled.
 - `[ ]` Criar `MedicalRecordPolicy` para bloqueio, retificação futura e leitura sensível.
 - `[ ]` Criar `PermissionPolicy` para clinic admin, professional, receptionist, patient e super admin.
 - `[ ]` Criar testes unitários para todas as regras puras.
@@ -175,6 +175,8 @@ Evidência parcial:
 - `npm run lint` passou após a extração do `PricingService` em 2026-06-23.
 - `BudgetTotalsService` criado em `src/domain/services/BudgetTotalsService.ts` em 2026-06-23 e integrado ao `BudgetPanel`.
 - `npm run lint` passou após a extração do `BudgetTotalsService` em 2026-06-23.
+- `SubscriptionPolicy` criado em `src/domain/policies/SubscriptionPolicy.ts` em 2026-06-23 e integrado ao `SuperAdmin` e `ClinicDashboard`.
+- `npm run lint` passou após a extração do `SubscriptionPolicy` em 2026-06-23.
 
 Critérios de aceite:
 

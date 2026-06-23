@@ -5,6 +5,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { User, Tenant, Patient, Appointment, Procedure, Budget, FinancialTransaction, AuditLog } from '../types';
+import { SubscriptionPolicy } from '../domain/policies';
 import { dbObj } from '../services/db';
 
 // Child panels
@@ -98,7 +99,7 @@ export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch }:
   const handleClearAtraso = () => {
     const updatedTenant: Tenant = {
       ...activeTenant,
-      status: 'active',
+      status: SubscriptionPolicy.nextStatusAfterManualPayment(activeTenant.status),
       nextBillingAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
     };
     dbObj.saveTenant(updatedTenant);
@@ -370,7 +371,7 @@ export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch }:
         </header>
 
         {/* ===== WORKSPACE ===== */}
-        {activeTenant.status === 'suspended' ? (
+        {!SubscriptionPolicy.hasOperationalAccess(activeTenant.status) ? (
           /* Suspended Screen */
           <div className="flex-1 flex items-center justify-center p-6">
             <div className="max-w-md w-full p-8 rounded-2xl border border-outline-variant bg-surface-container-lowest text-center space-y-6 shadow-2xl">
@@ -411,7 +412,7 @@ export default function ClinicDashboard({ currentUser, onLogout, onRoleSwitch }:
           <main className="flex-1 p-6 max-w-[1440px] w-full mx-auto space-y-0">
 
             {/* Trial Banner */}
-            {activeTenant.status === 'trial' && (
+            {SubscriptionPolicy.shouldShowTrialNotice(activeTenant.status) && (
               <div className="mb-5 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 flex items-center gap-3">
                 <span className="material-symbols-outlined text-amber-600">info</span>
                 <p className="text-xs text-amber-800 font-medium">

@@ -6,6 +6,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { dbObj, PLANS } from '../services/db';
 import { AuditLog, Plan, SubscriptionStatus, Tenant, User } from '../types';
+import { SubscriptionPolicy } from '../domain/policies';
 import { Button, Card, EasyClinMark, Input } from '../components/ui';
 
 interface SuperAdminProps {
@@ -84,24 +85,14 @@ export default function SuperAdmin({ currentUser, onLogout }: SuperAdminProps) {
   };
 
   const metrics = useMemo(() => {
-    const activeCount = tenants.filter(t => t.status === 'active').length;
-    const trialCount = tenants.filter(t => t.status === 'trial').length;
-    const overdueCount = tenants.filter(t => t.status === 'overdue' || t.status === 'pending').length;
-    const suspendedCount = tenants.filter(t => t.status === 'suspended').length;
-    const cancelledCount = tenants.filter(t => t.status === 'cancelled').length;
+    const subscriptionMetrics = SubscriptionPolicy.calculateMetrics(tenants);
     const totalMRR = tenants
-      .filter(t => t.status === 'active')
+      .filter(tenant => SubscriptionPolicy.isBillable(tenant.status))
       .reduce((sum, tenant) => sum + getPlanPrice(tenant.planId), 0);
-    const churnRate = tenants.length > 0 ? ((cancelledCount + suspendedCount) / tenants.length) * 100 : 0;
 
     return {
-      activeCount,
-      trialCount,
-      overdueCount,
-      suspendedCount,
+      ...subscriptionMetrics,
       totalMRR,
-      churnRate,
-      activationRate: tenants.length > 0 ? (activeCount / tenants.length) * 100 : 0,
     };
   }, [tenants]);
 
@@ -207,15 +198,15 @@ export default function SuperAdmin({ currentUser, onLogout }: SuperAdminProps) {
             icon="person_remove"
             label="Risco / Churn"
             value={`${metrics.churnRate.toFixed(1)}%`}
-            helper={`${metrics.suspendedCount} suspensas ou canceladas`}
+            helper={`${metrics.churnRiskCount} em risco comercial`}
             tone={metrics.churnRate > 12 ? 'error' : 'warning'}
           />
           <MetricCard
             icon="pending_actions"
             label="Ativações Pendentes"
-            value={String(metrics.overdueCount)}
+            value={String(metrics.delinquentCount)}
             helper="Pendências e inadimplência"
-            tone={metrics.overdueCount > 0 ? 'error' : 'success'}
+            tone={metrics.delinquentCount > 0 ? 'error' : 'success'}
           />
         </section>
 
@@ -337,11 +328,11 @@ export default function SuperAdmin({ currentUser, onLogout }: SuperAdminProps) {
                                 </button>
                                 <button
                                   type="button"
-                                  onClick={() => handleUpdateStatus(tenant.id, tenant.status === 'suspended' ? 'active' : 'suspended')}
+                                  onClick={() => handleUpdateStatus(tenant.id, SubscriptionPolicy.getReactiveStatus(tenant.status))}
                                   className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-outline transition-colors hover:bg-error/10 hover:text-error"
-                                  title={tenant.status === 'suspended' ? 'Reativar clínica' : 'Suspender clínica'}
+                                  title={SubscriptionPolicy.isSuspended(tenant.status) ? 'Reativar clínica' : 'Suspender clínica'}
                                 >
-                                  <span className="material-symbols-outlined text-[18px]">{tenant.status === 'suspended' ? 'lock_open' : 'block'}</span>
+                                  <span className="material-symbols-outlined text-[18px]">{SubscriptionPolicy.isSuspended(tenant.status) ? 'lock_open' : 'block'}</span>
                                 </button>
                               </div>
                             </td>
